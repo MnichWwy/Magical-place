@@ -8,7 +8,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
+#define SCIANA 2
+#define JABLKO 3
+#define BANAN 4
+#define KOKOS 5
 int menu() //menu glowne
 {
     int a;
@@ -68,7 +71,6 @@ void losujelement(int h,int l,int ilosc,int rodzaj,int **tab) //losowanie elemen
         while (tab[temp2][temp3]!=0);
         tab[temp2][temp3]=rodzaj;
         ilosc=ilosc-1;
-        printf("%d",tab[temp2][temp3]);
     } //losowanie elementu
 
 
@@ -209,10 +211,10 @@ void grazwykla()
         for (z=0; z<l; z++) tab[a][z]=0;
     }; //wypelnienie tablicy zerami
 
-    losujelement(h,l,is,2,tab);//losowanie scian
-    losujelement(h,l,ij,3,tab);//losowanie jabłęk
-    losujelement(h,l,ib,4,tab);//losowanie bananów
-    losujelement(h,l,ik,5,tab);//losowanie kokosów
+    losujelement(h,l,is,SCIANA,tab);//losowanie scian
+    losujelement(h,l,ij,JABLKO,tab);//losowanie jabłęk
+    losujelement(h,l,ib,BANAN,tab);//losowanie bananów
+    losujelement(h,l,ik,KOKOS,tab);//losowanie kokosów
 
     for (a=0; a<h; a++)
     {
