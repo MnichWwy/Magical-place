@@ -15,6 +15,7 @@
 #define KOKOS 5
 #define START 6
 #define META 7
+
 int menu() //menu glowne
 {
     int a;
@@ -29,7 +30,6 @@ int menu() //menu glowne
     system("cls");
     return a;
 }
-
 
 int dajinta(int min,int max) //chroni program przed wywaleniem sie w przypadku podania innego znaku niz liczba z podanego zakresu int
 {
@@ -94,6 +94,7 @@ zas ruch na pole z jedzeniem skutkuje konsumpcja i dodaniem liczby punktow zalez
     if (b==1) main();
     else exit(0);
 }
+
 void menugrazwykla() //menu gry zwyklej
 {
     int c;
@@ -115,6 +116,7 @@ void menugrazwykla() //menu gry zwyklej
     if (c==1) tworzplansze();
 
 }
+
 int tworzplansze() //stworzenie planszy (jako dwuwymiarowa tablica dynamiczna tab)
 {
 
@@ -206,6 +208,43 @@ int tworzplansze() //stworzenie planszy (jako dwuwymiarowa tablica dynamiczna ta
     return 0;
 }
 
+void zapisplanszydopliku(int h,int l,int **tab) //zapisanie planszy do pliku
+{
+    FILE *plik;
+    int a,b;
+    char nazwa[150];
+
+    printf("Podaj nazwe pliku do ktorego zostanie zapisana plansza\n");
+    printf("Nazwa Twojego pliku nie moze przekroczyc 150 znakow!\n");
+
+    scanf("%149s",nazwa);
+
+    plik = fopen(nazwa, "w");
+
+    if (plik==NULL)
+    {
+        printf("Blad otwarcia pliku\n\n");
+        printf("Wcisnij dowolny przycisk by powrocic do glownego menu\n");
+        getch();
+        menu();
+    }
+    else
+    {
+        for  (a=0; a<h; a++)
+        {
+            for(b=0; b<l; b++)
+            {
+                fprintf(plik,"%d ",tab[a][b]);
+            }
+            fprintf(plik,"\n",tab[a][b]);
+        }
+
+
+
+
+    }
+    fclose(plik);
+}
 
 int main() //funkcja glowna
 {
