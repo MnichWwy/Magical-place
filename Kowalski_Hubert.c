@@ -70,7 +70,6 @@ void losujelement(int h,int l,int ilosc,int rodzaj,int **tab) //losowanie elemen
         }
         while (tab[temp2][temp3]!=0);
         tab[temp2][temp3]=rodzaj;
-        ilosc=ilosc-1;
     } //losowanie elementu
 
 
@@ -155,9 +154,8 @@ void grazwykla()
 
     printf("Liczba punktow za jedzenie musi nalezec do przedzialu (1-dluzszy bok planszy)\n");
 
-    if (l>h) more=l; //okreslenie, ktory bok jest dluzszy <-w tym przypadku szerokosc
+    if (l>=h) more=l; //okreslenie, ktory bok jest dluzszy <-w tym przypadku szerokosc lub oba sa rowne
     else more=h; //<-w tym wysokosc
-    if (l=h) more=h;//<-w tym oba sa rowne (plansza jest kwadratem)
 
     printf("Podaj liczbe punktow otrzymywanych za zjedzenie jablka\n"); //punktacja za jablko
     j=dajinta(1,more);
