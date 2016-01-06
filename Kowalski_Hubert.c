@@ -49,7 +49,7 @@ int dajinta(int min,int max) //chroni program przed wywaleniem sie w przypadku p
 
 }
 
-void losujelement(int h,int l,int rodzaj,int *tab[h][l]) //losowanie elementu na dane pole
+void losujelement(int h,int l,int rodzaj,int **tab) //losowanie elementu na dane pole
 {
 
     int temp2,temp3,czas,a,z;
@@ -178,26 +178,24 @@ void grazwykla()
     printf("Pamietaj, ze ilosc scian musi nalezec do przedzialu [0-(ilosc pol/2)]\n");
 
     printf("Podaj ilosc scian, ktore zostana rozlosowane na planszy\n"); //ilosc scian
-    is=dajinta(1,h*l/2); //postanowilem ograniczyc ilosc scian do makymalnie polowy pol na planszy dla zachowania grywalnosci
+    is=dajinta(0,h*l/2); //postanowilem ograniczyc ilosc scian do makymalnie polowy pol na planszy dla zachowania grywalnosci
 
     printf("Pamietaj, ze ilosc jablek musi nalezec do przedzialu [0-((ilosc pol-ilosc scian)/3)]\n");
 
     printf("Podaj ilosc jablek, ktore zostana rozlosowane na planszy\n"); //ilosc jablek
-    ij=dajinta(1,(h*l-is)/3); //postanowilem ograniczyc ilosc jablek do makymalnie trzeciej czesci pol na planszy minus ilosc scian dla zachowania grywalnosci
+    ij=dajinta(0,(h*l-is)/3); //postanowilem ograniczyc ilosc jablek do makymalnie trzeciej czesci pol na planszy minus ilosc scian dla zachowania grywalnosci
 
     printf("Pamietaj, ze ilosc bananow musi nalezec do przedzialu [0-((ilosc pol-ilosc scian)/3)]\n");
 
     printf("Podaj ilosc bananow, ktore zostana rozlosowane na planszy\n"); //ilosc bananow
-    ib=dajinta(1,(h*l-is)/3); //postanowilem ograniczyc ilosc bananow do makymalnie trzeciej czesci pol na planszy minus ilosc scian dla zachowania grywalnosci
+    ib=dajinta(0,(h*l-is)/3); //postanowilem ograniczyc ilosc bananow do makymalnie trzeciej czesci pol na planszy minus ilosc scian dla zachowania grywalnosci
 
     printf("Pamietaj, ze ilosc kokosow musi nalezec do przedzialu [0-((ilosc pol-ilosc scian)/3)]\n");
 
     printf("Podaj ilosc kokosow, ktore zostana rozlosowane na planszy\n"); //ilosc kokosow
-    ik=dajinta(1,(h*l-is)/3); //postanowilem ograniczyc ilosc kokosow do makymalnie trzeciej czesci pol na planszy minus ilosc scian dla zachowania grywalnosci
+    ik=dajinta(0,(h*l-is)/3); //postanowilem ograniczyc ilosc kokosow do makymalnie trzeciej czesci pol na planszy minus ilosc scian dla zachowania grywalnosci
 
 
-
-    int temp2,temp3;
 
     int **tab;
     tab= malloc(h* sizeof(int *));
@@ -208,11 +206,20 @@ void grazwykla()
 
     }
 
-    losujelement(h,l,is,tab[h][l]);//losowanie scian
+    losujelement(h,l,is,tab);//losowanie scian
+    losujelement(h,l,ij,tab);//losowanie jabłęk
+    losujelement(h,l,ib,tab);//losowanie bananów
+    losujelement(h,l,ik,tab);//losowanie kokosów
+
+    for (a=0; a<h; a++)
+    {
+        for (z=0;z<l;z++) if (tab[a][z]=0) tab[a][z]=1;
+
+     printf("%d ",&tab[a][z]);
 
 
-
-
+ printf("\n");
+    }
 }
 
 
