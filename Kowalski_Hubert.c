@@ -49,7 +49,7 @@ int dajinta(int min,int max) //chroni program przed wywaleniem sie w przypadku p
 
 }
 
-void losujelement(int h,int l,int rodzaj,int **tab) //losowanie elementu na dane pole
+void losujelement(int h,int l,int ilosc,int rodzaj,int **tab) //losowanie elementu na dane pole
 {
 
     int temp2,temp3,czas,a,z;
@@ -61,7 +61,7 @@ void losujelement(int h,int l,int rodzaj,int **tab) //losowanie elementu na dane
     czas=time(NULL);
     srand(czas);
 
-    for (a=0; a<rodzaj; a++)
+    for (a=0; a<ilosc; a++)
     {
         do
         {
@@ -69,8 +69,8 @@ void losujelement(int h,int l,int rodzaj,int **tab) //losowanie elementu na dane
             temp3=rand()%l;
         }
         while (tab[temp2][temp3]!=0);
-        tab[temp2][temp3]=2;
-        rodzaj=rodzaj-1;
+        tab[temp2][temp3]=rodzaj;
+        ilosc=ilosc-1;
     } //losowanie elementu
 
 
@@ -206,19 +206,21 @@ void grazwykla()
 
     }
 
-    losujelement(h,l,is,tab);//losowanie scian
-    losujelement(h,l,ij,tab);//losowanie jabłęk
-    losujelement(h,l,ib,tab);//losowanie bananów
-    losujelement(h,l,ik,tab);//losowanie kokosów
+    losujelement(h,l,is,2,tab);//losowanie scian
+    losujelement(h,l,ij,3,tab);//losowanie jabłęk
+    losujelement(h,l,ib,4,tab);//losowanie bananów
+    losujelement(h,l,ik,5,tab);//losowanie kokosów
 
     for (a=0; a<h; a++)
     {
-        for (z=0;z<l;z++) if (tab[a][z]=0) tab[a][z]=1;
+        for (z=0; z<l; z++)
+        {
+            if (tab[a][z]==0) tab[a][z]=1;
 
-     printf("%d ",&tab[a][z]);
+            printf("%d ",tab[a][z]);
 
-
- printf("\n");
+        }
+        printf("\n");
     }
 }
 
