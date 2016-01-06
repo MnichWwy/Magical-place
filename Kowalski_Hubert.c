@@ -16,6 +16,14 @@
 #define START 6
 #define META 7
 
+int menu();
+int dajinta(int min,int max);
+void losujelement(int h,int l,int ilosc,int rodzaj,int **tab);
+int tworzplansze();
+void zapisplanszydopliku(int h,int l,int **tab);
+void instrukcja();
+void menugrazwykla();
+
 int menu() //menu glowne
 {
     int a;
@@ -78,45 +86,6 @@ void losujelement(int h,int l,int ilosc,int rodzaj,int **tab) //losowanie elemen
 
 
 }
-
-void instrukcja() //instrukcja
-{
-    int b;
-    system("cls");//czysci ekran
-    printf("DUSZEK jest gra, ktorej celem jest przejscie tytulowym duszkiem z lewego gornego\
-do prawego dolnego rogu pola gry.Na poczatku gry otrzymujesz pule punktow\n\
-(mniejsza od dlugosci wiekszego boku planszy).\
-Ruch na pole puste kosztuje jeden punkt,\
-zas ruch na pole z jedzeniem skutkuje konsumpcja i dodaniem liczby punktow zaleznej od rodzaju posilku.\n\n \
-       POWODZENIA! :) \n\n\n");
-    printf("Nacisnij 1 by powrocic do MENU lub 0 by zamknac gre\n");
-    b=dajinta(0,1);
-    if (b==1) main();
-    else exit(0);
-}
-
-void menugrazwykla() //menu gry zwyklej
-{
-    int c;
-    printf("PAMIETAJ, ZE POLE GRY MOZE PRZYJMOWAC ROZMIARY OD 5X5 DO 1000X1000\n\n\n");
-
-    printf("Chcesz utworzyc wlasna plansze czy wczytac ja z pliku?\n\n");
-    printf("1.Stworz wlasna plansze i rozpocznij gre\n");
-    printf("2.Wczytaj plansze z pliku\n");
-    printf("3.Stworz wlasna plansze i zapisz ja do pliku\n");
-    printf("4.Powrot do MENU\n");
-    printf("5.Zamknij gre");
-
-    printf("\n\n\nWcisnij numer podany przy akcji, ktora chcesz wykonac\n");
-    c=dajinta(1,5);
-
-    if (c==5) exit(0);
-    if (c==4) main();
-    if (c==3) tworzplansze();
-    if (c==1) tworzplansze();
-
-}
-
 int tworzplansze() //stworzenie planszy (jako dwuwymiarowa tablica dynamiczna tab)
 {
 
@@ -208,6 +177,7 @@ int tworzplansze() //stworzenie planszy (jako dwuwymiarowa tablica dynamiczna ta
     return 0;
 }
 
+
 void zapisplanszydopliku(int h,int l,int **tab) //zapisanie planszy do pliku
 {
     FILE *plik;
@@ -245,6 +215,51 @@ void zapisplanszydopliku(int h,int l,int **tab) //zapisanie planszy do pliku
     }
     fclose(plik);
 }
+
+
+void instrukcja() //instrukcja
+{
+    int b;
+    system("cls");//czysci ekran
+    printf("DUSZEK jest gra, ktorej celem jest przejscie tytulowym duszkiem z lewego gornego\
+do prawego dolnego rogu pola gry.Na poczatku gry otrzymujesz pule punktow\n\
+(mniejsza od dlugosci wiekszego boku planszy).\
+Ruch na pole puste kosztuje jeden punkt,\
+zas ruch na pole z jedzeniem skutkuje konsumpcja i dodaniem liczby punktow zaleznej od rodzaju posilku.\n\n \
+       POWODZENIA! :) \n\n\n");
+    printf("Nacisnij 1 by powrocic do MENU lub 0 by zamknac gre\n");
+    b=dajinta(0,1);
+    if (b==1) main();
+    else exit(0);
+}
+
+void menugrazwykla() //menu gry zwyklej
+{
+    int c;
+    printf("PAMIETAJ, ZE POLE GRY MOZE PRZYJMOWAC ROZMIARY OD 5X5 DO 1000X1000\n\n\n");
+
+    printf("Chcesz utworzyc wlasna plansze czy wczytac ja z pliku?\n\n");
+    printf("1.Stworz wlasna plansze i rozpocznij gre\n");
+    printf("2.Wczytaj plansze z pliku\n");
+    printf("3.Stworz wlasna plansze i zapisz ja do pliku\n");
+    printf("4.Powrot do MENU\n");
+    printf("5.Zamknij gre");
+
+    printf("\n\n\nWcisnij numer podany przy akcji, ktora chcesz wykonac\n");
+    c=dajinta(1,5);
+
+    if (c==5) exit(0);
+    if (c==4) main();
+    if (c==3)
+    {
+        tworzplansze();
+        zapisplanszydopliku(h,l,tab);
+    }
+    if (c==1) tworzplansze();
+
+}
+
+
 
 int main() //funkcja glowna
 {
