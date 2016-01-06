@@ -197,10 +197,7 @@ zas ruch na pole z jedzeniem skutkuje konsumpcja i dodaniem liczby punktow zalez
     else exit(0);
 }
 
-void menugrazwykla() //menu gry zwyklej
-{
-
-    void zapisplanszydopliku(int h,int l,int **tab) //zapisanie planszy do pliku
+ void zapisplanszydopliku(int h,int l,int **tab) //zapisanie planszy do pliku
     {
         FILE *plik;
         int a,b;
@@ -209,7 +206,7 @@ void menugrazwykla() //menu gry zwyklej
         printf("Podaj nazwe pliku do ktorego zostanie zapisana plansza\n");
         printf("Nazwa Twojego pliku nie moze przekroczyc 150 znakow!\n");
 
-        scanf("%149s",nazwa);
+        scanf("%149s",&nazwa);
 
         plik = fopen(nazwa, "w");
 
@@ -237,6 +234,10 @@ void menugrazwykla() //menu gry zwyklej
         }
         fclose(plik);
     }
+
+
+void menugrazwykla() //menu gry zwyklej
+{
 
     int c;
     printf("PAMIETAJ, ZE POLE GRY MOZE PRZYJMOWAC ROZMIARY OD 5X5 DO 1000X1000\n\n\n");
