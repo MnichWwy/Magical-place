@@ -19,7 +19,7 @@
 int menu();
 int dajinta(int min,int max);
 void losujelement(int h,int l,int ilosc,int rodzaj,int **tab);
-int tworzplansze();
+int tworzplansze(int *hh, int *ll,int **tab);
 void zapisplanszydopliku(int h,int l,int **tab);
 void instrukcja();
 void menugrazwykla();
@@ -86,7 +86,7 @@ void losujelement(int h,int l,int ilosc,int rodzaj,int **tab) //losowanie elemen
 
 
 }
-int tworzplansze() //stworzenie planszy (jako dwuwymiarowa tablica dynamiczna tab)
+int tworzplansze(int* hh, int* ll,int **tab) //stworzenie planszy (jako dwuwymiarowa tablica dynamiczna tab)
 {
 
     int a,z,p,h,l,j,b,k,more,is,ij,ik,ib;
@@ -143,7 +143,7 @@ int tworzplansze() //stworzenie planszy (jako dwuwymiarowa tablica dynamiczna ta
 
 
 
-    int **tab;
+
     tab= malloc(h* sizeof(int *)); //inicjalizacja dwuwymiarowej tablicy dynamicznej
 
     for(a = 0; a < h; a++)
@@ -174,48 +174,12 @@ int tworzplansze() //stworzenie planszy (jako dwuwymiarowa tablica dynamiczna ta
         }
         printf("\n");
     }
+
+    *hh=h;
+    *ll=l;
+
     return 0;
 }
-
-
-void zapisplanszydopliku(int h,int l,int **tab) //zapisanie planszy do pliku
-{
-    FILE *plik;
-    int a,b;
-    char nazwa[150];
-
-    printf("Podaj nazwe pliku do ktorego zostanie zapisana plansza\n");
-    printf("Nazwa Twojego pliku nie moze przekroczyc 150 znakow!\n");
-
-    scanf("%149s",nazwa);
-
-    plik = fopen(nazwa, "w");
-
-    if (plik==NULL)
-    {
-        printf("Blad otwarcia pliku\n\n");
-        printf("Wcisnij dowolny przycisk by powrocic do glownego menu\n");
-        getch();
-        menu();
-    }
-    else
-    {
-        for  (a=0; a<h; a++)
-        {
-            for(b=0; b<l; b++)
-            {
-                fprintf(plik,"%d ",tab[a][b]);
-            }
-            fprintf(plik,"\n",tab[a][b]);
-        }
-
-
-
-
-    }
-    fclose(plik);
-}
-
 
 void instrukcja() //instrukcja
 {
@@ -235,6 +199,45 @@ zas ruch na pole z jedzeniem skutkuje konsumpcja i dodaniem liczby punktow zalez
 
 void menugrazwykla() //menu gry zwyklej
 {
+
+    void zapisplanszydopliku(int h,int l,int **tab) //zapisanie planszy do pliku
+    {
+        FILE *plik;
+        int a,b;
+        char nazwa[150];
+
+        printf("Podaj nazwe pliku do ktorego zostanie zapisana plansza\n");
+        printf("Nazwa Twojego pliku nie moze przekroczyc 150 znakow!\n");
+
+        scanf("%149s",nazwa);
+
+        plik = fopen(nazwa, "w");
+
+        if (plik==NULL)
+        {
+            printf("Blad otwarcia pliku\n\n");
+            printf("Wcisnij dowolny przycisk by powrocic do glownego menu\n");
+            getch();
+            menu();
+        }
+        else
+        {
+            for  (a=0; a<h; a++)
+            {
+                for(b=0; b<l; b++)
+                {
+                    fprintf(plik,"%d ",tab[a][b]);
+                }
+                fprintf(plik,"\n",tab[a][b]);
+            }
+
+
+
+
+        }
+        fclose(plik);
+    }
+
     int c;
     printf("PAMIETAJ, ZE POLE GRY MOZE PRZYJMOWAC ROZMIARY OD 5X5 DO 1000X1000\n\n\n");
 
@@ -248,14 +251,16 @@ void menugrazwykla() //menu gry zwyklej
     printf("\n\n\nWcisnij numer podany przy akcji, ktora chcesz wykonac\n");
     c=dajinta(1,5);
 
+    int h,l,**tab;
+
     if (c==5) exit(0);
     if (c==4) main();
     if (c==3)
     {
-        tworzplansze();
+        tworzplansze(&h,&l,tab);
         zapisplanszydopliku(h,l,tab);
     }
-    if (c==1) tworzplansze();
+    if (c==1) tworzplansze(&h,&l,tab);
 
 }
 
