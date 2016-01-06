@@ -20,7 +20,7 @@ int menu() //menu glowne
     int a;
     system("cls");
     printf("MENU\n\n");
-    printf("1.Rozpocznij gre\n");
+    printf("1.Gra zwykla i tworzenie planszy\n");
     printf("2.Gra automatyczna\n");
     printf("3.Instrukcja\n");
     printf("4.Wyjscie\n");
@@ -64,14 +64,14 @@ void losujelement(int h,int l,int ilosc,int rodzaj,int **tab) //losowanie elemen
     czas=time(NULL);
     srand(czas);
 
-    for (a=0;a<ilosc; a++)
+    for (a=0; a<ilosc; a++)
     {
         do
         {
             temp2=rand()%h;
             temp3=rand()%l;
         }
-        while ((tab[temp2][temp3]!=POLE_ZWYKLE)||(tab[temp2][temp3]=START)||(tab[temp2][temp3]=META));
+        while (tab[temp2][temp3]!=POLE_ZWYKLE);
         tab[temp2][temp3]=rodzaj;
     } //losowanie elementu
 
@@ -79,16 +79,7 @@ void losujelement(int h,int l,int ilosc,int rodzaj,int **tab) //losowanie elemen
 
 }
 
-
-/*int *wczytajzpliku
-{
-
-
-
-
-}*/
-
-void instrukcja()
+void instrukcja() //instrukcja
 {
     int b;
     system("cls");//czysci ekran
@@ -103,46 +94,29 @@ zas ruch na pole z jedzeniem skutkuje konsumpcja i dodaniem liczby punktow zalez
     if (b==1) main();
     else exit(0);
 }
-void grazwykla()
+void menugrazwykla() //menu gry zwyklej
 {
     int c;
     printf("PAMIETAJ, ZE POLE GRY MOZE PRZYJMOWAC ROZMIARY OD 5X5 DO 1000X1000\n\n\n");
 
-    printf("Chcesz utworzyc wlasna plansze czy wczytac ja z pliku?\n");
-    printf("1.Wlasna\n");
-    printf("2.Wczytaj z pliku\n");
-    printf("3.Powrot do MENU\n");
-    printf("4.Zamknij gre");
+    printf("Chcesz utworzyc wlasna plansze czy wczytac ja z pliku?\n\n");
+    printf("1.Stworz wlasna plansze i rozpocznij gre\n");
+    printf("2.Wczytaj plansze z pliku\n");
+    printf("3.Stworz wlasna plansze i zapisz ja do pliku\n");
+    printf("4.Powrot do MENU\n");
+    printf("5.Zamknij gre");
 
     printf("\n\n\nWcisnij numer podany przy akcji, ktora chcesz wykonac\n");
-    c=dajinta(1,4);
+    c=dajinta(1,5);
 
-    if (c==4) exit(0);
-    if (c==3) main();
-    /*if (c==2) { //
-    FILE *plik;
-    char nazwa;
+    if (c==5) exit(0);
+    if (c==4) main();
+    if (c==3) tworzplansze();
+    if (c==1) tworzplansze();
 
-
-    printf("Podaj nazwe pliku\n");
-    scanf("%s",nazwa);
-
-    plik=fopen("%s",nazwa);
-
-    if (plik==NULL) {printf("Blad otwarcia pliku"); main();} //przypadek bledu podczas otwierania pliku - program wraca do glownego menu
-    else {
-
-
-
-
-    }
-
-
-
-
-
-
-    }*/
+}
+int tworzplansze() //stworzenie planszy (jako dwuwymiarowa tablica dynamiczna tab)
+{
 
     int a,z,p,h,l,j,b,k,more,is,ij,ik,ib;
 
@@ -215,8 +189,8 @@ void grazwykla()
     tab[0][0]=START; //lewy gorny rog staje sie polem startu
     tab[h-1][l-1]=META; //prawy dolny rog staje sie polem mety
     losujelement(h,l,is,SCIANA,tab);//losowanie scian
-    losujelement(h,l,ij,JABLKO,tab);//losowanie jab³êk
-    losujelement(h,l,ib,BANAN,tab);//losowanie bananów
+    losujelement(h,l,ij,JABLKO,tab);//losowanie jablek
+    losujelement(h,l,ib,BANAN,tab);//losowanie bananow
     losujelement(h,l,ik,KOKOS,tab);//losowanie kokosów
 
     for (a=0; a<h; a++)      //CZASOWO
@@ -229,10 +203,11 @@ void grazwykla()
         }
         printf("\n");
     }
+    return 0;
 }
 
 
-int main()
+int main() //funkcja glowna
 {
     system("cls");
     printf("Witaj w grze DUSZEK!\n\n\n\nWcisnij dowolny przycisk aby rozpoczac");
@@ -240,7 +215,7 @@ int main()
     int x;
     x=menu();
     if (x==4) exit(0);
-    if (x==1) grazwykla();
+    if (x==1) menugrazwykla();
 //if (x==2) graautomatyczna;
     if (x==3) instrukcja();
 
