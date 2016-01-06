@@ -141,7 +141,7 @@ void grazwykla()
 
     }*/
 
-    int i,a,z,p,h,l,j,b,k,more,is,ij,ik,ib,temp;
+    int a,z,p,h,l,j,b,k,more,is,ij,ik,ib,temp;
 
     system("cls");
 
@@ -198,9 +198,9 @@ void grazwykla()
     int **tab;
     tab= malloc(h* sizeof(int *));
 
-    for(i = 0; i < h; i++)
+    for(a = 0; a < h; a++)
     {
-        tab[i] = malloc(l* sizeof(int));
+        tab[a] = malloc(l* sizeof(int));
 
     }
 
