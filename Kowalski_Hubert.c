@@ -8,10 +8,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#define POLE_ZWYKLE 1
 #define SCIANA 2
 #define JABLKO 3
 #define BANAN 4
 #define KOKOS 5
+#define START 6
+#define META 7
 int menu() //menu glowne
 {
     int a;
@@ -35,7 +38,7 @@ int dajinta(int min,int max) //chroni program przed wywaleniem sie w przypadku p
     do
     {
         ok=0;
-        for (i=0; i<100; i++) temp[i]=0; //bo domyslnie znajduja sie tam "smieci
+        for (i=0; i<100; i++) temp[i]=0; //bo domyslnie znajduja sie tam "smieci"
         scanf("%s",temp);
         for (i=0; i<100; i++)
         {
@@ -61,14 +64,14 @@ void losujelement(int h,int l,int ilosc,int rodzaj,int **tab) //losowanie elemen
     czas=time(NULL);
     srand(czas);
 
-    for (a=0; a<ilosc; a++)
+    for (a=0;a<ilosc; a++)
     {
         do
         {
             temp2=rand()%h;
             temp3=rand()%l;
         }
-        while (tab[temp2][temp3]!=0);
+        while ((tab[temp2][temp3]!=POLE_ZWYKLE)||(tab[temp2][temp3]=START)||(tab[temp2][temp3]=META));
         tab[temp2][temp3]=rodzaj;
     } //losowanie elementu
 
@@ -141,7 +144,7 @@ void grazwykla()
 
     }*/
 
-    int a,z,p,h,l,j,b,k,more,is,ij,ik,ib,temp;
+    int a,z,p,h,l,j,b,k,more,is,ij,ik,ib;
 
     system("cls");
 
@@ -196,7 +199,7 @@ void grazwykla()
 
 
     int **tab;
-    tab= malloc(h* sizeof(int *));
+    tab= malloc(h* sizeof(int *)); //inicjalizacja dwuwymiarowej tablicy dynamicznej
 
     for(a = 0; a < h; a++)
     {
@@ -206,19 +209,20 @@ void grazwykla()
 
     for (a=0; a<h; a++)
     {
-        for (z=0; z<l; z++) tab[a][z]=0;
-    }; //wypelnienie tablicy zerami
+        for (z=0; z<l; z++) tab[a][z]=POLE_ZWYKLE;
+    }; //wypelnienie tablicy polami zwyklymi
 
+    tab[0][0]=START; //lewy gorny rog staje sie polem startu
+    tab[h-1][l-1]=META; //prawy dolny rog staje sie polem mety
     losujelement(h,l,is,SCIANA,tab);//losowanie scian
-    losujelement(h,l,ij,JABLKO,tab);//losowanie jabłęk
+    losujelement(h,l,ij,JABLKO,tab);//losowanie jab³êk
     losujelement(h,l,ib,BANAN,tab);//losowanie bananów
     losujelement(h,l,ik,KOKOS,tab);//losowanie kokosów
 
-    for (a=0; a<h; a++)
+    for (a=0; a<h; a++)      //CZASOWO
     {
         for (z=0; z<l; z++)
         {
-            if (tab[a][z]==0) tab[a][z]=1;
 
             printf("%d ",tab[a][z]);
 
