@@ -53,10 +53,7 @@ void losujelement(int h,int l,int ilosc,int rodzaj,int **tab) //losowanie elemen
 {
 
     int temp2,temp3,czas,a,z;
-    for (a=0; a<h; a++)
-    {
-        for (z=0; z<l; z++) tab[a][z]=0;
-    }; //wypelnienie tablicy zerami
+
 
     czas=time(NULL);
     srand(czas);
@@ -71,6 +68,7 @@ void losujelement(int h,int l,int ilosc,int rodzaj,int **tab) //losowanie elemen
         while (tab[temp2][temp3]!=0);
         tab[temp2][temp3]=rodzaj;
         ilosc=ilosc-1;
+        printf("%d",tab[temp2][temp3]);
     } //losowanie elementu
 
 
@@ -205,6 +203,11 @@ void grazwykla()
         tab[i] = malloc(l* sizeof(int));
 
     }
+
+    for (a=0; a<h; a++)
+    {
+        for (z=0; z<l; z++) tab[a][z]=0;
+    }; //wypelnienie tablicy zerami
 
     losujelement(h,l,is,2,tab);//losowanie scian
     losujelement(h,l,ij,3,tab);//losowanie jabłęk
