@@ -14,7 +14,7 @@
 
 int menu();
 int dajinta(int min,int max);
-int tworzplansze(int *hh, int *ll,int **tab);
+int tworzplansze(int h, int l,int **tab);
 void losujelement(int h,int l,int ilosc,int rodzaj,int **tab);
 void zapisplanszydopliku(int h,int l,int **tab);
 void instrukcja();
@@ -60,20 +60,11 @@ int dajinta(int min,int max) //chroni program przed wywaleniem sie w przypadku p
 
 }
 
-int tworzplansze(int* hh, int* ll,int **tab) //stworzenie planszy (jako dwuwymiarowa tablica dynamiczna tab)
+int tworzplansze(int h, int l,int **tab) //stworzenie planszy (jako dwuwymiarowa tablica dynamiczna tab)
 {
 
-    int a,z,p,h,l,j,b,k,more,is,ij,ik,ib;
+    int a,z,p,j,b,k,more,is,ij,ik,ib;
 
-
-    /*printf("Podaj wysokosc pola gry\n");
-    h=dajinta(5,1000);
-
-
-    printf("Podaj szerokosc pola gry\n");
-    l=dajinta(5,1000);*/
-    h=*hh;
-    l=*ll;
 
     printf("Liczba punktow za jedzenie musi nalezec do przedzialu (1-dluzszy bok planszy)\n");
 
@@ -143,9 +134,6 @@ int tworzplansze(int* hh, int* ll,int **tab) //stworzenie planszy (jako dwuwymia
         }
         printf("\n");
     }
-
-    *hh=h;
-    *ll=l;
 
     return 0;
 }
@@ -244,7 +232,7 @@ void wczytajplanszezpliku(int **tab) //wczytanie planszy z pliku
     FILE *plik;
     int a=0,b=0;
     char nazwa[150],x[1];
-    
+
 
     system("cls");
 
@@ -269,30 +257,22 @@ void wczytajplanszezpliku(int **tab) //wczytanie planszy z pliku
     else
     {
 
-        fscanf(plik,"%s",&x);
-        tab[a][b]=atoi(x);
+
 
         while (fscanf(plik,"%s",&x)!=EOF)
         {
+            tab[a][b]=atoi(x);
 
-             while (fscanf(plik,"%s",&x)!='\n')
+            while (fscanf(plik,"%s",&x)!='\n')
             {
                 b++;
-                fscanf(plik,"%s",&x);
                 tab[a][b]=atoi(x);
 
-
-
             }
+
             a++;
             b=0;
-            fscanf(plik,"%s",&x);
-            tab[a][b]=atoi(x);
         }
-
-
-
-
 
     }
 
@@ -331,8 +311,8 @@ void menugrazwykla() //menu gry zwyklej
 
     int h,l,**tab;
 
-    if (c==5) exit(0);
-    else if (c==4) main();
+    if (c==5) exit(0); //wyjscie z programu
+    else if (c==4) main(); //powrot do menu
     else if (c==2)
     {
 
@@ -373,9 +353,9 @@ void menugrazwykla() //menu gry zwyklej
         }
 
 
-        if (c==3)
+        if (c==3) //zapis planszy do pliku - wywolanie
         {
-            tworzplansze(&h,&l,tab);
+            tworzplansze(h,l,tab);
 
             for(a=0; a<h; a++)
             {
@@ -387,9 +367,9 @@ void menugrazwykla() //menu gry zwyklej
             }
             zapisplanszydopliku(h,l,tab);
         }
-        if (c==1)
+        if (c==1) //gra zwykla z utworzeniem planszy - wywolanie
         {
-            tworzplansze(&h,&l,tab);
+            tworzplansze(h,l,tab);
             //tu bedzie funkcja z gra
         }
 
