@@ -20,6 +20,7 @@ void zapisplanszydopliku(int h,int l,int **tab);
 void instrukcja();
 void menugrazwykla();
 void wczytajplanszezpliku(int **tab);
+void pobierzpunktacje(int h,int l);
 
 int menu() //menu glowne
 {
@@ -59,12 +60,9 @@ int dajinta(int min,int max) //chroni program przed wywaleniem sie w przypadku p
     return atoi(temp); //przeksztalca chara na inta
 
 }
-
-int tworzplansze(int h, int l,int **tab) //stworzenie planszy (jako dwuwymiarowa tablica dynamiczna tab)
+void pobierzpunktacje(int h,int l)
 {
-
-    int a,z,p,j,b,k,more,is,ij,ik,ib;
-
+    int more,p,j,b,k;
 
     printf("Liczba punktow za jedzenie musi nalezec do przedzialu (1-dluzszy bok planszy)\n");
 
@@ -86,6 +84,14 @@ int tworzplansze(int h, int l,int **tab) //stworzenie planszy (jako dwuwymiarowa
     printf("Podaj poczatkowa liczbe punktow\n");
     p=dajinta(1,more);
 
+
+
+}
+
+int tworzplansze(int h, int l,int **tab) //stworzenie planszy (jako dwuwymiarowa tablica dynamiczna tab)
+{
+
+    int a,z,p,j,b,k,more,is,ij,ik,ib;
 
     printf("Pamietaj, ze ilosc scian musi nalezec do przedzialu [0-(ilosc pol/2)]\n");
 
@@ -317,10 +323,11 @@ void wczytajplanszezpliku(int **tab) //wczytanie planszy z pliku
         }
         else
         {
+            pobierzpunktacje(i,j);
+            system("cls");
             printf("Nacisnij dowolny przycisk by rozpoczac gre\n");
             getch();
             //tutaj zacznie sie gra
-
 
             int q,u;
             for (q=0; q<i; q++)     //CZASOWO
@@ -336,6 +343,7 @@ void wczytajplanszezpliku(int **tab) //wczytanie planszy z pliku
         }
     }
     fclose(plik);
+
 }
 
 void menugrazwykla() //menu gry zwyklej
@@ -406,6 +414,7 @@ void menugrazwykla() //menu gry zwyklej
         if (c==1) //gra zwykla z utworzeniem planszy - wywolanie
         {
             tworzplansze(h,l,tab);
+            pobierzpunktacje(h,l);
             //tu bedzie funkcja z gra
         }
 
