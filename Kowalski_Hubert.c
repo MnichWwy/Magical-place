@@ -92,17 +92,17 @@ int tworzplansze(int h, int l,int **tab) //stworzenie planszy (jako dwuwymiarowa
     printf("Podaj ilosc scian, ktore zostana rozlosowane na planszy\n"); //ilosc scian
     is=dajinta(0,h*l/2); //postanowilem ograniczyc ilosc scian do makymalnie polowy pol na planszy dla zachowania grywalnosci
 
-    printf("Pamietaj, ze ilosc jablek musi nalezec do przedzialu [0-((ilosc pol-ilosc scian)/3)]\n");
+    printf("Pamietaj, ze ilosc jablek musi nalezec do przedzialu [0-(((ilosc pol-ilosc scian)-1)/3)]\n");
 
     printf("Podaj ilosc jablek, ktore zostana rozlosowane na planszy\n"); //ilosc jablek
     ij=dajinta(0,((h*l-is)-1)/3); //postanowilem ograniczyc ilosc jablek do makymalnie trzeciej czesci pol na planszy minus ilosc scian i minus 1 (pole start i meta) dla zachowania grywalnosci
 
-    printf("Pamietaj, ze ilosc bananow musi nalezec do przedzialu [0-((ilosc pol-ilosc scian)/3)]\n");
+    printf("Pamietaj, ze ilosc bananow musi nalezec do przedzialu [0-(((ilosc pol-ilosc scian)-1)/3)]\n");
 
     printf("Podaj ilosc bananow, ktore zostana rozlosowane na planszy\n"); //ilosc bananow
     ib=dajinta(0,((h*l-is)-1)/3); //postanowilem ograniczyc ilosc bananow do makymalnie trzeciej czesci pol na planszy minus i minus 1 (pole start i meta) ilosc scian dla zachowania grywalnosci
 
-    printf("Pamietaj, ze ilosc kokosow musi nalezec do przedzialu [0-((ilosc pol-ilosc scian)/3)]\n");
+    printf("Pamietaj, ze ilosc kokosow musi nalezec do przedzialu [0-(((ilosc pol-ilosc scian)-1)/3)]\n");
 
     printf("Podaj ilosc kokosow, ktore zostana rozlosowane na planszy\n"); //ilosc kokosow
     ik=dajinta(0,((h*l-is)-1)/3); //postanowilem ograniczyc ilosc kokosow do makymalnie trzeciej czesci pol na planszy minus i minus 1 (pole start i meta) ilosc scian dla zachowania grywalnosci
@@ -270,7 +270,7 @@ void wczytajplanszezpliku(int **tab) //wczytanie planszy z pliku
             do
             {
                 o=fgetc(plik);
-                if ((atoi(&o)!=1)||(atoi(&o)!=2)||(atoi(&o)!=3)||(atoi(&o)!=4)||(atoi(&o)!=5)||(atoi(&o)!=6)||(atoi(&o)!=7))
+                if ((atoi(&o)==1)||(atoi(&o)==2)||(atoi(&o)==3)||(atoi(&o)==4)||(atoi(&o)==5)||(atoi(&o)==6)||(atoi(&o)==7))
                 {
                     tab[i][j]=atoi(&o);
                     j++;
@@ -296,7 +296,7 @@ void wczytajplanszezpliku(int **tab) //wczytanie planszy z pliku
             while(o!='\n');
         }
 
-        if ((is>(i*j/2))||(tab[0][0]!=6)||(tab[i][j]!=7)||(ij>((i*j-is)-1)/3)||(ib>((i*j-is)-1)/3)||((ik>(i*j-is)-1)/3)) ok=1; //czy plansza jest poprawna?
+        if ((is>(i*j/2))||(tab[0][0]!=6)||(tab[i-1][j-1]!=7)||(ij>((i*j-is)-1)/3)||(ib>((i*j-is)-1)/3)||((ik>(i*j-is)-1)/3)) ok=1; //czy plansza jest poprawna?
 
         int k,a;
         system("cls");
