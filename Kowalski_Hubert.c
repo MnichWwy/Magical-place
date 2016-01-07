@@ -230,8 +230,8 @@ void zapisplanszydopliku(int h,int l,int **tab) //zapisanie planszy do pliku
 void wczytajplanszezpliku(int **tab) //wczytanie planszy z pliku
 {
     FILE *plik;
-    int a=0,b=0;
-    char nazwa[150],x[1];
+    int a=0,b=0,*x;
+    char nazwa[150];
 
 
     system("cls");
@@ -256,23 +256,32 @@ void wczytajplanszezpliku(int **tab) //wczytanie planszy z pliku
     }
     else
     {
-        int i=0,j,max=1000;
-        char linia[max];
+        int i,j,linie=1;
+        char o;
 
-        while (fgets(linia,max,plik))
+        while((o=fgetc(plik))!=EOF)
+       {
+        if(o=='\n') linie++;
+       }
+
+            rewind(plik);
+            for(i=0;i<linie-1;i++)
             {
+            j=0;
+            do
+            {
+            //fscanf(plik,"%d",&(tab[i][j]));
+            o=fgetc(plik);
+            if (atoi(&o)!=0)
+            {
+                tab[i][j]=atoi(&o);
+                j++;
+            }
+            }
+            while(o!='\n');
+            }
 
-
-
-        if ((atoi(linia[i]==1))||(atoi(linia[i]==2))||(atoi(linia[i]==3))||(atoi(linia[i]==4))||(atoi(linia[i]==5))||(atoi(linia[i]==6))||(atoi(linia[i]==7)))
-              {
-                  tab[a][b]=atoi(linia[i]);
-                  b++;
-
-              }
-        else
-        {
-            int k;
+           /* int k;
             system("cls");
         printf("Bledne dane lub ich format\n");
         printf("1.Powrot do MENU glownego\n");
@@ -281,37 +290,25 @@ void wczytajplanszezpliku(int **tab) //wczytanie planszy z pliku
         k=dajinta(1,2);
 
         if (k==1) main();
-        else exit(0);
-
-
-        }
-
-
-
-            }
+        else exit(0);*/
 
 
 
 
-
-
-
-
-
-    for (i=0; i<a; i++)     //CZASOWO
+    int q,u;
+    for (q=0; q<i; q++)     //CZASOWO
     {
-        for (j=0; j<b; j++)
+        for (u=0; u<j; u++)
         {
 
-            printf("%d ",tab[i][j]);
+            printf("%d ",tab[q][u]);
 
         }
         printf("\n");
     }
 
-
+    }
     fclose(plik);
-      }
 }
 
 void menugrazwykla() //menu gry zwyklej
@@ -377,15 +374,6 @@ void menugrazwykla() //menu gry zwyklej
         if (c==3) //zapis planszy do pliku - wywolanie
         {
             tworzplansze(h,l,tab);
-
-            for(a=0; a<h; a++)
-            {
-                for (z=0; z<l; z++)
-                {
-                    printf("%d ",tab[a][z]);
-                }
-                printf("\n");
-            }
             zapisplanszydopliku(h,l,tab);
         }
         if (c==1) //gra zwykla z utworzeniem planszy - wywolanie
