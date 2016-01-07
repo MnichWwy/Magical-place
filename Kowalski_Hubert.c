@@ -102,17 +102,17 @@ int tworzplansze(int* hh, int* ll,int **tab) //stworzenie planszy (jako dwuwymia
     printf("Pamietaj, ze ilosc jablek musi nalezec do przedzialu [0-((ilosc pol-ilosc scian)/3)]\n");
 
     printf("Podaj ilosc jablek, ktore zostana rozlosowane na planszy\n"); //ilosc jablek
-    ij=dajinta(0,(h*l-is)/3); //postanowilem ograniczyc ilosc jablek do makymalnie trzeciej czesci pol na planszy minus ilosc scian dla zachowania grywalnosci
+    ij=dajinta(0,((h*l-is)-1)/3); //postanowilem ograniczyc ilosc jablek do makymalnie trzeciej czesci pol na planszy minus ilosc scian i minus 1 (pole start i meta) dla zachowania grywalnosci
 
     printf("Pamietaj, ze ilosc bananow musi nalezec do przedzialu [0-((ilosc pol-ilosc scian)/3)]\n");
 
     printf("Podaj ilosc bananow, ktore zostana rozlosowane na planszy\n"); //ilosc bananow
-    ib=dajinta(0,(h*l-is)/3); //postanowilem ograniczyc ilosc bananow do makymalnie trzeciej czesci pol na planszy minus ilosc scian dla zachowania grywalnosci
+    ib=dajinta(0,((h*l-is)-1)/3); //postanowilem ograniczyc ilosc bananow do makymalnie trzeciej czesci pol na planszy minus i minus 1 (pole start i meta) ilosc scian dla zachowania grywalnosci
 
     printf("Pamietaj, ze ilosc kokosow musi nalezec do przedzialu [0-((ilosc pol-ilosc scian)/3)]\n");
 
     printf("Podaj ilosc kokosow, ktore zostana rozlosowane na planszy\n"); //ilosc kokosow
-    ik=dajinta(0,(h*l-is)/3); //postanowilem ograniczyc ilosc kokosow do makymalnie trzeciej czesci pol na planszy minus ilosc scian dla zachowania grywalnosci
+    ik=dajinta(0,((h*l-is)-1)/3); //postanowilem ograniczyc ilosc kokosow do makymalnie trzeciej czesci pol na planszy minus i minus 1 (pole start i meta) ilosc scian dla zachowania grywalnosci
 
 
 
@@ -304,7 +304,28 @@ void menugrazwykla() //menu gry zwyklej
 
     if (c==5) exit(0);
     else if (c==4) main();
-    else if (c==2) wczytajplanszezpliku(tab);
+    else if (c==2)
+    {
+
+        h=1000;
+        l=1000;
+
+
+        tab= malloc(h* sizeof(int *)); //inicjalizacja dwuwymiarowej tablicy dynamicznej
+
+        for(a=0; a<h; a++)
+        {
+            tab[a] = malloc(l* sizeof(int));
+        }
+
+
+
+        wczytajplanszezpliku(tab);
+        //tutaj bedzie funkcja z gra
+
+        for (a=0; a<h; a++) free(tab[a]);
+        free(tab);
+    }
     else
         system("cls");
 
@@ -336,7 +357,12 @@ void menugrazwykla() //menu gry zwyklej
         }
         zapisplanszydopliku(h,l,tab);
     }
-    if (c==1) tworzplansze(&h,&l,tab);
+    if (c==1)
+    {
+        tworzplansze(&h,&l,tab);
+        //tu bedzie funkcja z gra
+    }
+
 
     for (a=0; a<h; a++) free(tab[a]);
     free(tab);
