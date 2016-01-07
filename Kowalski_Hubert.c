@@ -299,7 +299,7 @@ void menugrazwykla() //menu gry zwyklej
     printf("\n\n\nWcisnij numer podany przy akcji, ktora chcesz wykonac\n");
     c=dajinta(1,5);
 
-    int h=1000,l=1000,**tab;
+    int h=1000,l=1000,**tab; //maksymalne wymiary planszy (do malloca)
 
     if (c==5) exit(0);
     if (c==4) main();
