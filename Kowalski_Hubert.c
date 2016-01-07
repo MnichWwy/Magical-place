@@ -256,28 +256,48 @@ void wczytajplanszezpliku(int **tab) //wczytanie planszy z pliku
     }
     else
     {
+        int i=0,j,max=1000;
+        char linia[max];
 
-
-
-        while (fscanf(plik,"%s",&x)!=EOF)
-        {
-            tab[a][b]=atoi(x);
-
-            while (fscanf(plik,"%s",&x)!='\n')
+        while (fgets(linia,max,plik))
             {
-                b++;
-                tab[a][b]=atoi(x);
+
+
+
+        if ((atoi(linia[i]==1))||(atoi(linia[i]==2))||(atoi(linia[i]==3))||(atoi(linia[i]==4))||(atoi(linia[i]==5))||(atoi(linia[i]==6))||(atoi(linia[i]==7)))
+              {
+                  tab[a][b]=atoi(linia[i]);
+                  b++;
+
+              }
+        else
+        {
+            int k;
+            system("cls");
+        printf("Bledne dane lub ich format\n");
+        printf("1.Powrot do MENU glownego\n");
+        printf("2.Zamkniecie gry\n");
+        printf("\n\n\nWcisnij numer podany przy akcji, ktora chcesz wykonac\n");
+        k=dajinta(1,2);
+
+        if (k==1) main();
+        else exit(0);
+
+
+        }
+
+
 
             }
 
-            a++;
-            b=0;
-        }
-
-    }
 
 
-    int i,j;
+
+
+
+
+
+
     for (i=0; i<a; i++)     //CZASOWO
     {
         for (j=0; j<b; j++)
@@ -291,6 +311,7 @@ void wczytajplanszezpliku(int **tab) //wczytanie planszy z pliku
 
 
     fclose(plik);
+      }
 }
 
 void menugrazwykla() //menu gry zwyklej
