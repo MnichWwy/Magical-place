@@ -275,7 +275,7 @@ void wczytajplanszezpliku(int **tab) //wczytanie planszy z pliku
         while (fscanf(plik,"%s",&x)!=EOF)
         {
 
-            while (tab[a][b]!='\n')
+             while (fscanf(plik,"%s",&x)!='\n')
             {
                 b++;
                 fscanf(plik,"%s",&x);
