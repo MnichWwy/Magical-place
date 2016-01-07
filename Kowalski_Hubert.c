@@ -300,7 +300,7 @@ void wczytajplanszezpliku(int **tab) //wczytanie planszy z pliku
 
         int k,a;
         system("cls");
-        if (ok=1)
+        if (ok==1)
         {
             for (a=0; a<i; a++) free(tab[a]);
             free(tab);
@@ -317,7 +317,7 @@ void wczytajplanszezpliku(int **tab) //wczytanie planszy z pliku
         }
         else
         {
-            printf("Nacisnij dowolny przycisk by rozpoczac gre");
+            printf("Nacisnij dowolny przycisk by rozpoczac gre\n");
             getch();
             //tutaj zacznie sie gra
 
