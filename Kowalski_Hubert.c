@@ -265,22 +265,35 @@ void wczytajplanszezpliku(int **tab) //wczytanie planszy z pliku
     }
     else
     {
-        while  (feof(plik)==0)
+        while  ((tab[a][b]=fgetc(plik))!= EOF)
         {
-            while  (feof(plik)==0) //feof zwraca wartosc !=0 jesli odczytano koniec pliku
+            while (feof(plik)==0);//feof zwraca wartosc !=0 jesli odczytano koniec pliku
             {
 
-                fscanf(plik,"%d ",tab[a][b]);
+                fscanf(plik,"%d ",&tab[a][b]);
                 b++;
 
             }
-
+            b=0;
             a++;
-            fscanf(plik,"\n\r ",tab[a][b]); //\r przenosi rozpoczyna czytanie od poczatku linii
-
+            fscanf(plik,"\n%d",&tab[a][b]); //\r przenosi rozpoczyna czytanie od poczatku linii
+            b++;
 
         }
     }
+    int i,j;
+    for (i=0; i<a; i++)      //CZASOWO
+    {
+        for (j=0; j<b; j++)
+        {
+
+            printf("%d ",tab[i][j]);
+
+        }
+        printf("\n");
+    }
+
+
     fclose(plik);
 }
 
@@ -300,7 +313,7 @@ void menugrazwykla() //menu gry zwyklej
     printf("\n\n\nWcisnij numer podany przy akcji, ktora chcesz wykonac\n");
     c=dajinta(1,5);
 
-    int h,l,**tab; //maksymalne wymiary planszy (do malloca)
+    int h,l,**tab;
 
     if (c==5) exit(0);
     else if (c==4) main();
@@ -311,11 +324,11 @@ void menugrazwykla() //menu gry zwyklej
         l=1000;
 
 
-        tab= malloc(h* sizeof(int *)); //inicjalizacja dwuwymiarowej tablicy dynamicznej
+        tab=malloc(h* sizeof(int *)); //inicjalizacja dwuwymiarowej tablicy dynamicznej
 
         for(a=0; a<h; a++)
         {
-            tab[a] = malloc(l* sizeof(int));
+            tab[a]=malloc(l* sizeof(int));
         }
 
 
@@ -323,8 +336,8 @@ void menugrazwykla() //menu gry zwyklej
         wczytajplanszezpliku(tab);
         //tutaj bedzie funkcja z gra
 
-        for (a=0; a<h; a++) free(tab[a]);
-        free(tab);
+        // for (a=0; a<h; a++) free(tab[a]);
+        //free(tab);
     }
     else
         system("cls");
