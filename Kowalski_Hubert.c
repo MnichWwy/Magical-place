@@ -63,14 +63,15 @@ int tworzplansze(int* hh, int* ll,int **tab) //stworzenie planszy (jako dwuwymia
 
     int a,z,p,h,l,j,b,k,more,is,ij,ik,ib;
 
-    system("cls");
 
-    printf("Podaj wysokosc pola gry\n");
+    /*printf("Podaj wysokosc pola gry\n");
     h=dajinta(5,1000);
 
 
     printf("Podaj szerokosc pola gry\n");
-    l=dajinta(5,1000);
+    l=dajinta(5,1000);*/
+    h=*hh;
+    l=*ll;
 
     printf("Liczba punktow za jedzenie musi nalezec do przedzialu (1-dluzszy bok planszy)\n");
 
@@ -286,7 +287,7 @@ void wczytajplanszezpliku(int **tab) //wczytanie planszy z pliku
 void menugrazwykla() //menu gry zwyklej
 {
 
-    int a,c;
+    int a,c,z;
     printf("PAMIETAJ, ZE POLE GRY MOZE PRZYJMOWAC ROZMIARY OD 5X5 DO 1000X1000\n\n\n");
 
     printf("Chcesz utworzyc wlasna plansze czy wczytac ja z pliku?\n\n");
@@ -299,22 +300,31 @@ void menugrazwykla() //menu gry zwyklej
     printf("\n\n\nWcisnij numer podany przy akcji, ktora chcesz wykonac\n");
     c=dajinta(1,5);
 
-    int h=1000,l=1000,**tab; //maksymalne wymiary planszy (do malloca)
+    int h,l,**tab; //maksymalne wymiary planszy (do malloca)
 
     if (c==5) exit(0);
-    if (c==4) main();
+    else if (c==4) main();
+    else if (c==2) wczytajplanszezpliku(tab);
+    else
+        system("cls");
+
+    printf("Podaj wysokosc pola gry\n");
+    h=dajinta(5,1000);
+
+    printf("Podaj szerokosc pola gry\n");
+    l=dajinta(5,1000);
 
     tab= malloc(h* sizeof(int *)); //inicjalizacja dwuwymiarowej tablicy dynamicznej
 
     for(a=0; a<h; a++)
     {
         tab[a] = malloc(l* sizeof(int));
-
     }
+
+
     if (c==3)
     {
         tworzplansze(&h,&l,tab);
-        int a,z;
 
         for(a=0; a<h; a++)
         {
@@ -327,9 +337,8 @@ void menugrazwykla() //menu gry zwyklej
         zapisplanszydopliku(h,l,tab);
     }
     if (c==1) tworzplansze(&h,&l,tab);
-    if (c==2) wczytajplanszezpliku(tab);
 
-    for (a=0;a<h;a++) free(tab[a]);
+    for (a=0; a<h; a++) free(tab[a]);
     free(tab);
 
 }
