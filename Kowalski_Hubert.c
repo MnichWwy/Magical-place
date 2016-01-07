@@ -1,9 +1,3 @@
-
-//pole zwykle - pz  -1                DOROBIC WCZYTANIE PLANSZY Z PLIKU I ZAPIS DO
-//sciany - sc - 2
-//typ jedzenia jablko - j - 3
-//typ jedzenia banan - b - 4
-//typ jedzenia kokos - k - 5
 //ZALOZENIE:MINIMALNY ROZMIAR POLA GRY TO 5X5; MAKSYMALNY 1000X1000
 #include <stdio.h>
 #include <stdlib.h>
@@ -23,6 +17,7 @@ void losujelement(int h,int l,int ilosc,int rodzaj,int **tab);
 void zapisplanszydopliku(int h,int l,int **tab);
 void instrukcja();
 void menugrazwykla();
+void wczytajplanszezpliku(int **tab);
 
 int menu() //menu glowne
 {
@@ -151,6 +146,7 @@ int tworzplansze(int* hh, int* ll,int **tab) //stworzenie planszy (jako dwuwymia
 
     return 0;
 }
+
 void losujelement(int h,int l,int ilosc,int rodzaj,int **tab) //losowanie elementu na dane pole
 {
 
@@ -174,6 +170,7 @@ void losujelement(int h,int l,int ilosc,int rodzaj,int **tab) //losowanie elemen
 
 
 }
+
 void instrukcja() //instrukcja
 {
     int b;
@@ -190,45 +187,101 @@ zas ruch na pole z jedzeniem skutkuje konsumpcja i dodaniem liczby punktow zalez
     else exit(0);
 }
 
- void zapisplanszydopliku(int h,int l,int **tab) //zapisanie planszy do pliku
+void zapisplanszydopliku(int h,int l,int **tab) //zapisanie planszy do pliku
+{
+    FILE *plik;
+    int a,b;
+    char nazwa[150];
+
+    printf("Podaj nazwe pliku do ktorego zostanie zapisana plansza\n");
+    printf("Nazwa Twojego pliku nie moze przekroczyc 150 znakow!\n");
+    printf("Pamietaj, aby nazwa pliku konczyla sie rozszerzeniem .txt\n");
+
+    scanf("%149s",&nazwa);
+
+    plik = fopen(nazwa, "w");
+
+    if (plik==NULL)
     {
-        FILE *plik;
-        int a,b;
-        char nazwa[150];
-
-        printf("Podaj nazwe pliku do ktorego zostanie zapisana plansza\n");
-        printf("Nazwa Twojego pliku nie moze przekroczyc 150 znakow!\n\n");
-        printf("Pamietaj, aby plik konczyl sie rozszerzeniem .txt\n");
-
-        scanf("%149s",&nazwa);
-
-        plik = fopen(nazwa, "w");
-
-        if (plik==NULL)
+        printf("Blad otwarcia pliku\n\n");
+        printf("Wcisnij dowolny przycisk by powrocic do glownego menu\n");
+        getch();
+        main();
+    }
+    else
+    {
+        for  (a=0; a<h; a++)
         {
-            printf("Blad otwarcia pliku\n\n");
-            printf("Wcisnij dowolny przycisk by powrocic do glownego menu\n");
-            getch();
-            main();
-        }
-        else
-        {
-            for  (a=0; a<h; a++)
+            for(b=0; b<l; b++)
             {
-                for(b=0; b<l; b++)
-                {
-                    fprintf(plik,"%d ",tab[a][b]);
-                }
-                fprintf(plik,"\n",tab[a][b]);
+                fprintf(plik,"%d ",tab[a][b]);
+            }
+            fprintf(plik,"\n",tab[a][b]);
+        }
+
+
+
+
+    }
+    fclose(plik);
+
+    system("cls");
+    printf("Plansza pomyslnie zapisana do pliku.\n");
+    printf("1.Powrot do MENU glownego\n");
+    printf("2.Zamkniecie gry\n");
+    printf("\n\n\nWcisnij numer podany przy akcji, ktora chcesz wykonac\n");
+    a=dajinta(1,2);
+
+    if (a==1) main();
+    else exit(0);
+}
+
+void wczytajplanszezpliku(int **tab) //wczytanie planszy z pliku
+{
+    FILE *plik;
+    int a=0,b=0;
+    char nazwa[150];
+
+    system("cls");
+
+    printf("Plik musi miec postac dwuwymiarowej tabelki zlozonej wylacznie z cyfr od 1 do 5\n");
+    printf("1-Pole zwykle\n2-Sciana\n3-Jablko\n4-Banan\n5-Kokos\n\n");
+    printf("Nazwa Twojego pliku nie moze przekroczyc 150 znakow!\n");
+    printf("Pamietaj, aby nazwa pliku konczyla sie rozszerzeniem .txt\n");
+    printf("Twoj plik z plansza musi znajdowac sie w tym samym folderze co DUSZEK!\n\n");
+    printf("Podaj nazwe pliku z ktorego wczytana zostanie plansza\n");
+
+    scanf("%149s",&nazwa);
+
+    plik = fopen(nazwa, "r");
+
+    if (plik==NULL)
+    {
+        printf("Blad otwarcia pliku\n\n");
+        printf("Wcisnij dowolny przycisk by powrocic do glownego menu\n");
+        getch();
+        main();
+    }
+    else
+    {
+        while  (feof(plik)==0)
+        {
+            while  (feof(plik)==0) //feof zwraca wartosc !=0 jesli odczytano koniec pliku
+            {
+
+                fscanf(plik,"%d ",tab[a][b]);
+                b++;
+
             }
 
-
+            a++;
+            fscanf(plik,"\n\r ",tab[a][b]); //\r przenosi rozpoczyna czytanie od poczatku linii
 
 
         }
-        fclose(plik);
     }
-
+    fclose(plik);
+}
 
 void menugrazwykla() //menu gry zwyklej
 {
@@ -249,9 +302,9 @@ void menugrazwykla() //menu gry zwyklej
     int h,l,**tab;
 
 
-tab= malloc(h* sizeof(int *)); //inicjalizacja dwuwymiarowej tablicy dynamicznej
+    tab= malloc(h* sizeof(int *)); //inicjalizacja dwuwymiarowej tablicy dynamicznej
 
-    for(a=0; a<h;a++)
+    for(a=0; a<h; a++)
     {
         tab[a] = malloc(l* sizeof(int));
 
@@ -264,14 +317,20 @@ tab= malloc(h* sizeof(int *)); //inicjalizacja dwuwymiarowej tablicy dynamicznej
         tworzplansze(&h,&l,tab);
         int a,z;
 
-        for(a=0;a<h;a++){for (z=0;z<l;z++)   {printf("%d ",tab[a][z]);} printf("\n");}
+        for(a=0; a<h; a++)
+        {
+            for (z=0; z<l; z++)
+            {
+                printf("%d ",tab[a][z]);
+            }
+            printf("\n");
+        }
         zapisplanszydopliku(h,l,tab);
     }
     if (c==1) tworzplansze(&h,&l,tab);
+    if (c==2) wczytajplanszezpliku(tab);
 
 }
-
-
 
 int main() //funkcja glowna
 {
