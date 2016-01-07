@@ -299,8 +299,10 @@ void menugrazwykla() //menu gry zwyklej
     printf("\n\n\nWcisnij numer podany przy akcji, ktora chcesz wykonac\n");
     c=dajinta(1,5);
 
-    int h,l,**tab;
+    int h=1000,l=1000,**tab;
 
+    if (c==5) exit(0);
+    if (c==4) main();
 
     tab= malloc(h* sizeof(int *)); //inicjalizacja dwuwymiarowej tablicy dynamicznej
 
@@ -309,9 +311,6 @@ void menugrazwykla() //menu gry zwyklej
         tab[a] = malloc(l* sizeof(int));
 
     }
-
-    if (c==5) exit(0);
-    if (c==4) main();
     if (c==3)
     {
         tworzplansze(&h,&l,tab);
@@ -329,6 +328,9 @@ void menugrazwykla() //menu gry zwyklej
     }
     if (c==1) tworzplansze(&h,&l,tab);
     if (c==2) wczytajplanszezpliku(tab);
+
+    for (a=0;a<h;a++) free(tab[a]);
+    free(tab);
 
 }
 
