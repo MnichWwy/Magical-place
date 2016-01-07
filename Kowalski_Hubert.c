@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
+
 #define POLE_ZWYKLE 1
 #define SCIANA 2
 #define JABLKO 3
@@ -240,7 +242,7 @@ void zapisplanszydopliku(int h,int l,int **tab) //zapisanie planszy do pliku
 void wczytajplanszezpliku(int **tab) //wczytanie planszy z pliku
 {
     FILE *plik;
-    int a=0,b=0;
+    int a=0,b=0,x;
     char nazwa[150];
 
     system("cls");
@@ -265,24 +267,36 @@ void wczytajplanszezpliku(int **tab) //wczytanie planszy z pliku
     }
     else
     {
-        while  ((tab[a][b]=fgetc(plik))!= EOF)
-        {
-            while (feof(plik)==0);//feof zwraca wartosc !=0 jesli odczytano koniec pliku
-            {
+        fscanf(plik,"%d",&x);
+        tab[a][b]=x;
 
-                fscanf(plik,"%d ",&tab[a][b]);
+        while (tab[a][b]!=EOF)
+        {
+
+            while (tab[a][b]!='\n')
+            {
                 b++;
+                fscanf(plik,"%d",&x);
+                tab[a][b]=x;
+
+
 
             }
-            b=0;
             a++;
-            fscanf(plik,"\n%d",&tab[a][b]); //\r przenosi rozpoczyna czytanie od poczatku linii
-            b++;
-
+            b=0;
+            fscanf(plik,"%d",&x);
+            x=tab[a][b];
         }
+
+
+
+
+
     }
+
+
     int i,j;
-    for (i=0; i<a; i++)      //CZASOWO
+    for (i=0; i<a; i++)     //CZASOWO
     {
         for (j=0; j<b; j++)
         {
@@ -336,50 +350,52 @@ void menugrazwykla() //menu gry zwyklej
         wczytajplanszezpliku(tab);
         //tutaj bedzie funkcja z gra
 
-        // for (a=0; a<h; a++) free(tab[a]);
-        //free(tab);
+        for (a=0; a<h; a++) free(tab[a]);
+        free(tab);
     }
     else
+    {
         system("cls");
 
-    printf("Podaj wysokosc pola gry\n");
-    h=dajinta(5,1000);
+        printf("Podaj wysokosc pola gry\n");
+        h=dajinta(5,1000);
 
-    printf("Podaj szerokosc pola gry\n");
-    l=dajinta(5,1000);
+        printf("Podaj szerokosc pola gry\n");
+        l=dajinta(5,1000);
 
-    tab= malloc(h* sizeof(int *)); //inicjalizacja dwuwymiarowej tablicy dynamicznej
-
-    for(a=0; a<h; a++)
-    {
-        tab[a] = malloc(l* sizeof(int));
-    }
-
-
-    if (c==3)
-    {
-        tworzplansze(&h,&l,tab);
+        tab= malloc(h* sizeof(int *)); //inicjalizacja dwuwymiarowej tablicy dynamicznej
 
         for(a=0; a<h; a++)
         {
-            for (z=0; z<l; z++)
-            {
-                printf("%d ",tab[a][z]);
-            }
-            printf("\n");
+            tab[a] = malloc(l* sizeof(int));
         }
-        zapisplanszydopliku(h,l,tab);
+
+
+        if (c==3)
+        {
+            tworzplansze(&h,&l,tab);
+
+            for(a=0; a<h; a++)
+            {
+                for (z=0; z<l; z++)
+                {
+                    printf("%d ",tab[a][z]);
+                }
+                printf("\n");
+            }
+            zapisplanszydopliku(h,l,tab);
+        }
+        if (c==1)
+        {
+            tworzplansze(&h,&l,tab);
+            //tu bedzie funkcja z gra
+        }
+
+
+        for (a=0; a<h; a++) free(tab[a]);
+        free(tab);
+
     }
-    if (c==1)
-    {
-        tworzplansze(&h,&l,tab);
-        //tu bedzie funkcja z gra
-    }
-
-
-    for (a=0; a<h; a++) free(tab[a]);
-    free(tab);
-
 }
 
 int main() //funkcja glowna
