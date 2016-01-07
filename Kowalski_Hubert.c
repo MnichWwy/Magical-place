@@ -230,7 +230,6 @@ void zapisplanszydopliku(int h,int l,int **tab) //zapisanie planszy do pliku
 void wczytajplanszezpliku(int **tab) //wczytanie planszy z pliku
 {
     FILE *plik;
-    int a=0,b=0,*x;
     char nazwa[150];
 
 
@@ -256,57 +255,85 @@ void wczytajplanszezpliku(int **tab) //wczytanie planszy z pliku
     }
     else
     {
-        int i,j,linie=1;
+        int ok=0,i,j,linie=1,is=0,ij=0,ib=0,ik=0;
         char o;
 
         while((o=fgetc(plik))!=EOF)
-       {
-        if(o=='\n') linie++;
-       }
+        {
+            if(o=='\n') linie++; //petla liczy wysokosc pliku
+        }
 
-            rewind(plik);
-            for(i=0;i<linie-1;i++)
-            {
+        rewind(plik); //"kursor" powraca na poczatek
+        for(i=0; i<linie-1; i++) //petla wczytuje po jednym znaku, jesli jest rodzajem pola planszy to go zapisuje do tablicy, ktora jest plansza
+        {
             j=0;
             do
             {
-            //fscanf(plik,"%d",&(tab[i][j]));
-            o=fgetc(plik);
-            if (atoi(&o)!=0)
-            {
-                tab[i][j]=atoi(&o);
-                j++;
-            }
+                o=fgetc(plik);
+                if ((atoi(&o)!=1)||(atoi(&o)!=2)||(atoi(&o)!=3)||(atoi(&o)!=4)||(atoi(&o)!=5)||(atoi(&o)!=6)||(atoi(&o)!=7))
+                {
+                    tab[i][j]=atoi(&o);
+                    j++;
+
+                    switch (tab[i][j]) //liczenie elementow
+                    {
+                    case 2:
+                        is++;
+                        break;
+                    case 3:
+                        ij++;
+                        break;
+                    case 4:
+                        ib++;
+                        break;
+                    case 5:
+                        ik++;
+                        break;
+                    }
+
+                }
             }
             while(o!='\n');
-            }
+        }
 
-           /* int k;
-            system("cls");
-        printf("Bledne dane lub ich format\n");
-        printf("1.Powrot do MENU glownego\n");
-        printf("2.Zamkniecie gry\n");
-        printf("\n\n\nWcisnij numer podany przy akcji, ktora chcesz wykonac\n");
-        k=dajinta(1,2);
+        if ((is>(i*j/2))||(tab[0][0]!=6)||(tab[i][j]!=7)||(ij>((i*j-is)-1)/3)||(ib>((i*j-is)-1)/3)||((ik>(i*j-is)-1)/3)) ok=1; //czy plansza jest poprawna?
 
-        if (k==1) main();
-        else exit(0);*/
-
-
-
-
-    int q,u;
-    for (q=0; q<i; q++)     //CZASOWO
-    {
-        for (u=0; u<j; u++)
+        int k,a;
+        system("cls");
+        if (ok=1)
         {
+            for (a=0; a<i; a++) free(tab[a]);
+            free(tab);
 
-            printf("%d ",tab[q][u]);
+            printf("Bledne dane lub ich format\n");
+            printf("1.Powrot do MENU glownego\n");
+            printf("2.Zamkniecie gry\n");
+            printf("\n\n\nWcisnij numer podany przy akcji, ktora chcesz wykonac\n");
+            k=dajinta(1,2);
+
+            if (k==1) main();
+            else exit(0);
 
         }
-        printf("\n");
-    }
+        else
+        {
+            printf("Nacisnij dowolny przycisk by rozpoczac gre");
+            getch();
+            //tutaj zacznie sie gra
 
+
+            int q,u;
+            for (q=0; q<i; q++)     //CZASOWO
+            {
+                for (u=0; u<j; u++)
+                {
+
+                    printf("%d ",tab[q][u]);
+
+                }
+                printf("\n");
+            }
+        }
     }
     fclose(plik);
 }
