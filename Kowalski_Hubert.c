@@ -1,4 +1,4 @@
-//ZALOZENIE:MINIMALNY ROZMIAR POLA GRY TO 5X5; MAKSYMALNY 1000X1000
+//ZALOZENIE:MINIMALNY ROZMIAR POLA GRY TO 5X5; MAKSYMALNY 250X250
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -26,7 +26,7 @@ int menu() //menu glowne
     int a;
     system("cls");
     printf("MENU\n\n");
-    printf("1.Gra zwykla i tworzenie planszy\n");
+    printf("1.Gra zwykla,wczytywanie i zapisywanie wlasnej planszy\n");
     printf("2.Gra automatyczna\n");
     printf("3.Instrukcja\n");
     printf("4.Wyjscie\n");
@@ -361,8 +361,8 @@ void menugrazwykla() //menu gry zwyklej
     else if (c==2)
     {
 
-        h=1000;
-        l=1000;
+        h=300;
+        l=300;
 
 
         tab=malloc(h* sizeof(int *)); //inicjalizacja dwuwymiarowej tablicy dynamicznej
@@ -385,10 +385,10 @@ void menugrazwykla() //menu gry zwyklej
         system("cls");
 
         printf("Podaj wysokosc pola gry\n");
-        h=dajinta(5,1000);
+        h=dajinta(5,250);
 
         printf("Podaj szerokosc pola gry\n");
-        l=dajinta(5,1000);
+        l=dajinta(5,250);
 
         tab= malloc(h* sizeof(int *)); //inicjalizacja dwuwymiarowej tablicy dynamicznej
 
