@@ -242,8 +242,9 @@ void zapisplanszydopliku(int h,int l,int **tab) //zapisanie planszy do pliku
 void wczytajplanszezpliku(int **tab) //wczytanie planszy z pliku
 {
     FILE *plik;
-    int a=0,b=0,x;
-    char nazwa[150];
+    int a=0,b=0;
+    char nazwa[150],x[1];
+    
 
     system("cls");
 
@@ -267,25 +268,26 @@ void wczytajplanszezpliku(int **tab) //wczytanie planszy z pliku
     }
     else
     {
-        fscanf(plik,"%d",&x);
-        tab[a][b]=x;
 
-        while (tab[a][b]!=EOF)
+        fscanf(plik,"%s",&x);
+        tab[a][b]=atoi(x);
+
+        while (fscanf(plik,"%s",&x)!=EOF)
         {
 
             while (tab[a][b]!='\n')
             {
                 b++;
-                fscanf(plik,"%d",&x);
-                tab[a][b]=x;
+                fscanf(plik,"%s",&x);
+                tab[a][b]=atoi(x);
 
 
 
             }
             a++;
             b=0;
-            fscanf(plik,"%d",&x);
-            x=tab[a][b];
+            fscanf(plik,"%s",&x);
+            tab[a][b]=atoi(x);
         }
 
 
