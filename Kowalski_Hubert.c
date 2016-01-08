@@ -384,7 +384,7 @@ void menugrazwykla() //menu gry zwyklej
 {
 
     int a,c;
-    printf("PAMIETAJ, ZE POLE GRY MOZE PRZYJMOWAC ROZMIARY OD 5X5 DO 1000X1000\n\n\n");
+    printf("PAMIETAJ, ZE POLE GRY MOZE PRZYJMOWAC ROZMIARY OD 5X5 DO 250x250\n\n\n");
 
     printf("Chcesz utworzyc wlasna plansze czy wczytac ja z pliku?\n\n");
     printf("1.Stworz wlasna plansze i rozpocznij gre\n");
