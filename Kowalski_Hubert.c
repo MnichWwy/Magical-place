@@ -19,8 +19,8 @@ void losujelement(int h,int l,int ilosc,int rodzaj,int **tab);
 void zapisplanszydopliku(int h,int l,int **tab);
 void instrukcja();
 void menugrazwykla();
-void wczytajplanszezpliku(int **tab);
-void pobierzpunktacje(int h,int l);
+void wczytajplanszezplikuigraj(int **tab);
+void grazwykla(int h,int l,int **tab);
 
 int menu() //menu glowne
 {
@@ -60,7 +60,8 @@ int dajinta(int min,int max) //chroni program przed wywaleniem sie w przypadku p
     return atoi(temp); //przeksztalca chara na inta
 
 }
-void pobierzpunktacje(int h,int l)
+
+void grazwykla(int h,int l,int **tab) //glowny kod zwyklej gry
 {
     int more,p,j,b,k;
 
@@ -83,6 +84,21 @@ void pobierzpunktacje(int h,int l)
 
     printf("Podaj poczatkowa liczbe punktow\n");
     p=dajinta(1,more);
+
+
+    typedef struct gra //inicjalizacja struktury
+    {
+     struct gra *next;
+     int rodzajpola;
+     int punkty;
+     int x;
+     int y;
+    } duszek;
+
+    duszek *first;
+    first=malloc(sizeof(duszek));//rezerwacja pamieci
+    first->next=malloc(sizeof(duszek));
+
 
 
 
@@ -129,17 +145,6 @@ int tworzplansze(int h, int l,int **tab) //stworzenie planszy (jako dwuwymiarowa
     losujelement(h,l,ij,JABLKO,tab);//losowanie jablek
     losujelement(h,l,ib,BANAN,tab);//losowanie bananow
     losujelement(h,l,ik,KOKOS,tab);//losowanie kokosów
-
-    for (a=0; a<h; a++)      //CZASOWO
-    {
-        for (z=0; z<l; z++)
-        {
-
-            printf("%d ",tab[a][z]);
-
-        }
-        printf("\n");
-    }
 
     return 0;
 }
@@ -233,7 +238,7 @@ void zapisplanszydopliku(int h,int l,int **tab) //zapisanie planszy do pliku
     else exit(0);
 }
 
-void wczytajplanszezpliku(int **tab) //wczytanie planszy z pliku
+void wczytajplanszezplikuigraj(int **tab) //wczytanie planszy z pliku
 {
     FILE *plik;
     char nazwa[150];
@@ -323,23 +328,12 @@ void wczytajplanszezpliku(int **tab) //wczytanie planszy z pliku
         }
         else
         {
-            pobierzpunktacje(i,j);
-            system("cls");
-            printf("Nacisnij dowolny przycisk by rozpoczac gre\n");
+            printf("Pomyslnie wczytano plansze!\n\nNacisnij dowolny przycisk aby kontynuowac.\n");
             getch();
+            system("cls");
+            grazwykla(i,j,tab);
             //tutaj zacznie sie gra
 
-            int q,u;
-            for (q=0; q<i; q++)     //CZASOWO
-            {
-                for (u=0; u<j; u++)
-                {
-
-                    printf("%d ",tab[q][u]);
-
-                }
-                printf("\n");
-            }
         }
     }
     fclose(plik);
@@ -349,12 +343,12 @@ void wczytajplanszezpliku(int **tab) //wczytanie planszy z pliku
 void menugrazwykla() //menu gry zwyklej
 {
 
-    int a,c,z;
+    int a,c;
     printf("PAMIETAJ, ZE POLE GRY MOZE PRZYJMOWAC ROZMIARY OD 5X5 DO 1000X1000\n\n\n");
 
     printf("Chcesz utworzyc wlasna plansze czy wczytac ja z pliku?\n\n");
     printf("1.Stworz wlasna plansze i rozpocznij gre\n");
-    printf("2.Wczytaj plansze z pliku\n");
+    printf("2.Wczytaj plansze z pliku i rozpocznij gre\n");
     printf("3.Stworz wlasna plansze i zapisz ja do pliku\n");
     printf("4.Powrot do MENU\n");
     printf("5.Zamknij gre");
@@ -366,7 +360,7 @@ void menugrazwykla() //menu gry zwyklej
 
     if (c==5) exit(0); //wyjscie z programu
     else if (c==4) main(); //powrot do menu
-    else if (c==2)
+    else if (c==2) //wczytanie planszy z pliku i rozpoczecie gry
     {
 
         h=300;
@@ -382,8 +376,7 @@ void menugrazwykla() //menu gry zwyklej
 
 
 
-        wczytajplanszezpliku(tab);
-        //tutaj bedzie funkcja z gra
+        wczytajplanszezplikuigraj(tab);
 
         for (a=0; a<h; a++) free(tab[a]);
         free(tab);
@@ -398,7 +391,7 @@ void menugrazwykla() //menu gry zwyklej
         printf("Podaj szerokosc pola gry\n");
         l=dajinta(5,250);
 
-        tab= malloc(h* sizeof(int *)); //inicjalizacja dwuwymiarowej tablicy dynamicznej
+        tab= malloc(h* sizeof(int *)); //zarezerwowanie pamieci pod dwuwymiarowa tablice dynamiczna
 
         for(a=0; a<h; a++)
         {
@@ -414,8 +407,7 @@ void menugrazwykla() //menu gry zwyklej
         if (c==1) //gra zwykla z utworzeniem planszy - wywolanie
         {
             tworzplansze(h,l,tab);
-            pobierzpunktacje(h,l);
-            //tu bedzie funkcja z gra
+            grazwykla(h,l,tab);
         }
 
 
