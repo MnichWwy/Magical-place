@@ -119,8 +119,8 @@ void grazwykla(int h,int l,int **tab) //glowny kod zwyklej gry
     while (ok==1) {
     do  {
         printf("W ktora strone chcesz sie poruszyc?(wcisniecie 'm' wyswietla droge duszka)\n");
-        scanf("%s",&a);
-        printf("%s",&a);
+        scanf("%c",&a);
+        printf("%s",a);
         if ((a=='w')||(a=='s')||(a=='a')||(a=='d')||(a=='m')) ok=0;
         }
     while ((a!='w')||(a!='s')||(a!='a')||(a!='d')||(a!='m'));
@@ -285,8 +285,8 @@ void wczytajplanszezplikuigraj(int **tab) //wczytanie planszy z pliku
 
     system("cls");
 
-    printf("Plik musi miec postac dwuwymiarowej tabelki zlozonej wylacznie z cyfr od 1 do 5\n");
-    printf("1-Pole zwykle\n2-Sciana\n3-Jablko\n4-Banan\n5-Kokos\n\n");
+    printf("Plik musi miec postac dwuwymiarowej tabelki zlozonej wylacznie z cyfr od 1 do 7\n");
+    printf("1-Pole zwykle\n2-Sciana\n3-Jablko\n4-Banan\n5-Kokos\n6-Start\n7-Meta\n\n");
     printf("Nazwa Twojego pliku nie moze przekroczyc 150 znakow!\n");
     printf("Pamietaj, aby nazwa pliku konczyla sie rozszerzeniem .txt\n");
     printf("Twoj plik z plansza musi znajdowac sie w tym samym folderze co DUSZEK!\n\n");
