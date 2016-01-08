@@ -95,9 +95,44 @@ void grazwykla(int h,int l,int **tab) //glowny kod zwyklej gry
      int y;
     } duszek;
 
-    duszek *first;
-    first=malloc(sizeof(duszek));//rezerwacja pamieci
-    first->next=malloc(sizeof(duszek));
+    duszek *first,*wsk,*pierwszy;
+    first=malloc(sizeof(duszek));   //rezerwacja pamieci
+    first->rodzajpola=tab[0][0];
+    first->punkty=p;
+    first->x=0;
+    first->y=0;
+
+    pierwszy=wsk=first;
+
+    system("cls");
+    printf("Duszkiem poruszaszasz sie do gory(w),w lewo(a),w prawo(d),w dol(s)\n");
+    printf("W kazdej chwili mozesz wyswietlic droge duszka wciskajac(m)\n");
+    printf("Ostatnia pozycja to aktualnie zajmowane pole\n");
+    printf("Nacisniecie dowolnego przycisku rozpocznie rozgrywke");
+    getch();
+    system("cls");
+
+    char a;
+    int i=0,ok=0;
+   // while (wsk!=NULL) wsk=wsk->next; //wsk to ostatni element listy
+
+    do {
+    do {
+        printf("W ktora strone chcesz sie poruszyc?(wcisniecie 'm' wyswietla droge duszka)\n");
+        scanf("%c\n",&a);
+       }
+    while ((a!='w')||(a!='s')||(a!='a')||(a!='d'));
+
+    switch (a){
+    case 'w':if (i==0) {printf("Oops!Nie mozesz sie tam ruszyc :( \n");ok=1;}else {i--;ok=0;} break;
+    case 's':if (i==h-1) {printf("Oops!Nie mozesz sie tam ruszyc :( \n");ok=1;}else {i++;ok=0;} break;
+    case 'a':if (j==0) {printf("Oops!Nie mozesz sie tam ruszyc :( \n");ok=1;}else {j--;ok=0;} break;
+    case 'd':if (j==l-1) {printf("Oops!Nie mozesz sie tam ruszyc :( \n");ok=1;}else {j++;ok=0;} break;
+    case 'm':while (pierwszy!=NULL) {printf("%d,%d,%d,%d",pierwszy->x,pierwszy->y,pierwszy->rodzajpola,pierwszy->punkty);pierwszy=pierwszy->next;}
+              }
+       }
+    while (ok==1);
+
 
 
 
