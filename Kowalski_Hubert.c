@@ -289,6 +289,7 @@ void wczytajplanszezplikuigraj(int **tab) //wczytanie planszy z pliku
     printf("1-Pole zwykle\n2-Sciana\n3-Jablko\n4-Banan\n5-Kokos\n6-Start\n7-Meta\n\n");
     printf("Nazwa Twojego pliku nie moze przekroczyc 150 znakow!\n");
     printf("Pamietaj, aby nazwa pliku konczyla sie rozszerzeniem .txt\n");
+    printf("Kazda linijka musi konczyc sie spacja ' '\nPo ostatniej linii musi znajdowac sie przejscie do nastepnej linii (enter)\n");
     printf("Twoj plik z plansza musi znajdowac sie w tym samym folderze co DUSZEK!\n\n");
     printf("Podaj nazwe pliku z ktorego wczytana zostanie plansza\n");
 
