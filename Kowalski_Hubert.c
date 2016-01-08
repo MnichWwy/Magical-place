@@ -63,7 +63,7 @@ int dajinta(int min,int max) //chroni program przed wywaleniem sie w przypadku p
 
 void grazwykla(int h,int l,int **tab) //glowny kod zwyklej gry
 {
-    int more,p,j,b,k;
+    int more,p,j,b,k,again;
 
     printf("Liczba punktow za jedzenie musi nalezec do przedzialu (1-dluzszy bok planszy)\n");
 
@@ -85,64 +85,181 @@ void grazwykla(int h,int l,int **tab) //glowny kod zwyklej gry
     printf("Podaj poczatkowa liczbe punktow\n");
     p=dajinta(1,more);
 
-
+    do
+    {
+    again=0;
     typedef struct gra //inicjalizacja struktury
     {
-     struct gra *next;
-     int rodzajpola;
-     int punkty;
-     int x;
-     int y;
+        struct gra *next;
+        int rodzajpola;
+        int punkty;
+        int x;
+        int y;
     } duszek;
 
-    duszek *first,*wsk,*pierwszy;
-    first=malloc(sizeof(duszek));   //rezerwacja pamieci
+    duszek *first,*polozenie,*wsk;
+    first=(duszek*)malloc(sizeof(duszek));   //rezerwacja pamieci
     first->rodzajpola=tab[0][0];
     first->punkty=p;
     first->x=0;
     first->y=0;
+    first->next=NULL;
 
-    pierwszy=wsk=first;
+    polozenie=first;
 
     system("cls");
     printf("Duszkiem poruszaszasz sie do gory(w),w lewo(a),w prawo(d),w dol(s)\n");
     printf("W kazdej chwili mozesz wyswietlic droge duszka wciskajac(m)\n");
+    printf("Mozesz cofnac swoj ostatni ruch wciskajac(b)\n");
     printf("Ostatnia pozycja to aktualnie zajmowane pole\n");
     printf("Nacisniecie dowolnego przycisku rozpocznie rozgrywke");
     getch();
     system("cls");
 
-    char a[200];
-    int i=0,ok=1;
-   // while (wsk!=NULL) wsk=wsk->next; //wsk to ostatni element listy
+    char a;
+    int i=0,q=0,punktacja[6]={0,0,0,j,b,k},statystyka[6]={0,0,0,0,0,0};
 
-    while (ok==1) {
-    do  {
-        printf("W ktora strone chcesz sie poruszyc?(wcisniecie 'm' wyswietla droge duszka)\n");
-        scanf("%s",&a);
-        printf("\n%c\n",a[0]);
-        printf("%d\n",ok);
-        if ((a[0]=='w')||(a[0]=='s')||(a[0]=='a')||(a[0]=='d')||(a[0]=='m')) ok=0;
-        printf("%d",ok);
+
+    do
+    {
+        do
+        {
+            fflush(stdin); //czysci bufor
+            printf("W ktora strone chcesz sie poruszyc?(wcisniecie 'm' wyswietla droge duszka)\n");
+            a=getchar();
         }
-    while ((a[0]!='w')||(a[0]!='s')||(a[0]!='a')||(a[0]!='d')||(a[0]!='m'));
+        while ((a!='w')&&(a!='s')&&(a!='a')&&(a!='d')&&(a!='m')&&(a!='b'));
 
 
 
-    switch (a[0]){
-    case 'w':if (i==0) {printf("Oops!Nie mozesz sie tam ruszyc :( \n");ok=1;}else {i--;ok=0;} break;
-    case 's':if (i==h-1) {printf("Oops!Nie mozesz sie tam ruszyc :( \n");ok=1;}else {i++;ok=0;} break;
-    case 'a':if (j==0) {printf("Oops!Nie mozesz sie tam ruszyc :( \n");ok=1;}else {j--;ok=0;} break;
-    case 'd':if (j==l-1) {printf("Oops!Nie mozesz sie tam ruszyc :( \n");ok=1;}else {j++;ok=0;} break;
-    case 'm':while (pierwszy!=NULL) {printf("%d,%d,%d,%d",pierwszy->x,pierwszy->y,pierwszy->rodzajpola,pierwszy->punkty);pierwszy=pierwszy->next;}break;
+        switch (a)
+        {
+        case 'w':
+            if ((i==0)||(tab[i-1][q]==SCIANA))
+            {
+                printf("Oops!Nie mozesz sie tam ruszyc :( \n");
+            }
+            else
+            {
+                i--;
+                polozenie->next=(duszek*)malloc(sizeof(duszek));
+                polozenie->next->x=q;
+                polozenie->next->y=i;
+                polozenie->next->rodzajpola=tab[i][q];
+                polozenie->next->punkty=((polozenie->punkty)+punktacja[polozenie->next->rodzajpola])-1;
+                polozenie->next->next=NULL;
+                statystyka[tab[i][q]]=statystyka[tab[i][q]]+1;
+                polozenie=polozenie->next;
+            }
+            break;
+        case 's':
+            if ((i==h-1)||(tab[i+1][q]==SCIANA))
+            {
+                printf("Oops!Nie mozesz sie tam ruszyc :( \n");
+            }
+            else
+            {
+                i++;
+                polozenie->next=(duszek*)malloc(sizeof(duszek));
+                polozenie->next->x=q;
+                polozenie->next->y=i;
+                polozenie->next->rodzajpola=tab[i][q];
+                polozenie->next->punkty=((polozenie->punkty)+punktacja[polozenie->next->rodzajpola])-1;
+                polozenie->next->next=NULL;
+                statystyka[tab[i][q]]=statystyka[tab[i][q]]+1;
+                polozenie=polozenie->next;
+            }
+            break;
+        case 'a':
+            if ((q==0)||(tab[i][q-1]==SCIANA))
+            {
+                printf("Oops!Nie mozesz sie tam ruszyc :( \n");
+            }
+            else
+            {
+                q--;
+                polozenie->next=(duszek*)malloc(sizeof(duszek));
+                polozenie->next->x=q;
+                polozenie->next->y=i;
+                polozenie->next->rodzajpola=tab[i][q];
+                polozenie->next->punkty=((polozenie->punkty)+punktacja[polozenie->next->rodzajpola])-1;
+                polozenie->next->next=NULL;
+                statystyka[tab[i][q]]=statystyka[tab[i][q]]+1;
+                polozenie=polozenie->next;
+            }
+            break;
+        case 'd':
+            if ((q==l-1)||(tab[i][q+1]==SCIANA))
+            {
+                printf("Oops!Nie mozesz sie tam ruszyc :( \n");
+            }
+            else
+            {
+                q++;
+                polozenie->next=(duszek*)malloc(sizeof(duszek));
+                polozenie->next->x=q;
+                polozenie->next->y=i;
+                polozenie->next->rodzajpola=tab[i][q];
+                polozenie->next->punkty=((polozenie->punkty)+punktacja[polozenie->next->rodzajpola])-1;
+                polozenie->next->next=NULL;
+                statystyka[tab[i][q]]=statystyka[tab[i][q]]+1;
+                polozenie=polozenie->next;
+            }
+            break;
+       case 'm':
+           wsk=first;
+            while (wsk!=NULL)
+            {
+                printf("%d,%d,%d,%d\n",wsk->x,wsk->y,wsk->rodzajpola,wsk->punkty);
+                wsk=wsk->next;
+            }
+            break;
+       case 'b':
+          wsk=first;
+           if (first->next!=NULL)
+           {
+           while (first->next!=NULL)
+            {
+           if (wsk->next->next!=NULL) {do wsk=wsk->next; while (wsk->next->next!=NULL);}
+            free(polozenie);
+            polozenie=wsk;
+            polozenie->next=NULL;
+            break;
+            }
+           }else
+            printf("Nie mozesz sie cofnac\n");
+            break;
+
+
+
+        }
+    }
+    while ((polozenie->punkty!=0)&&(tab[i][q]!=META));
+
+    if (polozenie->punkty==0) printf("Przegrales! :(\n");
+    else printf("Gratulacje, wygrales! :)\n");
+
+    int t;
+    printf("1.Zagraj ponownie na takich samymch warunkach\n");
+    printf("2.Powrot do MENU glownego\n");
+    printf("3.Wyswietl statystyke odwiedzonych pol\n");
+    printf("4.Zamkniecie gry\n");
+    printf("\n\n\nWcisnij numer podany przy akcji, ktora chcesz wykonac\n");
+    t=dajinta(1,4);
+    if (t==1) again=1;
+    if (t==4) exit(0);
+    if (t==2) return;
+    if (t==3) {
+        printf("Odwiedzono %d pol zwyklych\n",statystyka[POLE_ZWYKLE]);
+        printf("Odwiedzono %d pol z jablkami\n",statystyka[JABLKO]);
+        printf("Odwiedzono %d pol z bananami\n",statystyka[BANAN]);
+        printf("Odwiedzono %d pol z kokosami\n",statystyka[KOKOS]);
+        printf("Nacisnij dowolny przycisk by powrocic do MENU");
+        getch();
               }
-                  }
-
-
-
-
-
-
+    }
+    while (again==1);
+    return;
 }
 
 int tworzplansze(int h, int l,int **tab) //stworzenie planszy (jako dwuwymiarowa tablica dynamiczna tab)
@@ -226,7 +343,7 @@ zas ruch na pole z jedzeniem skutkuje konsumpcja i dodaniem liczby punktow zalez
        POWODZENIA! :) \n\n\n");
     printf("Nacisnij 1 by powrocic do MENU lub 0 by zamknac gre\n");
     b=dajinta(0,1);
-    if (b==1) main();
+    if (b==1) return;
     else exit(0);
 }
 
@@ -249,7 +366,7 @@ void zapisplanszydopliku(int h,int l,int **tab) //zapisanie planszy do pliku
         printf("Blad otwarcia pliku\n\n");
         printf("Wcisnij dowolny przycisk by powrocic do glownego menu\n");
         getch();
-        main();
+        return;
     }
     else
     {
@@ -275,7 +392,7 @@ void zapisplanszydopliku(int h,int l,int **tab) //zapisanie planszy do pliku
     printf("\n\n\nWcisnij numer podany przy akcji, ktora chcesz wykonac\n");
     a=dajinta(1,2);
 
-    if (a==1) main();
+    if (a==1) return;
     else exit(0);
 }
 
@@ -304,7 +421,7 @@ void wczytajplanszezplikuigraj(int **tab) //wczytanie planszy z pliku
         printf("Blad otwarcia pliku\n\n");
         printf("Wcisnij dowolny przycisk by powrocic do glownego menu\n");
         getch();
-        main();
+        return;
     }
     else
     {
@@ -364,7 +481,7 @@ void wczytajplanszezplikuigraj(int **tab) //wczytanie planszy z pliku
             printf("\n\n\nWcisnij numer podany przy akcji, ktora chcesz wykonac\n");
             k=dajinta(1,2);
 
-            if (k==1) main();
+            if (k==1) return;
             else exit(0);
 
         }
@@ -379,7 +496,7 @@ void wczytajplanszezplikuigraj(int **tab) //wczytanie planszy z pliku
         }
     }
     fclose(plik);
-
+return;
 }
 
 void menugrazwykla() //menu gry zwyklej
@@ -401,7 +518,7 @@ void menugrazwykla() //menu gry zwyklej
     int h,l,**tab;
 
     if (c==5) exit(0); //wyjscie z programu
-    else if (c==4) main(); //powrot do menu
+    else if (c==4) return; //powrot do menu
     else if (c==2) //wczytanie planszy z pliku i rozpoczecie gry
     {
 
@@ -419,6 +536,7 @@ void menugrazwykla() //menu gry zwyklej
 
 
         wczytajplanszezplikuigraj(tab);
+        //tu petla do ponownej gry
 
         for (a=0; a<h; a++) free(tab[a]);
         free(tab);
@@ -444,12 +562,13 @@ void menugrazwykla() //menu gry zwyklej
         if (c==3) //zapis planszy do pliku - wywolanie
         {
             tworzplansze(h,l,tab);
-            zapisplanszydopliku(h,l,tab);
+            zapisplanszydopliku(h,l,tab);return;
         }
         if (c==1) //gra zwykla z utworzeniem planszy - wywolanie
         {
             tworzplansze(h,l,tab);
             grazwykla(h,l,tab);
+            //tu petla do ponownej gry
         }
 
 
@@ -457,6 +576,7 @@ void menugrazwykla() //menu gry zwyklej
         free(tab);
 
     }
+    return;
 }
 
 int main() //funkcja glowna
@@ -465,11 +585,15 @@ int main() //funkcja glowna
     printf("Witaj w grze DUSZEK!\n\n\n\nWcisnij dowolny przycisk aby rozpoczac");
     getch();
     int x;
+    do
+    {
     x=menu();
     if (x==4) exit(0);
     if (x==1) menugrazwykla();
 //if (x==2) graautomatyczna;
     if (x==3) instrukcja();
+    }
+    while (x!=4);
 
     return 0;
 }
