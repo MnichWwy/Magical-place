@@ -112,22 +112,24 @@ void grazwykla(int h,int l,int **tab) //glowny kod zwyklej gry
     getch();
     system("cls");
 
-    char a;
+    char a[200];
     int i=0,ok=1;
    // while (wsk!=NULL) wsk=wsk->next; //wsk to ostatni element listy
 
     while (ok==1) {
     do  {
         printf("W ktora strone chcesz sie poruszyc?(wcisniecie 'm' wyswietla droge duszka)\n");
-        scanf("%c",&a);
-        printf("%s",a);
-        if ((a=='w')||(a=='s')||(a=='a')||(a=='d')||(a=='m')) ok=0;
+        scanf("%s",&a);
+        printf("\n%c\n",a[0]);
+        printf("%d\n",ok);
+        if ((a[0]=='w')||(a[0]=='s')||(a[0]=='a')||(a[0]=='d')||(a[0]=='m')) ok=0;
+        printf("%d",ok);
         }
-    while ((a!='w')||(a!='s')||(a!='a')||(a!='d')||(a!='m'));
+    while ((a[0]!='w')||(a[0]!='s')||(a[0]!='a')||(a[0]!='d')||(a[0]!='m'));
 
 
 
-    switch (a){
+    switch (a[0]){
     case 'w':if (i==0) {printf("Oops!Nie mozesz sie tam ruszyc :( \n");ok=1;}else {i--;ok=0;} break;
     case 's':if (i==h-1) {printf("Oops!Nie mozesz sie tam ruszyc :( \n");ok=1;}else {i++;ok=0;} break;
     case 'a':if (j==0) {printf("Oops!Nie mozesz sie tam ruszyc :( \n");ok=1;}else {j--;ok=0;} break;
