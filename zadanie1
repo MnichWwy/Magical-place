@@ -61,61 +61,69 @@ void destroy(int *tab)
 int main()
 {
     srand(time( NULL));
-    int temp1,temp2,i,*tab,ind;
-    cout << "0.Wykonaj polecenie z zadania 1"<<endl<<"1.init" << endl<<"2.destroy"<<endl<<"3.push"<<endl<<"4.pop"<<endl<<"5.top"<<endl<<"6.empty"<<endl<<"7.full"<<endl<<"8.wyjdz"<<endl;
-    int wybor;
-    cout<< "Wybierz akcje: ";
-    cin>>wybor;
-    switch(wybor)
+    int temp1,temp2,i,*tab,ind,wybor,wybor1=0;;
+    do
     {
-    case 0://losowanie losowej liczby liczb losowych i ich wyswietlanie
-        temp1=(rand()%20);
-        init(tab,ind,temp1);
-        for (i=0; i<temp1; i++)
+        cout << "0.Wykonaj polecenie z zadania 1"<<endl<<"1.init" << endl<<"2.destroy"<<endl<<"3.push"<<endl<<"4.pop"<<endl<<"5.top"<<endl<<"6.empty"<<endl<<"7.full"<<endl<<"8.wyjdz"<<endl;
+        cout<< "Wybierz akcje: ";
+        cin>>wybor;
+        switch(wybor)
         {
-            temp2=(rand()%20);
-            push(tab,temp2,ind);
-        };
-        i=0;
+        case 0://losowanie losowej liczby liczb losowych i ich wyswietlanie
+            temp1=(rand()%20);
+            init(tab,ind,temp1);
+            for (i=0; i<temp1; i++)
+            {
+                temp2=(rand()%20);
+                push(tab,temp2,ind);
+            };
+            i=0;
 
-        while (i!=temp1)
-        {
+            while (i!=temp1)
+            {
 
-            cout<<tab[i]<<endl;
-            i++;
+                cout<<tab[i]<<endl;
+                i++;
+            }
+
+            destroy(tab);
+            break;
+        case 1:
+            init(tab,ind,N);
+            break;
+        case 2:
+            destroy(tab);
+            break;
+        case 3:
+            push(tab,N,ind);
+            break;
+        case 4:
+            pop(tab,ind);
+            break;
+        case 5:
+            top(tab,ind);
+            break;
+        case 6:
+            empty(tab,ind);
+            break;
+        case 7:
+            full(tab,ind);
+            break;
+        case 8:
+            return 0;
+            break;
+        default:
+            cout << "Bledny wybor,nastapi wyjscie" << endl;
+            return -1;
+            break;
         }
-
-        destroy(tab);
-        break;
-    case 1:
-        init(tab,ind,N);
-        break;
-    case 2:
-        destroy(tab);
-        break;
-    case 3:
-        push(tab,N,ind);
-        break;
-    case 4:
-        pop(tab,ind);
-        break;
-    case 5:
-        top(tab,ind);
-        break;
-    case 6:
-        empty(tab,ind);
-        break;
-    case 7:
-        full(tab,ind);
-        break;
-    case 8:
-        return 0;
-        break;
-    default:
-        cout << "Bledny wybor,nastapi wyjscie" << endl;
-        return -1;
-        break;
+        do
+        {
+            cout<<"Chcesz zrobic cos jeszcze?"<<endl<<"1.Tak"<<endl<<"2.Nie"<<endl<<"Wybor:";
+            cin>>wybor1;
+        }
+        while ((wybor1!=1)&&(wybor1!=2));
     }
-
+    while (wybor1==1);
     return 0;
 }
