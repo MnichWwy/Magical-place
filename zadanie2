@@ -1,0 +1,51 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int main()
+{
+    string Nazwa_Pliku,Nazwa_Pliku_Wyjscie;
+    cout << "Podaj nazwe pliku (bez rozszerzenia)" << endl;
+    cin>>Nazwa_Pliku;
+    Nazwa_Pliku_Wyjscie=Nazwa_Pliku+".max.txt";
+    Nazwa_Pliku+=".txt";
+    ifstream Odczyt_Pliku;
+    Odczyt_Pliku.open(Nazwa_Pliku.c_str());
+
+    string imie,nazwisko;
+    int wiek,i;
+    float skutecznosc,maks;
+
+    ofstream Zapis_Pliku;
+    Zapis_Pliku.open(Nazwa_Pliku_Wyjscie.c_str());
+
+    while(!Odczyt_Pliku.eof())
+    {
+            Odczyt_Pliku>>imie>>nazwisko>>wiek>>skutecznosc;
+            if (skutecznosc>maks) maks=skutecznosc;
+    }
+
+
+    Odczyt_Pliku.seekg( 0, ios::beg );
+
+    while (!Odczyt_Pliku.eof())
+    {
+        Odczyt_Pliku>>imie>>nazwisko>>wiek>>skutecznosc;
+        cout<<imie<<" "<<nazwisko<<" "<<wiek<<" "<<skutecznosc<<endl;
+
+        int temp=imie.size(),temp2=nazwisko.size(); cout<<temp<<" "<<temp2;
+        if ((temp2>3)&&(nazwisko[temp2]=='i')&&(nazwisko[temp2-1]=='k')&&(nazwisko[temp2-2]=='s')(temp>3)&&(skutecznosc==maks)) {
+
+                for(i=1;i<temp-3;i++) imie[i]='*';
+                Zapis_Pliku<<imie<<" ";
+                for(i=1;i<temp2-3;i++) nazwisko[i]='*';
+                Zapis_Pliku<<nazwisko<<" ";
+                Zapis_Pliku<<wiek<<endl;
+
+     }                       }
+    Odczyt_Pliku.close();
+
+    Zapis_Pliku.close();
+    return 0;
+}
