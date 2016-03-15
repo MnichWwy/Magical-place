@@ -15,7 +15,7 @@ int main()
 
     string imie,nazwisko;
     int wiek,i;
-    float skutecznosc,maks;
+    float skutecznosc,maks=0;
 
     ofstream Zapis_Pliku;
     Zapis_Pliku.open(Nazwa_Pliku_Wyjscie.c_str());
