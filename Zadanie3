@@ -56,18 +56,19 @@ for (i=0;i<10;i++)
     cin>>x;
     Stos.push(x);
 }
-
+    cout<<endl<<"Wypisanie stosu:"<<endl;
 while (!Stos.empty())
 {
     Stos_pom.push(Stos.top());
     Stos.pop();
     cout<<Stos_pom.top()<<endl;
 }
-
+    cout<<endl<<"Zawartosc stosu pierwotnego po wypisaniu:"<<endl;
 while (!Stos_pom.empty())
 {
     Stos.push(Stos_pom.top());
     Stos_pom.pop();
+    cout<<Stos.top()<<endl;
 }
     Stos.destroy();
     Stos_pom.destroy();
