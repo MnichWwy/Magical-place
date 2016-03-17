@@ -2,7 +2,7 @@
 
 using namespace std;
 
-    class Stos
+    class Stack
     {
     public:
         int *tab,wierzch,rozmiar;
@@ -45,9 +45,9 @@ int main()
 
 int i,x;
 
-    Stos Stos;
+    Stack Stos;
     Stos.init(10);
-    Stos Stos_pom;          //<---- tu nie tigo
+    Stack Stos_pom;          
     Stos_pom.init(10);
 
 for (i=0;i<10;i++)
@@ -59,7 +59,7 @@ for (i=0;i<10;i++)
 
 while (Stos.empty()!=-1)
 {
-    Stos_pom.push(Stos.top);
+    Stos_pom.push(Stos.top); //<---- typy zmiennych mu sie nie zgadzaja
     Stos.pop;
     cout<<Stos_pom.top<<endl;
 }
