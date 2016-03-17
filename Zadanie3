@@ -47,7 +47,7 @@ int i,x;
 
     Stack Stos;
     Stos.init(10);
-    Stack Stos_pom;          
+    Stack Stos_pom;
     Stos_pom.init(10);
 
 for (i=0;i<10;i++)
@@ -57,20 +57,20 @@ for (i=0;i<10;i++)
     Stos.push(x);
 }
 
-while (Stos.empty()!=-1)
+while (!Stos.empty())
 {
-    Stos_pom.push(Stos.top); //<---- typy zmiennych mu sie nie zgadzaja
-    Stos.pop;
-    cout<<Stos_pom.top<<endl;
+    Stos_pom.push(Stos.top());
+    Stos.pop();
+    cout<<Stos_pom.top()<<endl;
 }
 
-while (Stos_pom.empty()!=-1)
+while (!Stos_pom.empty())
 {
-    Stos.push(Stos_pom.top);
-    Stos_pom.pop;
+    Stos.push(Stos_pom.top());
+    Stos_pom.pop();
 }
-    Stos.destroy;
-    Stos_pom.destroy;
+    Stos.destroy();
+    Stos_pom.destroy();
 
     return 0;
 }
