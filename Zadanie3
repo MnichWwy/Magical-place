@@ -1,0 +1,76 @@
+#include <iostream>
+
+using namespace std;
+
+    class Stos
+    {
+    public:
+        int *tab,wierzch,rozmiar;
+        void init(int _rozmiar)
+        {
+            tab=new int[_rozmiar];
+            wierzch = -1;
+            rozmiar = _rozmiar;
+        }
+        void destroy()
+        {
+            delete tab;
+        }
+        void push(int l)
+        {
+            tab[++wierzch] = l;
+        }
+        void pop()
+        {
+            --wierzch;
+        }
+        int top()
+        {
+            return tab[wierzch];
+        }
+        int empty()
+        {
+            return wierzch == -1;
+        }
+        int full()
+        {
+            return wierzch == rozmiar-1;
+        }
+
+    };
+
+
+int main()
+{
+
+int i,x;
+
+    Stos Stos;
+    Stos.init(10);
+    Stos Stos_pom;          //<---- tu nie tigo
+    Stos_pom.init(10);
+
+for (i=0;i<10;i++)
+{
+    cout<<"Podaj "<<i<<" liczbe stosu"<<endl;
+    cin>>x;
+    Stos.push(x);
+}
+
+while (Stos.empty()!=-1)
+{
+    Stos_pom.push(Stos.top);
+    Stos.pop;
+    cout<<Stos_pom.top<<endl;
+}
+
+while (Stos_pom.empty()!=-1)
+{
+    Stos.push(Stos_pom.top);
+    Stos_pom.pop;
+}
+    Stos.destroy;
+    Stos_pom.destroy;
+
+    return 0;
+}
