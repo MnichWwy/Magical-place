@@ -1,5 +1,6 @@
 #include <iostream>
 #include <stdlib.h>
+#define N 100
 
 using namespace std;
 
@@ -17,7 +18,7 @@ public:
     }*/
     Osoba(string imie,string nazwisko)
     {
-        imie="Gall";;
+        imie="Gall";
         nazwisko="Anonim";
     }
     string getimie()
@@ -58,7 +59,17 @@ namespace imp
 {
 class Kartoteka
 {
-public:
+        public:
+        int ind;
+        Osoba *tab;
+        Kartoteka(){
+            ind=-1;
+            tab=new Osoba[N];
+        }
+        ~Kartoteka(){
+            delete[]tab;
+            ind=-1;
+        }
 
 
 
@@ -73,82 +84,90 @@ public:
 
 using namespace kartoteka;
 using namespace kartoteka::mockup;
+//using namespace kartoteka::imp;
 
 int main()
 {
-    int wybor,temp;
+    int wybor,temp,wybor2=0;
     Kartoteka lista;
     string imie,nazwisko;
+    do
+    {
     cout<<"MENU"<<endl;
     cout<<"1.Dodaj"<<endl<<"2.Usun"<<endl<<"3.Rozmiar"<<endl<<"4.Czy dana osoba nalezy do listy?"<<endl<<"5.Wyswietl osobe z numeru indeksu"<<endl<<"6.Wyjdz"<<endl;
     cout<<"Wybor:";
     cin>>wybor;
 
-    switch (wybor)
-    {
-    case 1:
-    {
-        cout<<"Podaj imie"<<endl;
-        cin>>imie;
-        cout<<"Podaj nazwisko"<<endl;
-        cin>>nazwisko;
-        Osoba o(imie,nazwisko);
-        lista.dodaj(o);
-        break;
-    }
-
-    case 2:
-    {
-        cout<<"Podaj imie"<<endl;
-        cin>>imie;
-        cout<<"Podaj nazwisko"<<endl;
-        cin>>nazwisko;
-        Osoba o(imie,nazwisko);
-        lista.usun(o);
-        break;
-    }
-
-    case 3:
-    {
-        cout<<lista.rozmiar()<<endl;
-        break;
-    }
-
-    case 4:
-    {
-        cout<<"Podaj imie"<<endl;
-        cin>>imie;
-        cout<<"Podaj nazwisko"<<endl;
-        cin>>nazwisko;
-        Osoba o(imie,nazwisko);
-        if (lista.czyZawiera(o)==true)
+        switch (wybor)
         {
-            cout<<"Tak"<<endl;
-        }
-        else
+        case 1:
         {
-            cout<<"Nie"<<endl;
+            cout<<"Podaj imie"<<endl;
+            cin>>imie;
+            cout<<"Podaj nazwisko"<<endl;
+            cin>>nazwisko;
+            Osoba o(imie,nazwisko);
+            lista.dodaj(o);
+            break;
         }
-        break;
-    }
 
-    case 5:
-    {
-        cout<<"Podaj numer indeksu osoby"<<endl;
-        cin>>temp;
-        lista.pobierz(temp);
-        break;
-    }
+        case 2:
+        {
+            cout<<"Podaj imie"<<endl;
+            cin>>imie;
+            cout<<"Podaj nazwisko"<<endl;
+            cin>>nazwisko;
+            Osoba o(imie,nazwisko);
+            lista.usun(o);
+            break;
+        }
 
-    case 6:
-    {
-        return 0;
+        case 3:
+        {
+            cout<<lista.rozmiar()<<endl;
+            break;
+        }
+
+        case 4:
+        {
+            cout<<"Podaj imie"<<endl;
+            cin>>imie;
+            cout<<"Podaj nazwisko"<<endl;
+            cin>>nazwisko;
+            Osoba o(imie,nazwisko);
+            if (lista.czyZawiera(o)==true)
+            {
+                cout<<"Tak"<<endl;
+            }
+            else
+            {
+                cout<<"Nie"<<endl;
+            }
+            break;
+        }
+
+        case 5:
+        {
+            cout<<"Podaj numer indeksu osoby"<<endl;
+            cin>>temp;
+            lista.pobierz(temp);
+            break;
+        }
+
+        case 6:
+        {
+            exit(0);
+        }
+        default:
+        {
+            cout<<"Nieprawidlowy wybor,nacisnij dowolny przycisk aby wyjsc"<<endl;
+            exit(-1);
+        }
+        }
+        cout<<endl<<"Chcesz zrobic cos jeszcze?Tak-1/Nie-0"<<endl;
+        cout<<"Wybor:";
+        cin>>wybor2;
     }
-    default:
-    {
-        cout<<"Nieprawidlowy wybor,nacisnij dowolny przycisk aby wyjsc"<<endl;
-        exit(-1);
-    }
-    }
+    while (wybor2!=0);
     return 0;
 }
