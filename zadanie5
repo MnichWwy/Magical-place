@@ -9,13 +9,11 @@ namespace kartoteka
 {
 class Osoba
 {
-public:
-    string imie,nazwisko;
 
-Osoba()
+    private:   string imie,nazwisko;
+    public:
+    Osoba()
     {
-       imie=" ";
-        nazwisko=" ";
     }
     Osoba(string imie_,string nazwisko_)
     {
@@ -84,7 +82,7 @@ public:
         {
             if ((tab[i].getimie()==o.getimie())&&(tab[i].getnazwisko()==o.getnazwisko()))
             {
-                for(j=i+1; j<ind; j++)
+                for(j=i+1; j<=ind; j++)
                 {
                     tab[j-1]=tab[j];
                 }
