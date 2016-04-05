@@ -12,11 +12,15 @@ class Osoba
 public:
     string imie,nazwisko;
 
-    Osoba() {}
-    Osoba(string imie,string nazwisko)
+Osoba()
     {
-        imie="Gall";
-        nazwisko="Anonim";
+       imie=" ";
+        nazwisko=" ";
+    }
+    Osoba(string imie_,string nazwisko_)
+    {
+        imie=imie_;
+        nazwisko=nazwisko_;
     }
     string getimie()
     {
@@ -72,12 +76,11 @@ public:
     {
         ind++;
         tab[ind]=o;
-        cout<<tab[ind].imie<<" "<<tab[ind].nazwisko;
     }
     void usun(Osoba o)
     {
         int i,j;
-        for(i=0; i<ind; i++)
+        for(i=0; i<=ind; i++)
         {
             if ((tab[i].getimie()==o.getimie())&&(tab[i].getnazwisko()==o.getnazwisko()))
             {
@@ -98,7 +101,7 @@ public:
     bool czyZawiera(Osoba o)
     {
         int i;
-        for(i=0; i<ind; i++)
+        for(i=0; i<=ind; i++)
         {
             if ((tab[i].getimie()==o.getimie())&&(tab[i].getnazwisko()==o.getnazwisko()))
             {
