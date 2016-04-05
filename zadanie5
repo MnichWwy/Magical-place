@@ -9,24 +9,24 @@ namespace kartoteka
 class Osoba
 {
 public:
-    string a,b;
-    Osoba()
+    string imie,nazwisko;
+    /*Osoba()
     {
         a="Gall";
         b="Anonim";
-    }
+    }*/
     Osoba(string imie,string nazwisko)
     {
-        a=imie;
-        b=nazwisko;
+        imie="Gall";;
+        nazwisko="Anonim";
     }
     string getimie()
     {
-        return a;
+        return imie;
     };
     string getnazwisko()
     {
-        return b;
+        return nazwisko;
     };
 };
 
@@ -66,14 +66,66 @@ public:
 
 
 
+
 };
 };
 };
 
-
+using namespace kartoteka;
+using namespace kartoteka::mockup;
 
 int main()
 {
+    int wybor,temp;
+    string imie,nazwisko;
+    Osoba o;
+    cout<<"MENU"<<endl;
+    cout<<"1.Dodaj"<<endl<<"2.Usun"<<endl<<"3.Rozmiar"<<"4.Czy dana osoba nalezy do listy?"<<"5.Wybierz"<<endl;
+    cout<<"Wybor:";
+    cin>>wybor;
+
+    switch (wybor)
+    {
+    case 1:
+        cout<<"Podaj imie"<<endl;
+        cin>>imie;
+        cout<<"Podaj nazwisko"<<endl;
+        cin>>nazwisko;
+        Kartoteka.dodaj(Osoba(imie,nazwisko));
+        break;
+    }
+case 2:
+    cout<<"Podaj imie"<<endl;
+    cin>>imie;
+    cout<<"Podaj nazwisko"<<endl;
+    cin>>nazwisko;
+    Kartoteka.usun(Osoba(imie,nazwisko));
+    break;
+
+case 3:
+    cout<<Kartoteka.rozmiar()<<endl;
+    break;
+
+case 4:
+    cout<<"Podaj imie"<<endl;
+    cin>>imie;
+    cout<<"Podaj nazwisko"<<endl;
+    cin>>nazwisko;
+    if (kart.CzyZawiera(Osoba(imie,nazwisko))==1)
+    {
+        cout<<"Tak"<<endl;
+    }
+    else
+    {
+        cout<<"Nie"<<endl;
+    }
+    break;
+
+case 5:
+    cout<<"Podaj numer indeksu osoby"<<endl;
+    cin>>temp;
+    kart.Pobierz(t);
+    break;
 
     return 0;
 }
