@@ -29,9 +29,9 @@ public:
         return b;
     };
 };
-};
 
-namespace mockup_Kartoteka
+
+namespace mockup
 {
 class Kartoteka
 {
@@ -54,6 +54,20 @@ public:
 };
 
 
+namespace imp
+{
+class Kartoteka
+{
+public:
+
+
+
+
+
+
+
+};
+};
 };
 
 
