@@ -12,7 +12,7 @@ class Osoba
 public:
     string imie,nazwisko;
 
-    Osoba(){}
+    Osoba() {}
     Osoba(string imie,string nazwisko)
     {
         imie="Gall";
@@ -110,7 +110,17 @@ public:
     }
     Osoba pobierz(int index)
     {
-        return tab[index];
+
+        if (index<=ind)
+        {
+            return tab[index];
+            cout<<"Osoba wybrana";
+        }
+        else
+        {
+            cout<<"Nie ma takiej osoby";
+            exit(0);
+        }
     }
 
 
@@ -130,7 +140,8 @@ int main()
     Kartoteka lista;
     string imie,nazwisko;
     do
-    {   system("cls");
+    {
+        system("cls");
         cout<<"MENU"<<endl;
         cout<<"1.Dodaj"<<endl<<"2.Usun"<<endl<<"3.Rozmiar"<<endl<<"4.Czy dana osoba nalezy do listy?"<<endl<<"5.Wybierz osobe z numeru indeksu"<<endl<<"6.Wyjdz"<<endl;
         cout<<"Wybor:";
