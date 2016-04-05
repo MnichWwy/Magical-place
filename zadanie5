@@ -4,18 +4,14 @@
 
 using namespace std;
 
-
 namespace kartoteka
 {
 class Osoba
 {
 public:
     string imie,nazwisko;
-    /*Osoba()
-    {
-        a="Gall";
-        b="Anonim";
-    }*/
+
+    Osoba(){}
     Osoba(string imie,string nazwisko)
     {
         imie="Gall";
@@ -54,26 +50,66 @@ public:
 };
 };
 
-
 namespace imp
 {
 class Kartoteka
 {
-        public:
-        int ind;
-        Osoba *tab;
-        Kartoteka(){
-            ind=-1;
-            tab=new Osoba[N];
+public:
+    int ind;
+    Osoba *tab;
+    Kartoteka()
+    {
+        ind=-1;
+        tab=new Osoba[N];
+    }
+    ~Kartoteka()
+    {
+        delete[]tab;
+        ind=-1;
+    }
+    void dodaj(Osoba o)
+    {
+        ind++;
+        tab[ind]=o;
+    }
+    void usun(Osoba o)
+    {
+        int i,j;
+        for(i=0; i<ind; i++)
+        {
+            if ((tab[i].getimie()==o.getimie())&&(tab[i].getnazwisko()==o.getnazwisko()))
+            {
+                for(j=i+1; j<ind; j++)
+                {
+                    tab[j-1]=tab[j];
+                }
+                i--;
+                ind--;
+            }
         }
-        ~Kartoteka(){
-            delete[]tab;
-            ind=-1;
+    }
+    int rozmiar()
+    {
+        return ind+1;
+    }
+
+    bool czyZawiera(Osoba o)
+    {
+        int i;
+        for(i=0; i<ind; i++)
+        {
+            if ((tab[i].getimie()==o.getimie())&&(tab[i].getnazwisko()==o.getnazwisko()))
+            {
+                return true;
+            }
+
         }
-
-
-
-
+        return false;
+    }
+    Osoba pobierz(int index)
+    {
+        return tab[index];
+    }
 
 
 
@@ -83,8 +119,8 @@ class Kartoteka
 };
 
 using namespace kartoteka;
-using namespace kartoteka::mockup;
-//using namespace kartoteka::imp;
+//using namespace kartoteka::mockup;
+using namespace kartoteka::imp;
 
 int main()
 {
@@ -93,10 +129,10 @@ int main()
     string imie,nazwisko;
     do
     {
-    cout<<"MENU"<<endl;
-    cout<<"1.Dodaj"<<endl<<"2.Usun"<<endl<<"3.Rozmiar"<<endl<<"4.Czy dana osoba nalezy do listy?"<<endl<<"5.Wyswietl osobe z numeru indeksu"<<endl<<"6.Wyjdz"<<endl;
-    cout<<"Wybor:";
-    cin>>wybor;
+        cout<<"MENU"<<endl;
+        cout<<"1.Dodaj"<<endl<<"2.Usun"<<endl<<"3.Rozmiar"<<endl<<"4.Czy dana osoba nalezy do listy?"<<endl<<"5.Wyswietl osobe z numeru indeksu"<<endl<<"6.Wyjdz"<<endl;
+        cout<<"Wybor:";
+        cin>>wybor;
 
         switch (wybor)
         {
