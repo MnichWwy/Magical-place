@@ -1,27 +1,62 @@
 #include <iostream>
+#include <stdlib.h>
 
 using namespace std;
-using namespace kartoteka_Osoba; //gownodupakupa
 
-namespace kartoteka_Osoba {
-class Osoba{
-    public:string imie,nazwisko;
-public:Osoba(string imie,string nazwisko);
-void getimie(){cin>>imie;};
-void getnazwisko(){cin>>nazwisko;};
-};};
 
-namespace kartoteka_mockup_Osoba {
-class Kartoteka{
-void dodaj(){};
-void usun(){};
-int rozmiar(){return 1;}
-int czyZawiera(){return true;}
-void pobierz(){Osoba new;}; //nie wiem gownodupakupa
-};};
+namespace kartoteka
+{
+class Osoba
+{
+public:
+    string a,b;
+    Osoba()
+    {
+        a="Gall";
+        b="Anonim";
+    }
+    Osoba(string imie,string nazwisko)
+    {
+        a=imie;
+        b=nazwisko;
+    }
+    string getimie()
+    {
+        return a;
+    };
+    string getnazwisko()
+    {
+        return b;
+    };
+};
+};
+
+namespace mockup_Kartoteka
+{
+class Kartoteka
+{
+public:
+    void dodaj(Osoba o) {}
+    void usun(Osoba o) {}
+    int rozmiar()
+    {
+        return 1;
+    }
+    bool czyZawiera(Osoba o)
+    {
+        return true;
+    }
+    Osoba pobierz(int index)
+    {
+        return Osoba("Gall","Anonim");
+    };
+};
+};
 
 
 };
+
+
 
 int main()
 {
