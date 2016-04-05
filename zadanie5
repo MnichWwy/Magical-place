@@ -94,38 +94,3 @@ int main()
         Kartoteka.dodaj(Osoba(imie,nazwisko));
         break;
     }
-case 2:
-    cout<<"Podaj imie"<<endl;
-    cin>>imie;
-    cout<<"Podaj nazwisko"<<endl;
-    cin>>nazwisko;
-    Kartoteka.usun(Osoba(imie,nazwisko));
-    break;
-
-case 3:
-    cout<<Kartoteka.rozmiar()<<endl;
-    break;
-
-case 4:
-    cout<<"Podaj imie"<<endl;
-    cin>>imie;
-    cout<<"Podaj nazwisko"<<endl;
-    cin>>nazwisko;
-    if (kart.CzyZawiera(Osoba(imie,nazwisko))==1)
-    {
-        cout<<"Tak"<<endl;
-    }
-    else
-    {
-        cout<<"Nie"<<endl;
-    }
-    break;
-
-case 5:
-    cout<<"Podaj numer indeksu osoby"<<endl;
-    cin>>temp;
-    kart.Pobierz(t);
-    break;
-
-    return 0;
-}
