@@ -1,0 +1,251 @@
+#include <iostream>
+#include <string>
+#include <stdlib.h>
+#include <list>
+
+using namespace std;
+class Druzyna
+{
+public:
+    string Nazwa;
+    int ID;
+public:
+Druzyna()
+{
+    Nazwa="Real Madryt";
+    ID=-1;
+}
+
+Druzyna(string Nazwa_,int ID_)
+{
+    Nazwa=Nazwa_;
+    ID=ID_;
+
+}
+    friend ostream & operator<< (ostream &os, const Druzyna &druzyna);
+};
+    ostream & operator<< (ostream &os, const Druzyna &druzyna)
+{
+   return os <<druzyna.Nazwa <<" ID:"<<druzyna.ID;  //przeciazanie operatora wypisania do cout "<<"
+}
+
+class Sedzia
+{
+public:
+    string Imie;
+    string Nazwisko;
+    int ID;
+public:
+Sedzia()
+{
+    Imie="Ryszard";
+    Nazwisko="Lubicz";
+    ID=-2;
+}
+
+Sedzia(string Imie_,string Nazwisko_,int ID_)
+{
+    Imie=Imie_;
+    Nazwisko=Nazwisko_;
+    ID=ID_;
+
+}
+    friend ostream & operator<< (ostream &os, const Sedzia &sedzia);
+
+};
+
+    ostream & operator<< (ostream &os, const Sedzia &sedzia)
+{
+   return os <<sedzia.Imie <<" "<< sedzia.Nazwisko<<" ID:"<<sedzia.ID;  //przeciazanie operatora wypisania do cout "<<"
+}
+
+class Dyscyplina
+{
+    public:
+    list<Druzyna> Druzyny;
+    list<Sedzia> Sedziowie;
+    list<Sedzia>::iterator iter;
+    list<Druzyna>::iterator iter1;
+
+ void dodaj_sedzia(Sedzia sedz)
+ {
+    Sedziowie.push_front(sedz);
+ }
+ void usun_sedzia(int ID)
+ {
+     int ok=0;
+
+       if( Sedziowie.empty () )
+         cout<< "Lista sedziow jest pusta!"<<endl;
+         else
+         {
+        iter=Sedziowie.begin();
+      while (iter!=Sedziowie.end())
+        {iter++;
+      if (iter->ID==ID)
+      {
+            Sedziowie.erase(iter);
+            cout<<"Usunieto sedziego o numerze ID:"<<ID<<endl;
+            ok=1;
+            break;
+
+      }
+        }
+      if (ok!=1) cout<<"Nie udalo sie usunac sedziego o numerze ID:"<<ID<<endl;
+
+         }
+ };
+ void dodaj_druzyna(Druzyna druz)
+ {
+    Druzyny.push_front(druz);
+ }
+ void usun_druzyna(int ID)
+ {
+         int ok1=0;
+
+       if( Druzyny.empty () )
+         cout<< "Lista druzyn jest pusta!"<<endl;
+         else
+         {
+        iter1=Druzyny.begin();
+      while (iter1!=Druzyny.end())
+        {iter1++;
+      if (iter1->ID==ID)
+      {
+            Druzyny.erase(iter1);
+            cout<<"Usunieto druzyne o numerze ID:"<<ID<<endl;
+            ok1=1;
+            break;
+
+      }
+        }
+      if (ok1!=1) cout<<"Nie udalo sie usunac druzyny o numerze ID:"<<ID<<endl;
+
+         }
+ }
+ void wyswietl_sedziow()
+ {
+     if( Sedziowie.empty () )
+         cout<< "Lista sedziow jest pusta!"<<endl;
+         else
+         {
+      for(  iter=Sedziowie.begin(); iter != Sedziowie.end(); iter++ )
+      {
+      cout<<*iter<<endl;
+      }
+         }
+ }
+ void wyswietl_druzyny()
+ {
+     if( Druzyny.empty () )
+         cout<< "Lista druzyn jest pusta!"<<endl;
+         else
+         {
+      for(  iter1=Druzyny.begin(); iter1 != Druzyny.end(); iter1++ )
+      {
+      cout<<*iter1<<endl;
+      }
+         }
+ }
+
+
+};
+
+class Spotkanie
+{
+public:
+
+  int Gospodarz;
+  int Gosc;
+  int Wynik;
+  bool Czy_Rozegrany;
+  int Sedzia_Glowny;
+  int Sedzia_Pom1;
+  int Sedzia_Pom2;
+
+};
+
+class Wyniki{
+public:
+  list<Spotkanie>  Lista_Spotkan;
+
+void wyswietl_wyniki()
+{
+
+}
+
+void dodaj_wynik()
+{
+
+
+}
+
+void stworz_terminarz()
+{
+
+}
+
+void wyswietl_terminarz()
+{
+
+}
+void generuj_polfinaly()
+{
+
+}
+void generuj_final()
+{
+
+}
+
+};
+
+class Dwa_ognie : public Dyscyplina
+{
+
+};
+
+class Przeciaganie_liny : public Dyscyplina
+{
+
+};
+
+class Siatkowka : public Dyscyplina
+{
+    public:
+    list<Sedzia> Sedziowie_glowni;
+    list<Sedzia> Sedziowie_pom1;
+    list<Sedzia> Sedzia_pom2;
+
+    void dodaj_sedzia(Sedzia sedz)
+    {
+
+    }
+
+};
+
+class Rozgrywki
+{
+    public:
+ Siatkowka Siatka;
+ Dwa_ognie Ognie;
+ Przeciaganie_liny Lina;
+
+ void Zapisz_na_dysk()
+ {
+
+ }
+
+ void Odczyt_z_dysku()
+ {
+
+ }
+
+};
+
+using namespace std;
+
+int main()
+{
+
+}
