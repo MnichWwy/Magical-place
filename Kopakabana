@@ -2,6 +2,7 @@
 #include <string>
 #include <stdlib.h>
 #include <list>
+#include <cstring>
 
 using namespace std;
 class Druzyna
@@ -159,7 +160,7 @@ public:
 
     int Gospodarz;
     int Gosc;
-    int Wynik;
+    int Wynik=-1;
     bool Czy_Rozegrany;
     int Sedzia_Glowny;
     int Sedzia_Pom1;
@@ -193,10 +194,19 @@ public:
         }
     }
 
-    void dodaj_wynik(Spotkanie mecz)
+    void dodaj_wynik(int gosc,int gospodarz,int wynik)              //Spotkanie.Gospodarz gosp,Spotkanie.Gosc gosc,Spotkanie.Wynik wyn
     {
-    Lista_Spotkan.push_front(mecz);
+        int powodzenie=0;
+    for(  iter2=Lista_Spotkan.begin(); iter2 != Lista_Spotkan.end(); iter2++ )
+            {
+                if (((iter2->Gospodarz)==gospodarz)&&((iter2->Gosc)==gosc))
+                {
+                        iter2->Wynik=wynik;
+                        powodzenie=1;
+                }
 
+            }
+    if (powodzenie!=1) cout<<"Dodawanie wyniku nie powiodlo sie"<<endl;
     }
 
     void stworz_terminarz()
