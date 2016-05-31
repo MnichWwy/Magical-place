@@ -165,21 +165,37 @@ public:
     int Sedzia_Pom1;
     int Sedzia_Pom2;
 
+    friend ostream & operator<< (ostream &os, const Spotkanie &mecz);
+
 };
+
+ostream & operator<< (ostream &os, const Spotkanie &mecz)
+{
+    return os <<mecz.Gospodarz <<" vs "<< mecz.Gosc<<"  "<<mecz.Wynik;  //przeciazanie operatora wypisania do cout "<<"
+}
 
 class Wyniki
 {
 public:
     list<Spotkanie>  Lista_Spotkan;
+    list<Spotkanie>::iterator iter2;
 
     void wyswietl_wyniki()
     {
-
+        if(Lista_Spotkan.empty () )
+            cout<< "Lista spotkan jest pusta!"<<endl;
+        else
+        {
+            for(  iter2=Lista_Spotkan.begin(); iter2 != Lista_Spotkan.end(); iter2++ )
+            {
+                cout<<*iter2<<endl;
+            }
+        }
     }
 
-    void dodaj_wynik()
+    void dodaj_wynik(Spotkanie mecz)
     {
-
+    Lista_Spotkan.push_front(mecz);
 
     }
 
@@ -297,8 +313,8 @@ int main()
     Sedzia(imie,nazwisko);
 
     Dyscyplina Lina; //<--tu nie tigo, nie wiem jak to ogarnac
-    Lina.dodaj_sedzia(Sedzia);
-    cout<<endl<<"Poprawnie dodano sedziego. Jego ID: "<<Sedzia.ID;
+    //Lina.dodaj_sedzia(Sedzia);
+//    cout<<endl<<"Poprawnie dodano sedziego. Jego ID: "<<Sedzia.ID;
     }
 
 
