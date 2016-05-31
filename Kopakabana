@@ -271,8 +271,6 @@ public:
 
 };
 
-
-
 int dajinta()
 {
 int zmienna;
@@ -292,10 +290,14 @@ int podmenu()
 
     cout<<"1.Zarzadzanie sedziami"<<endl;
     cout<<"2.Zarzadzanie druzynami"<<endl;
-    cout<<"3.Powrot"<<endl;
+    cout<<"3.Zarzadzanie rozgrywkami"<<endl;
+    cout<<"4.Tabela wynikow"<<endl;
+    cout<<"5.Zapis na dysk"<<endl;
+    cout<<"6.Odczyt z dysku"<<endl;
+    cout<<"7.Powrot"<<endl;
 
     do wybor=dajinta();
-    while ((wybor!=1)&&(wybor!=2)&&(wybor!=3));
+    while ((wybor!=1)&&(wybor!=2)&&(wybor!=3)&&(wybor!=4)&&(wybor!=5)&&(wybor!=6)&&(wybor!=7));
     return wybor;
 }
 
@@ -375,7 +377,7 @@ void menu_lina_ogien(int dyscyplina)
 
     break;
         }
-    case 3:
+    case 7:
         {
     return;
     break;
@@ -385,12 +387,7 @@ void menu_lina_ogien(int dyscyplina)
 };
 int main()
 {
-
     int dyscyplina;
-    string imie,nazwisko,nazwa;
-    Przeciaganie_liny lina;
-    Siatkowka siata;
-    Dwa_ognie ogien;
 
     while(true)
     {
