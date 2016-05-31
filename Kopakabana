@@ -295,88 +295,30 @@ int podmenu()
     cout<<"3.Powrot"<<endl;
 
     do wybor=dajinta();
-    while ((wybor!=1)&&(wybor!=2)&&(wybor!=3));  
-    return wybor; 
+    while ((wybor!=1)&&(wybor!=2)&&(wybor!=3));
+    return wybor;
 }
 
-int menu_sedziow(int dyscyplina)
+void menu_sedziow(int dyscyplina)
 {
-   system("cls");
-    cout<<"1.Dodaj sedziego"<<endl;
-    cout<<"2.Usun sedziego"<<endl;
-    cout<<"3.Wyswietl sedziow"<<endl;
-    cout<<"4.Wroc"<<endl;
-
-    do wybor=dajinta();
-    while ((wybor!=1)&&(wybor!=2)&&(wybor!=3)&&(wybor!=4));
-
-    switch(wybor)
-
-    case(1):
-{
-
-    cout<<"Imie: ";
-    cin>>imie;
-    cout<<endl<<"Nazwisko: ";
-    cin>>nazwisko;
-
-    Sedzia sedzia(imie,nazwisko);
-
-    if (dyscyplina==1)
-    {
-        lina.dodaj_sedzia(sedzia);
-        cout<<endl<<"Poprawnie dodano sedziego do przeciagania liny. Jego ID: "<<sedzia.ID<<endl;
-    }
-    if (dyscyplina==2)
-    {
-        ogien.dodaj_sedzia(sedzia);
-        cout<<endl<<"Poprawnie dodano sedziego do gry w dwa ognie. Jego ID: "<<sedzia.ID<<endl;
-    }
-    break;
-    }
-    case(2):
-        {
-    cout<<"ID sedziego: ";
-    cin>>id;
-    cout<<endl<<"Nazwisko: ";
-    cin>>nazwisko;
-
-    Sedzia sedzia(imie,nazwisko);
-
-    if (dyscyplina==1)
-    {
-        lina.usun_sedzia(id);
-    }
-        if (dyscyplina==2)
-    {
-        ogien.usun_sedzia(id);
-    }
-    break;
-        }
-    break;
-    }
-}
-void menu_lina
-
-int wybor=podmenu;
-    switch(wybor) //od akcji w wybranej dyscyplinie
-
-    case(1):
-    {
+    Przeciaganie_liny lina;
+    Dwa_ognie ogien;
     system("cls");
     cout<<"1.Dodaj sedziego"<<endl;
     cout<<"2.Usun sedziego"<<endl;
     cout<<"3.Wyswietl sedziow"<<endl;
     cout<<"4.Wroc"<<endl;
 
+    int wybor;
     do wybor=dajinta();
     while ((wybor!=1)&&(wybor!=2)&&(wybor!=3)&&(wybor!=4));
 
     switch(wybor)
+ {
 
-    case(1):
-{
-
+    case 1:
+    {
+    string imie,nazwisko;
     cout<<"Imie: ";
     cin>>imie;
     cout<<endl<<"Nazwisko: ";
@@ -396,14 +338,11 @@ int wybor=podmenu;
     }
     break;
     }
-    case(2):
+    case 2:
         {
+            int id;
     cout<<"ID sedziego: ";
-    cin>>id;
-    cout<<endl<<"Nazwisko: ";
-    cin>>nazwisko;
-
-    Sedzia sedzia(imie,nazwisko);
+    id=dajinta();
 
     if (dyscyplina==1)
     {
@@ -415,39 +354,39 @@ int wybor=podmenu;
     }
     break;
         }
-    break;
-    }
-case(2):
-    cout<<"1.Dodaj druzyne"<<endl;
-    cout<<"2.Usun druzyne"<<endl;
-    cout<<"3.Wyswietl druzyny"<<endl;
-    cout<<"4.Wroc"<<endl;
 
-    do wybor=dajinta();
-    while ((wybor!=1)&&(wybor!=2)&&(wybor!=3)&&(wybor!=4));
+ }
+}
+void menu_lina_ogien(int dyscyplina)
+{
+
+    int wybor=podmenu();
 
     switch(wybor)
-
-    case(1):
-
-    cout<<"Nazwa: ";
-    cin>>nazwa;
-
-    Druzyna druzyna(nazwa);
-
-    if (dyscyplina==1)
     {
-        lina.dodaj_druzyna(druzyna);
-        cout<<endl<<"Poprawnie dodano druzyne. Jego ID: "<<druzyna.ID<<endl;
+    case 1:
+    {
+    menu_sedziow(dyscyplina);
+    break;
+    }
+    case 2:
+        {
+    //menu_druzyn();
+
+    break;
+        }
+    case 3:
+        {
+    return;
+    break;
     }
 
-     break;
-     }
-}
+    }
+};
 int main()
 {
     system("cls");
-    int dyscyplina,wybor,id;
+    int dyscyplina;
     string imie,nazwisko,nazwa;
     Przeciaganie_liny lina;
     Siatkowka siata;
@@ -463,100 +402,27 @@ int main()
     while ((dyscyplina!=1)&&(dyscyplina!=2)&&(dyscyplina!=3)&&(dyscyplina!=4));
 
     switch(dyscyplina)//od dyscyplin
-
-    case(1):
-        {
-    system("cls");
-
-    cout<<"1.Zarzadzanie sedziami"<<endl;
-    cout<<"2.Zarzadzanie druzynami"<<endl;
-    cout<<"3.Wyjscie"<<endl;
-
-    do wybor=dajinta();
-    while ((wybor!=1)&&(wybor!=2)&&(wybor!=3));
-
-    switch(wybor) //od akcji w wybranej dyscyplinie
-
-    case(1):
-    {
-    system("cls");
-    cout<<"1.Dodaj sedziego"<<endl;
-    cout<<"2.Usun sedziego"<<endl;
-    cout<<"3.Wyswietl sedziow"<<endl;
-    cout<<"4.Wroc"<<endl;
-
-    do wybor=dajinta();
-    while ((wybor!=1)&&(wybor!=2)&&(wybor!=3)&&(wybor!=4));
-
-    switch(wybor)
-
-    case(1):
 {
 
-    cout<<"Imie: ";
-    cin>>imie;
-    cout<<endl<<"Nazwisko: ";
-    cin>>nazwisko;
-
-    Sedzia sedzia(imie,nazwisko);
-
-    if (dyscyplina==1)
-    {
-        lina.dodaj_sedzia(sedzia);
-        cout<<endl<<"Poprawnie dodano sedziego do przeciagania liny. Jego ID: "<<sedzia.ID<<endl;
-    }
-    if (dyscyplina==2)
-    {
-        ogien.dodaj_sedzia(sedzia);
-        cout<<endl<<"Poprawnie dodano sedziego do gry w dwa ognie. Jego ID: "<<sedzia.ID<<endl;
-    }
-    break;
-    }
-    case(2):
+case 1:
         {
-    cout<<"ID sedziego: ";
-    cin>>id;
-    cout<<endl<<"Nazwisko: ";
-    cin>>nazwisko;
-
-    Sedzia sedzia(imie,nazwisko);
-
-    if (dyscyplina==1)
-    {
-        lina.usun_sedzia(id);
-    }
-        if (dyscyplina==2)
-    {
-        ogien.usun_sedzia(id);
-    }
+    menu_lina_ogien(dyscyplina);
     break;
         }
-    break;
-    }
-case(2):
-    cout<<"1.Dodaj druzyne"<<endl;
-    cout<<"2.Usun druzyne"<<endl;
-    cout<<"3.Wyswietl druzyny"<<endl;
-    cout<<"4.Wroc"<<endl;
-
-    do wybor=dajinta();
-    while ((wybor!=1)&&(wybor!=2)&&(wybor!=3)&&(wybor!=4));
-
-    switch(wybor)
-
-    case(1):
-
-    cout<<"Nazwa: ";
-    cin>>nazwa;
-
-    Druzyna druzyna(nazwa);
-
-    if (dyscyplina==1)
-    {
-        lina.dodaj_druzyna(druzyna);
-        cout<<endl<<"Poprawnie dodano druzyne. Jego ID: "<<druzyna.ID<<endl;
-    }
-
+case 2:
+{
+    menu_lina_ogien(dyscyplina);
      break;
-     }
+}
+case 3:
+    {
+    //menu_siatka();
+        break;
+    }
+case 4:
+    {
+        system("pause");
+    }
+
+}
 }
