@@ -290,6 +290,9 @@ int main()
     system("cls");
     int dyscyplina,wybor;
     string imie,nazwisko;
+    Przeciaganie_liny lina;
+    Siatkowka siata;
+    Dwa_ognie ogien;
 
     cout<<"MENU"<<endl;
     cout<<"1.Siatkowka"<<endl;
@@ -310,7 +313,7 @@ int main()
     cout<<"3.Wyjscie"<<endl;
 
     do dajinta(wybor);
-    while ((wybor!=1)&&(wybor!=2));
+    while ((wybor!=1)&&(wybor!=2)&&(wybor!=3));
 
             switch(wybor) //od akcji w wybranej dyscyplinie
 
@@ -319,13 +322,18 @@ int main()
     cout<<"1.Dodaj sedziego"<<endl;
     cout<<"2.Usun sedziego"<<endl;
     cout<<"3.Wyswietl sedziow"<<endl;
-    dajinta(wybor);
+    cout<<"4.Dodaj druzyne"<<endl;
+    cout<<"5.Usun druzyne"<<endl;
+    cout<<"6.Wyswietl druzyny"<<endl;
+    cout<<"7.Wroc"<<endl;
+
+    do dajinta(wybor);
+    while ((wybor!=1)&&(wybor!=2)&&(wybor!=3)&&(wybor!=4)&&(wybor!=5)&&(wybor!=6)&&(wybor!=7));
 
                 switch(wybor)
 
     case(1):
-    if (dyscyplina==1)
-    {
+
      cout<<"Imie: ";
      cin>>imie;
      cout<<endl<<"Nazwisko: ";
@@ -333,9 +341,10 @@ int main()
 
     Sedzia(imie,nazwisko);
 
-    Dyscyplina Lina; //<--tu nie tigo, nie wiem jak to ogarnac
-    //Lina.dodaj_sedzia(Sedzia);
-//    cout<<endl<<"Poprawnie dodano sedziego. Jego ID: "<<Sedzia.ID;
+        if (dyscyplina==1)
+    {
+    lina.dodaj_sedzia(Sedzia);
+    cout<<endl<<"Poprawnie dodano sedziego. Jego ID: "<<Sedzia.ID<<endl;
     }
 
 
