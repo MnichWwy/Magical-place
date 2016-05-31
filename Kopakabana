@@ -65,7 +65,10 @@ public:
     list<Druzyna> Druzyny;
     list<Sedzia> Sedziowie;
     list<Sedzia>::iterator iter;
-    list<Druzyna>::iterator iter1;
+    list<Sedzia>::iterator iter1;
+    list<Druzyna>::iterator iter2;
+    list<Druzyna>::iterator iter3;
+
 
     void dodaj_sedzia(Sedzia sedz)
     {
@@ -80,6 +83,12 @@ public:
         else
         {
             iter=Sedziowie.begin();
+            iter1=Sedziowie.end();
+            if(ID<(iter->ID)||(ID>(iter1->ID)))
+            {
+                cout<<"Bledne ID"<<endl;
+                return;
+            }
             while (iter!=Sedziowie.end())
             {
                 iter++;
@@ -108,13 +117,20 @@ public:
             cout<< "Lista druzyn jest pusta!"<<endl;
         else
         {
-            iter1=Druzyny.begin();
-            while (iter1!=Druzyny.end())
+            iter2=Druzyny.begin();
+            iter3=Druzyny.end();
+            if(ID<(iter2->ID)||(ID>(iter3->ID)))
             {
-                iter1++;
-                if (iter1->ID==ID)
+                cout<<"Bledne ID"<<endl;
+                return;
+            }
+            iter2=Druzyny.begin();
+            while (iter2!=Druzyny.end())
+            {
+                iter2++;
+                if (iter2->ID==ID)
                 {
-                    Druzyny.erase(iter1);
+                    Druzyny.erase(iter2);
                     cout<<"Usunieto druzyne o numerze ID:"<<ID<<endl;
                     ok1=1;
                     break;
@@ -143,9 +159,9 @@ public:
             cout<< "Lista druzyn jest pusta!"<<endl;
         else
         {
-            for(  iter1=Druzyny.begin(); iter1 != Druzyny.end(); iter1++ )
+            for(  iter2=Druzyny.begin(); iter2 != Druzyny.end(); iter2++ )
             {
-                cout<<*iter1<<endl;
+                cout<<*iter2<<endl;
             }
         }
     }
@@ -273,7 +289,7 @@ public:
 
 int dajinta()
 {
-int zmienna;
+    int zmienna;
     while(!(cin>>zmienna)) //dopóki strumieñ jest w stanie b³êdu -> dopóki podawane s¹ b³êdne dane
     {
         cout<<"Nieprawidlowy klawisz"<<endl;
@@ -285,8 +301,8 @@ int zmienna;
 
 int podmenu()
 {
- system("cls");
- int wybor;
+    system("cls");
+    int wybor;
 
     cout<<"1.Zarzadzanie sedziami"<<endl;
     cout<<"2.Zarzadzanie druzynami"<<endl;
@@ -301,7 +317,7 @@ int podmenu()
     return wybor;
 }
 
-void menu_sedziow(int dyscyplina,Siatkowka siata,Przeciaganie_liny lina,Dwa_ognie ogien)
+void menu_sedziow(Dyscyplina* dyscyplina)
 {
     system("cls");
     cout<<"1.Dodaj sedziego"<<endl;
@@ -314,67 +330,51 @@ void menu_sedziow(int dyscyplina,Siatkowka siata,Przeciaganie_liny lina,Dwa_ogni
     while ((wybor!=1)&&(wybor!=2)&&(wybor!=3)&&(wybor!=4));
 
     switch(wybor)
- {
+    {
 
     case 1:
     {
-    string imie,nazwisko;
-    cout<<"Imie: ";
-    cin>>imie;
-    cout<<endl<<"Nazwisko: ";
-    cin>>nazwisko;
+        string imie,nazwisko;
+        cout<<"Imie: ";
+        cin>>imie;
+        cout<<endl<<"Nazwisko: ";
+        cin>>nazwisko;
 
-    Sedzia sedzia(imie,nazwisko);
+        Sedzia sedzia(imie,nazwisko);
 
-    if (dyscyplina==1)
-    {
-        lina.dodaj_sedzia(sedzia);
-        cout<<endl<<"Poprawnie dodano sedziego do przeciagania liny. Jego ID: "<<sedzia.ID<<endl;
-    }
-    if (dyscyplina==2)
-    {
-        ogien.dodaj_sedzia(sedzia);
-        cout<<endl<<"Poprawnie dodano sedziego do gry w dwa ognie. Jego ID: "<<sedzia.ID<<endl;
-    }
-    break;
+        dyscyplina->dodaj_sedzia(sedzia);
+        cout<<endl<<"Poprawnie dodano sedziego. Jego ID: "<<sedzia.ID<<endl;
+        system("pause");
+
+        break;
     }
     case 2:
-        {
-            int id;
-    cout<<"ID sedziego: ";
-    id=dajinta();
+    {
+        int id;
+        cout<<"ID sedziego: ";
+        id=dajinta();
 
-    if (dyscyplina==1)
-    {
-        lina.usun_sedzia(id);
+        dyscyplina->usun_sedzia(id);
+
+        system("pause");
+        break;
     }
-        if (dyscyplina==2)
-    {
-        ogien.usun_sedzia(id);
-    }
-    break;
-        }
     case 3:
-        {
-            if (dyscyplina==1)
-            {
-                lina.wyswietl_sedziow();
-            }
-            if (dyscyplina==2)
-            {
-                ogien.wyswietl_sedziow();
-            }
+    {
 
-            break;
-        }
+        dyscyplina->wyswietl_sedziow();
+        system("pause");
+
+        break;
+    }
     case 4:
-        {
-    return;
-    break;
-        }
- }
+    {
+        return;
+        break;
+    }
+    }
 }
-void menu_lina_ogien(int dyscyplina,Siatkowka siata,Przeciaganie_liny lina,Dwa_ognie ogien)
+void menu_lina_ogien(Dyscyplina* dyscyplina)
 {
 
     int wybor=podmenu();
@@ -383,19 +383,19 @@ void menu_lina_ogien(int dyscyplina,Siatkowka siata,Przeciaganie_liny lina,Dwa_o
     {
     case 1:
     {
-    menu_sedziow(dyscyplina,siata,lina,ogien);
-    break;
+        menu_sedziow(dyscyplina);
+        break;
     }
     case 2:
-        {
-    //menu_druzyn();
+    {
+        //menu_druzyn();
 
-    break;
-        }
+        break;
+    }
     case 7:
-        {
-    return;
-    break;
+    {
+        return;
+        break;
     }
 
     }
@@ -409,38 +409,39 @@ int main()
 
     while(true)
     {
-    system("cls");
-    cout<<"MENU"<<endl;
-    cout<<"1.Przeciaganie liny"<<endl;
-    cout<<"2.Dwa ognie"<<endl;
-    cout<<"3.Siatkowka"<<endl;
-    cout<<"4.Wyjscie"<<endl;
+        system("cls");
+        cout<<"WYBOR DYSCYPLINY"<<endl;
+        cout<<"1.Przeciaganie liny"<<endl;
+        cout<<"2.Dwa ognie"<<endl;
+        cout<<"3.Siatkowka"<<endl;
+        cout<<"4.Wyjscie"<<endl;
 
-    do dyscyplina=dajinta();
-    while ((dyscyplina!=1)&&(dyscyplina!=2)&&(dyscyplina!=3)&&(dyscyplina!=4));
-    switch(dyscyplina)//od dyscyplin
-{
+        do dyscyplina=dajinta();
+        while ((dyscyplina!=1)&&(dyscyplina!=2)&&(dyscyplina!=3)&&(dyscyplina!=4));
 
-case 1:
+        switch(dyscyplina)//od dyscyplin
         {
-    menu_lina_ogien(dyscyplina,siata,lina,ogien);
-    break;
-        }
-case 2:
-{
-    menu_lina_ogien(dyscyplina,siata,lina,ogien);
-     break;
-}
-case 3:
-    {
-    //menu_siatka();
-        break;
-    }
-case 4:
-    {
-        exit(0);
-    }
 
-}
+        case 1:
+        {
+            menu_lina_ogien(&lina);
+            break;
+        }
+        case 2:
+        {
+            menu_lina_ogien(&ogien);
+            break;
+        }
+        case 3:
+        {
+            //menu_siatka();
+            break;
+        }
+        case 4:
+        {
+            exit(0);
+        }
+
+        }
     }
 }
