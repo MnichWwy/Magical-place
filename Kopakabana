@@ -193,7 +193,7 @@ public:
         }
     }
 
-    void dodaj_wynik(int gosc,int gospodarz,int wynik)              //Spotkanie.Gospodarz gosp,Spotkanie.Gosc gosc,Spotkanie.Wynik wyn
+    void dodaj_wynik(int gosc,int gospodarz,int wynik)
     {
         int powodzenie=0;
     for(  iter2=Lista_Spotkan.begin(); iter2 != Lista_Spotkan.end(); iter2++ )
@@ -271,7 +271,7 @@ public:
 
 };
 
-using namespace std;
+
 
 int dajinta(int zmienna)
 {
@@ -298,7 +298,6 @@ int main()
     cout<<"4.Wyjscie"<<endl;
 
     do dajinta(dyscyplina);
-
     while ((dyscyplina!=1)&&(dyscyplina!=2)&&(dyscyplina!=3)&&(dyscyplina!=4));
 
         switch(dyscyplina)//od dyscyplin
