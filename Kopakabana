@@ -356,7 +356,19 @@ void menu_sedziow(int dyscyplina)
     }
     break;
         }
+    case 3:
+        {
+            if (dyscyplina==1)
+            {
+                lina.wyswietl_sedziow();
+            }
+            if (dyscyplina==2)
+            {
+                ogien.wyswietl_sedziow();
+            }
 
+            break;
+        }
  }
 }
 void menu_lina_ogien(int dyscyplina)
