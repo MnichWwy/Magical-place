@@ -385,13 +385,16 @@ void menu_lina_ogien(int dyscyplina)
 };
 int main()
 {
-    system("cls");
+
     int dyscyplina;
     string imie,nazwisko,nazwa;
     Przeciaganie_liny lina;
     Siatkowka siata;
     Dwa_ognie ogien;
 
+    while(true)
+    {
+    system("cls");
     cout<<"MENU"<<endl;
     cout<<"1.Przeciaganie liny"<<endl;
     cout<<"2.Dwa ognie"<<endl;
@@ -400,7 +403,6 @@ int main()
 
     do dyscyplina=dajinta();
     while ((dyscyplina!=1)&&(dyscyplina!=2)&&(dyscyplina!=3)&&(dyscyplina!=4));
-
     switch(dyscyplina)//od dyscyplin
 {
 
@@ -425,4 +427,5 @@ case 4:
     }
 
 }
+    }
 }
