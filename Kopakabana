@@ -421,7 +421,7 @@ case 3:
     }
 case 4:
     {
-        system("pause");
+        exit(0);
     }
 
 }
