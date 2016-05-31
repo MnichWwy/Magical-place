@@ -196,16 +196,16 @@ public:
     void dodaj_wynik(int gosc,int gospodarz,int wynik)
     {
         int powodzenie=0;
-    for(  iter2=Lista_Spotkan.begin(); iter2 != Lista_Spotkan.end(); iter2++ )
+        for(  iter2=Lista_Spotkan.begin(); iter2 != Lista_Spotkan.end(); iter2++ )
+        {
+            if (((iter2->Gospodarz)==gospodarz)&&((iter2->Gosc)==gosc))
             {
-                if (((iter2->Gospodarz)==gospodarz)&&((iter2->Gosc)==gosc))
-                {
-                        iter2->Wynik=wynik;
-                        powodzenie=1;
-                }
-
+                iter2->Wynik=wynik;
+                powodzenie=1;
             }
-    if (powodzenie!=1) cout<<"Dodawanie wyniku nie powiodlo sie"<<endl;
+
+        }
+        if (powodzenie!=1) cout<<"Dodawanie wyniku nie powiodlo sie"<<endl;
     }
 
     void stworz_terminarz()
@@ -273,15 +273,15 @@ public:
 
 
 
-int dajinta(int zmienna)
+int dajinta()
 {
-
-while(!(cin>>zmienna)) //dopóki strumieñ jest w stanie b³êdu -> dopóki podawane s¹ b³êdne dane
-{
-  cout<<"Nieprawidlowy klawisz"<<endl;
-  cin.clear(); //kasowanie flagi b³êdu strumienia
-  cin.sync(); //kasowanie zbêdnych znaków z bufora
-}
+int zmienna;
+    while(!(cin>>zmienna)) //dopóki strumieñ jest w stanie b³êdu -> dopóki podawane s¹ b³êdne dane
+    {
+        cout<<"Nieprawidlowy klawisz"<<endl;
+        cin.clear(); //kasowanie flagi b³êdu strumienia
+        cin.sync(); //kasowanie zbêdnych znaków z bufora
+    }
     return zmienna;
 }
 
@@ -289,63 +289,91 @@ int main()
 {
     system("cls");
     int dyscyplina,wybor;
-    string imie,nazwisko;
+    string imie,nazwisko,nazwa;
     Przeciaganie_liny lina;
     Siatkowka siata;
     Dwa_ognie ogien;
 
     cout<<"MENU"<<endl;
-    cout<<"1.Siatkowka"<<endl;
+    cout<<"1.Przeciaganie liny"<<endl;
     cout<<"2.Dwa ognie"<<endl;
-    cout<<"3.Przeciaganie liny"<<endl;
+    cout<<"3.Siatkowka"<<endl;
     cout<<"4.Wyjscie"<<endl;
 
-    do dajinta(dyscyplina);
+    do dyscyplina=dajinta();
     while ((dyscyplina!=1)&&(dyscyplina!=2)&&(dyscyplina!=3)&&(dyscyplina!=4));
 
-        switch(dyscyplina)//od dyscyplin
+    switch(dyscyplina)//od dyscyplin
 
     case(1):
+        {
     system("cls");
 
     cout<<"1.Zarzadzanie sedziami"<<endl;
     cout<<"2.Zarzadzanie druzynami"<<endl;
     cout<<"3.Wyjscie"<<endl;
 
-    do dajinta(wybor);
+    do wybor=dajinta();
     while ((wybor!=1)&&(wybor!=2)&&(wybor!=3));
 
-            switch(wybor) //od akcji w wybranej dyscyplinie
+    switch(wybor) //od akcji w wybranej dyscyplinie
 
     case(1):
+{
     system("cls");
     cout<<"1.Dodaj sedziego"<<endl;
     cout<<"2.Usun sedziego"<<endl;
     cout<<"3.Wyswietl sedziow"<<endl;
-    cout<<"4.Dodaj druzyne"<<endl;
-    cout<<"5.Usun druzyne"<<endl;
-    cout<<"6.Wyswietl druzyny"<<endl;
-    cout<<"7.Wroc"<<endl;
+    cout<<"4.Wroc"<<endl;
 
-    do dajinta(wybor);
-    while ((wybor!=1)&&(wybor!=2)&&(wybor!=3)&&(wybor!=4)&&(wybor!=5)&&(wybor!=6)&&(wybor!=7));
+    do wybor=dajinta();
+    while ((wybor!=1)&&(wybor!=2)&&(wybor!=3)&&(wybor!=4));
 
-                switch(wybor)
+    switch(wybor)
+
+    case(1):
+{
+
+    cout<<"Imie: ";
+    cin>>imie;
+    cout<<endl<<"Nazwisko: ";
+    cin>>nazwisko;
+
+    Sedzia sedzia(imie,nazwisko);
+
+    if (dyscyplina==1)
+    {
+        lina.dodaj_sedzia(sedzia);
+        cout<<endl<<"Poprawnie dodano sedziego. Jego ID: "<<sedzia.ID<<endl;
+    }
+    break;
+    }
+    break;
+    }
+case(2):
+    cout<<"1.Dodaj druzyne"<<endl;
+    cout<<"2.Usun druzyne"<<endl;
+    cout<<"3.Wyswietl druzyny"<<endl;
+    cout<<"4.Wroc"<<endl;
+
+    do wybor=dajinta();
+    while ((wybor!=1)&&(wybor!=2)&&(wybor!=3)&&(wybor!=4));
+
+    switch(wybor)
 
     case(1):
 
-     cout<<"Imie: ";
-     cin>>imie;
-     cout<<endl<<"Nazwisko: ";
-     cin>>nazwisko;
+    cout<<"Nazwa: ";
+    cin>>nazwa;
 
-    Sedzia(imie,nazwisko);
+    Druzyna druzyna(nazwa);
 
-        if (dyscyplina==1)
+    if (dyscyplina==1)
     {
-    lina.dodaj_sedzia(Sedzia);
-    cout<<endl<<"Poprawnie dodano sedziego. Jego ID: "<<Sedzia.ID<<endl;
+        lina.dodaj_druzyna(druzyna);
+        cout<<endl<<"Poprawnie dodano druzyne. Jego ID: "<<druzyna.ID<<endl;
     }
 
-
+     break;
+     }
 }
