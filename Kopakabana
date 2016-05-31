@@ -301,10 +301,8 @@ int podmenu()
     return wybor;
 }
 
-void menu_sedziow(int dyscyplina)
+void menu_sedziow(int dyscyplina,Siatkowka siata,Przeciaganie_liny lina,Dwa_ognie ogien)
 {
-    Przeciaganie_liny lina;
-    Dwa_ognie ogien;
     system("cls");
     cout<<"1.Dodaj sedziego"<<endl;
     cout<<"2.Usun sedziego"<<endl;
@@ -369,9 +367,14 @@ void menu_sedziow(int dyscyplina)
 
             break;
         }
+    case 4:
+        {
+    return;
+    break;
+        }
  }
 }
-void menu_lina_ogien(int dyscyplina)
+void menu_lina_ogien(int dyscyplina,Siatkowka siata,Przeciaganie_liny lina,Dwa_ognie ogien)
 {
 
     int wybor=podmenu();
@@ -380,7 +383,7 @@ void menu_lina_ogien(int dyscyplina)
     {
     case 1:
     {
-    menu_sedziow(dyscyplina);
+    menu_sedziow(dyscyplina,siata,lina,ogien);
     break;
     }
     case 2:
@@ -400,6 +403,9 @@ void menu_lina_ogien(int dyscyplina)
 int main()
 {
     int dyscyplina;
+    Przeciaganie_liny lina;
+    Dwa_ognie ogien;
+    Siatkowka siata;
 
     while(true)
     {
@@ -417,12 +423,12 @@ int main()
 
 case 1:
         {
-    menu_lina_ogien(dyscyplina);
+    menu_lina_ogien(dyscyplina,siata,lina,ogien);
     break;
         }
 case 2:
 {
-    menu_lina_ogien(dyscyplina);
+    menu_lina_ogien(dyscyplina,siata,lina,ogien);
      break;
 }
 case 3:
