@@ -8,7 +8,7 @@ class Druzyna
 {
 public:
     string Nazwa;
-    int ID;
+    int ID=0;
 public:
 Druzyna()
 {
@@ -16,10 +16,10 @@ Druzyna()
     ID=-1;
 }
 
-Druzyna(string Nazwa_,int ID_)
+Druzyna(string Nazwa_)
 {
     Nazwa=Nazwa_;
-    ID=ID_;
+    ID++;
 
 }
     friend ostream & operator<< (ostream &os, const Druzyna &druzyna);
@@ -34,7 +34,7 @@ class Sedzia
 public:
     string Imie;
     string Nazwisko;
-    int ID;
+    int ID=0;
 public:
 Sedzia()
 {
@@ -43,11 +43,11 @@ Sedzia()
     ID=-2;
 }
 
-Sedzia(string Imie_,string Nazwisko_,int ID_)
+Sedzia(string Imie_,string Nazwisko_)
 {
     Imie=Imie_;
     Nazwisko=Nazwisko_;
-    ID=ID_;
+    ID++;
 
 }
     friend ostream & operator<< (ostream &os, const Sedzia &sedzia);
