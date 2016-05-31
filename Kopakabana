@@ -91,7 +91,6 @@ public:
             }
             while (iter!=Sedziowie.end())
             {
-                iter++;
                 if (iter->ID==ID)
                 {
                     Sedziowie.erase(iter);
@@ -100,6 +99,7 @@ public:
                     break;
 
                 }
+            iter++;
             }
             if (ok!=1) cout<<"Nie udalo sie usunac sedziego o numerze ID:"<<ID<<endl;
 
@@ -127,7 +127,6 @@ public:
             iter2=Druzyny.begin();
             while (iter2!=Druzyny.end())
             {
-                iter2++;
                 if (iter2->ID==ID)
                 {
                     Druzyny.erase(iter2);
@@ -136,6 +135,7 @@ public:
                     break;
 
                 }
+            iter2++;
             }
             if (ok1!=1) cout<<"Nie udalo sie usunac druzyny o numerze ID:"<<ID<<endl;
 
@@ -374,6 +374,64 @@ void menu_sedziow(Dyscyplina* dyscyplina)
     }
     }
 }
+
+void menu_druzyn(Dyscyplina* dyscyplina)
+{
+    system("cls");
+    cout<<"1.Dodaj druzyne"<<endl;
+    cout<<"2.Usun druzyne"<<endl;
+    cout<<"3.Wyswietl druzyny"<<endl;
+    cout<<"4.Wroc"<<endl;
+
+    int wybor;
+    do wybor=dajinta();
+    while ((wybor!=1)&&(wybor!=2)&&(wybor!=3)&&(wybor!=4));
+
+    switch(wybor)
+    {
+
+    case 1:
+    {
+        string nazwa;
+        cout<<"Imie: ";
+        cin>>nazwa;
+
+
+        Druzyna druzyna(nazwa);
+
+        dyscyplina->dodaj_druzyna(druzyna);
+        cout<<endl<<"Poprawnie dodano druzyne. Jej ID: "<<druzyna.ID<<endl;
+        system("pause");
+
+        break;
+    }
+    case 2:
+    {
+        int id;
+        cout<<"ID druzyny: ";
+        id=dajinta();
+
+        dyscyplina->usun_druzyna(id);
+
+        system("pause");
+        break;
+    }
+    case 3:
+    {
+
+        dyscyplina->wyswietl_druzyny();
+        system("pause");
+
+        break;
+    }
+    case 4:
+    {
+        return;
+        break;
+    }
+    }
+}
+
 void menu_lina_ogien(Dyscyplina* dyscyplina)
 {
 
@@ -388,7 +446,7 @@ void menu_lina_ogien(Dyscyplina* dyscyplina)
     }
     case 2:
     {
-        //menu_druzyn();
+        menu_druzyn(dyscyplina);
 
         break;
     }
