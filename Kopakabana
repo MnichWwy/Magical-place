@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <list>
 
+int dajinta(int);
+
 using namespace std;
 class Druzyna
 {
@@ -259,13 +261,28 @@ class Siatkowka : public Dyscyplina
 public:
     list<Sedzia> Sedziowie_glowni;
     list<Sedzia> Sedziowie_pom1;
-    list<Sedzia> Sedzia_pom2;
+    list<Sedzia> Sedziowie_pom2;
 
     void dodaj_sedzia(Sedzia sedz)
     {
+            cout<<"Jakiego sedziego siatkowki chcesz dodac?"<<endl;
+            cout<<"1.Sedzia glowny"<<endl;
+            cout<<"2.Sedzia pomocniczy pierwszy"<<endl;
+            cout<<"3.Sedzia pomocniczy drugi"<<endl;
+
+            int tmp;
+            do dajinta(tmp);
+            while ((tmp!=1)&&(tmp!=2)&&(tmp!=3));
+
+            switch (tmp)
+            {
+            case 1:{Sedziowie_glowni.push_front(sedz);break;}
+            case 2:{Sedziowie_pom1.push_front(sedz);break;}
+            case 3:{Sedziowie_pom2.push_front(sedz);break;}
+            }
 
     }
-
+ friend int dajinta(int);
 };
 
 class Rozgrywki
@@ -393,7 +410,7 @@ void menu_druzyn(Dyscyplina* dyscyplina)
     case 1:
     {
         string nazwa;
-        cout<<"Imie: ";
+        cout<<"N: ";
         cin>>nazwa;
 
 
@@ -458,6 +475,34 @@ void menu_lina_ogien(Dyscyplina* dyscyplina)
 
     }
 };
+
+void menu_siatka(Dyscyplina* dyscyplina)
+{
+
+    int wybor=podmenu();
+
+    switch(wybor)
+    {
+    case 1:
+    {
+        menu_sedziow(dyscyplina);
+        break;
+    }
+    case 2:
+    {
+        menu_druzyn(dyscyplina);
+
+        break;
+    }
+    case 7:
+    {
+        return;
+        break;
+    }
+
+    }
+};
+
 int main()
 {
     int dyscyplina;
@@ -492,7 +537,7 @@ int main()
         }
         case 3:
         {
-            //menu_siatka();
+            menu_lina_ogien(&siata);
             break;
         }
         case 4:
