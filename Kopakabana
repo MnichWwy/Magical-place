@@ -2,7 +2,6 @@
 #include <string>
 #include <stdlib.h>
 #include <list>
-#include <cstring>
 
 using namespace std;
 class Druzyna
@@ -274,6 +273,18 @@ public:
 
 using namespace std;
 
+int dajinta(int zmienna)
+{
+
+while(!(cin>>zmienna)) //dopóki strumieñ jest w stanie b³êdu -> dopóki podawane s¹ b³êdne dane
+{
+  cout<<"Nieprawidlowy klawisz"<<endl;
+  cin.clear(); //kasowanie flagi b³êdu strumienia
+  cin.sync(); //kasowanie zbêdnych znaków z bufora
+}
+    return zmienna;
+}
+
 int main()
 {
     system("cls");
@@ -286,7 +297,8 @@ int main()
     cout<<"3.Przeciaganie liny"<<endl;
     cout<<"4.Wyjscie"<<endl;
 
-    do cin>>dyscyplina;
+    do dajinta(dyscyplina);
+
     while ((dyscyplina!=1)&&(dyscyplina!=2)&&(dyscyplina!=3)&&(dyscyplina!=4));
 
         switch(dyscyplina)//od dyscyplin
@@ -298,7 +310,7 @@ int main()
     cout<<"2.Zarzadzanie druzynami"<<endl;
     cout<<"3.Wyjscie"<<endl;
 
-    do cin>>wybor;
+    do dajinta(wybor);
     while ((wybor!=1)&&(wybor!=2));
 
             switch(wybor) //od akcji w wybranej dyscyplinie
@@ -308,7 +320,7 @@ int main()
     cout<<"1.Dodaj sedziego"<<endl;
     cout<<"2.Usun sedziego"<<endl;
     cout<<"3.Wyswietl sedziow"<<endl;
-    cin>>wybor;
+    dajinta(wybor);
 
                 switch(wybor)
 
