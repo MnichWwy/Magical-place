@@ -288,7 +288,7 @@ int zmienna;
 int main()
 {
     system("cls");
-    int dyscyplina,wybor;
+    int dyscyplina,wybor,id;
     string imie,nazwisko,nazwa;
     Przeciaganie_liny lina;
     Siatkowka siata;
@@ -319,7 +319,7 @@ int main()
     switch(wybor) //od akcji w wybranej dyscyplinie
 
     case(1):
-{
+    {
     system("cls");
     cout<<"1.Dodaj sedziego"<<endl;
     cout<<"2.Usun sedziego"<<endl;
@@ -344,10 +344,34 @@ int main()
     if (dyscyplina==1)
     {
         lina.dodaj_sedzia(sedzia);
-        cout<<endl<<"Poprawnie dodano sedziego. Jego ID: "<<sedzia.ID<<endl;
+        cout<<endl<<"Poprawnie dodano sedziego do przeciagania liny. Jego ID: "<<sedzia.ID<<endl;
+    }
+    if (dyscyplina==2)
+    {
+        ogien.dodaj_sedzia(sedzia);
+        cout<<endl<<"Poprawnie dodano sedziego do gry w dwa ognie. Jego ID: "<<sedzia.ID<<endl;
     }
     break;
     }
+    case(2):
+        {
+    cout<<"ID sedziego: ";
+    cin>>id;
+    cout<<endl<<"Nazwisko: ";
+    cin>>nazwisko;
+
+    Sedzia sedzia(imie,nazwisko);
+
+    if (dyscyplina==1)
+    {
+        lina.usun_sedzia(id);
+    }
+        if (dyscyplina==2)
+    {
+        ogien.usun_sedzia(id);
+    }
+    break;
+        }
     break;
     }
 case(2):
