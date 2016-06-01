@@ -72,7 +72,7 @@ public:
     list<Druzyna>::iterator iter3;
 
 
-    void dodaj_sedzia(Sedzia sedz)
+    virtual void dodaj_sedzia(Sedzia sedz)
     {
         Sedziowie.push_front(sedz);
     }
@@ -263,7 +263,7 @@ public:
     list<Sedzia> Sedziowie_pom1;
     list<Sedzia> Sedziowie_pom2;
 
-    void dodaj_sedzia(Sedzia sedz)
+   virtual void dodaj_sedzia(Sedzia sedz)
     {
             cout<<"Jakiego sedziego siatkowki chcesz dodac?"<<endl;
             cout<<"1.Sedzia glowny"<<endl;
@@ -271,8 +271,14 @@ public:
             cout<<"3.Sedzia pomocniczy drugi"<<endl;
 
             int tmp;
-            do dajinta(tmp);
-            while ((tmp!=1)&&(tmp!=2)&&(tmp!=3));
+            //do dajinta(tmp);
+               do{ while(!(cin>>tmp)) //dopóki strumieñ jest w stanie b³êdu -> dopóki podawane s¹ b³êdne dane
+    {
+        cout<<"Nieprawidlowy klawisz"<<endl;
+        cin.clear(); //kasowanie flagi b³êdu strumienia
+        cin.sync(); //kasowanie zbêdnych znaków z bufora
+    }
+           } while ((tmp!=1)&&(tmp!=2)&&(tmp!=3));
 
             switch (tmp)
             {
