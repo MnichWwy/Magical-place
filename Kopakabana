@@ -619,7 +619,7 @@ public:
         case 1:
         {
             string nazwa;
-            cout<<"N: ";
+            cout<<"Nazwa: ";
             cin>>nazwa;
 
 
