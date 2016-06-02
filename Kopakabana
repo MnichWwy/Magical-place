@@ -2,12 +2,16 @@
 #include <string>
 #include <stdlib.h>
 #include <list>
+#include <cstdlib>
+#include <ctime>
 
 int dajinta(int);
 int podmenu();
 void menu_sedziow();
 void menu_druzyn();
 void menu_lina_ogien_siatka();
+void menu_rozgrywek();
+bool czy_byla(int,int tab[],int);
 
 
 using namespace std;
@@ -188,6 +192,22 @@ public:
     int Sedzia_Pom1;
     int Sedzia_Pom2;
 
+    Spotkanie(int gosp,int gosc,int sedzia_glowny)
+    {
+        Gospodarz=gosp;
+        Gosc=gosc;
+        Sedzia_Glowny=sedzia_glowny;
+    }
+
+    Spotkanie(int gosp,int gosc,int sedzia_glowny,int sedzia_pom1,int sedzia_pom2)
+    {
+        Gospodarz=gosp;
+        Gosc=gosc;
+        Sedzia_Glowny=sedzia_glowny;
+        Sedzia_Pom1=sedzia_pom1;
+        Sedzia_Pom2=sedzia_pom2;
+    }
+
     friend ostream & operator<< (ostream &os, const Spotkanie &mecz);
 
 };
@@ -203,7 +223,100 @@ public:
     list<Spotkanie>  Lista_Spotkan;
     list<Spotkanie>::iterator iter2;
 
-    void wyswietl_wyniki()
+   /* void wyswietl_wyniki()
+    {
+        if(Lista_Spotkan.empty () )
+            cout<< "Lista spotkan jest pusta!"<<endl;
+        else
+        {
+            for(  iter2=Lista_Spotkan.begin(); iter2 != Lista_Spotkan.end(); iter2++ )
+            {
+                cout<<*iter2<<endl;
+            }
+        }
+    }*/
+
+    void dodaj_wynik(int gosc,int gospodarz,int wynik)
+    {
+        int powodzenie=0;
+        for(  iter2=Lista_Spotkan.begin(); iter2 != Lista_Spotkan.end(); iter2++ )
+        {
+            if (((iter2->Gospodarz)==gospodarz)&&((iter2->Gosc)==gosc))
+            {
+                iter2->Wynik=wynik;
+                powodzenie=1;
+                break;
+            }
+
+        }
+        if (powodzenie!=1) cout<<"Dodawanie wyniku nie powiodlo sie"<<endl;
+    }
+
+    void stworz_terminarz(list<Druzyna>* Druzyny,list<Sedzia>* Sedziowie)
+    {
+        list<Druzyna> *pomocnicza_druzyny=Druzyny;
+        list<Sedzia> *pomocnicza_sedziowie=Sedziowie;
+        list<Sedzia>::iterator iter1=pomocnicza_sedziowie->begin();
+        list<Druzyna>::iterator iter0=pomocnicza_druzyny->begin();
+        list<Druzyna>::iterator iter3;
+        list<Druzyna>::iterator iter4=Druzyny->begin();
+        list<Druzyna>::iterator iter5=Druzyny->end();
+        srand( time( NULL ) );
+
+    if(!Lista_Spotkan.empty () )
+            cout<< "Terminarz zostal juz wygenerowany!"<<endl;
+        else
+        {
+            if (Druzyny->begin()==Druzyny->end()) {cout<<"Tylko jedna druzyna na liscie!"<<endl;system("pause");return;}
+            if (Sedziowie->empty()) {cout<<"Lista sedziow jest pusta!"<<endl;system("pause");return;}
+
+                    int gosp_i_gosc[(iter5->ID)];
+                    int wylosowanych = 0;
+                do
+    {
+        int tmp = ( rand()%((iter5->ID)))+1;;
+        if( czy_byla( tmp, gosp_i_gosc, wylosowanych ) == false )
+        {
+            gosp_i_gosc[ wylosowanych ] = tmp;
+            wylosowanych++;
+        } //if
+    } while( wylosowanych < ((iter5->ID)));//tu sie konczy losowanie tablicy unikalnych gospodarzy i gosci
+
+                    int sedziowie[((Sedziowie->end())->ID)];
+                    int wylosowanych1 = 0;
+                do
+    {
+        int tmp1 = ( rand()%(((Sedziowie->end())->ID))+1);
+        if( czy_byla( tmp1, sedziowie, wylosowanych1 ) == false )
+        {
+            sedziowie[ wylosowanych1 ] = tmp1;
+            wylosowanych1++;
+        } //if
+    } while( wylosowanych1 < (((Sedziowie->end())->ID)));//tu sie konczy losowanie tablicy unikalnych sedziow
+
+            int i,j,k=0;
+            for (i=0;i!=j;i++)
+            {
+                for (j=wylosowanych;j==(wylosowanych/2);j--)
+                {
+                Spotkanie mecz(gosp_i_gosc[i],gosp_i_gosc[j],sedziowie[k]);
+                Lista_Spotkan.push_front(mecz);
+                if (k<wylosowanych1) {k++;}
+                }
+            }
+
+
+
+
+            }
+                //iter2->Gospodarz=
+
+return;
+        }
+
+
+
+    void wyswietl_terminarz()
     {
         if(Lista_Spotkan.empty () )
             cout<< "Lista spotkan jest pusta!"<<endl;
@@ -215,31 +328,6 @@ public:
             }
         }
     }
-
-    void dodaj_wynik(int gosc,int gospodarz,int wynik)
-    {
-        int powodzenie=0;
-        for(  iter2=Lista_Spotkan.begin(); iter2 != Lista_Spotkan.end(); iter2++ )
-        {
-            if (((iter2->Gospodarz)==gospodarz)&&((iter2->Gosc)==gosc))
-            {
-                iter2->Wynik=wynik;
-                powodzenie=1;
-            }
-
-        }
-        if (powodzenie!=1) cout<<"Dodawanie wyniku nie powiodlo sie"<<endl;
-    }
-
-    void stworz_terminarz()
-    {
-
-    }
-
-    void wyswietl_terminarz()
-    {
-
-    }
     void generuj_polfinaly()
     {
 
@@ -249,6 +337,7 @@ public:
 
     }
 
+friend bool czy_unikalna(int , int tab[], int);
 };
 
 class Dwa_ognie : public Dyscyplina
@@ -513,6 +602,19 @@ public:
 
     };
 
+        bool czy_byla(int liczba, int tab[], int ile)
+        {
+            if (ile<=0) return false;
+            int i=0;
+            do
+            {
+                if (tab[i]==liczba) return true;
+                i++;
+            }while (i<ile);
+            return false;
+        }
+
+
     int dajinta()
     {
         int zmienna;
@@ -658,7 +760,7 @@ public:
         }
     }
 
-    void menu_lina_ogien_siatka(Dyscyplina* dyscyplina)
+    void menu_lina_ogien_siatka(Wyniki* wyniki,Dyscyplina* dyscyplina,list<Sedzia>* Sedziowie,list<Druzyna>* Druzyny)
     {
 
         int wybor=podmenu();
@@ -673,7 +775,11 @@ public:
         case 2:
         {
             menu_druzyn(dyscyplina);
-
+            break;
+        }
+        case 3:
+        {
+            menu_rozgrywek(wyniki,dyscyplina,Druzyny,Sedziowie);
             break;
         }
         case 7:
@@ -685,12 +791,77 @@ public:
         }
     };
 
+    void menu_rozgrywek(Wyniki* wyniki,Dyscyplina* dyscyplina,list<Druzyna>* Druzyny,list<Sedzia>* Sedziowie)
+    {
+
+               system("cls");
+        cout<<"1.Wygeneruj terminarz"<<endl;
+        cout<<"2.Dodaj wynik dla wybranego spotkania"<<endl;
+        cout<<"3.Generuj polfinaly"<<endl;
+        cout<<"4.Wroc"<<endl;
+
+        int wybor;
+        do wybor=dajinta();
+        while ((wybor!=1)&&(wybor!=2)&&(wybor!=3)&&(wybor!=4));
+
+        switch(wybor)
+        {
+
+        case 1:
+        {
+            wyniki.stworz_terminarz(Druzyny,Sedziowie);
+
+
+
+
+            cout<<endl<<"Poprawnie dodano druzyne. Jej ID: "<<druzyna.ID<<endl;
+            system("pause");
+
+            break;
+        }
+        case 2:
+        {
+            int id;
+            cout<<"ID druzyny: ";
+            id=dajinta();
+
+            dyscyplina->usun_druzyna(id);
+
+            system("pause");
+            break;
+        }
+        case 3:
+        {
+
+            dyscyplina->wyswietl_druzyny();
+            system("pause");
+
+            break;
+        }
+        case 4:
+        {
+            return;
+            break;
+        }
+        }
+    }
+
+
+
+
+
+
+    };
+
+
     int main()
     {
         int dyscyplina;
         Przeciaganie_liny lina;
         Dwa_ognie ogien;
         Siatkowka siata;
+        Wyniki wyniki;
+
 
         while(true)
         {
