@@ -38,9 +38,21 @@ void czy_odwiedzone( int x_poprzedniej, int y_poprzedniej,int x_aktualnej , int 
 
     ilosc_wody=ilosc_wody+(wiezienie[x_aktualnej][y_aktualnej].glebokosc_sufitu)-(wiezienie[x_poprzedniej][y_poprzedniej].glebokosc_sufitu)+1;
 
-    czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej++,y_aktualnej);
+    czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej+1,y_aktualnej);
 
-    czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej,y_aktualnej++);
+    czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej,y_aktualnej+1);
+
+    czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej+1,y_aktualnej+1);
+
+    czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej-1,y_aktualnej);
+
+    czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej,y_aktualnej-1);
+
+    czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej-1,y_aktualnej-1);
+
+    czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej+1,y_aktualnej-1);
+
+    czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej-1,y_aktualnej+1);
 
 
 
