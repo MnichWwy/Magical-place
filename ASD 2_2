@@ -22,9 +22,9 @@ int ilosc_wody=1; //bo minimum 1 m3 jest potrzebny, aby wiezien sie utopil we wl
 int x_wiezien,y_wiezien,x,y;
 
 
-void czy_odwiedzone(int x_aktualnej , int y_aktualnej, int x_poprzedniej, int y_poprzedniej)
+void czy_odwiedzone( int x_poprzedniej, int y_poprzedniej,int x_aktualnej , int y_aktualnej)
 {
-
+    if ((x_aktualnej<1)||(y_aktualnej<1)||(x_aktualnej>(x+1))||(y_aktualnej>(y+1))) return;
 
     if (wiezienie[x_aktualnej][y_aktualnej].odwiedzono==true) return; //jesli juz sprawdzono cele to nie nalezy jej sprawdzac po raz drugi
 
@@ -36,7 +36,14 @@ void czy_odwiedzone(int x_aktualnej , int y_aktualnej, int x_poprzedniej, int y_
 
     if (((wiezienie[x_aktualnej][y_aktualnej].glebokosc_sufitu)-(wiezienie[x_poprzedniej][y_poprzedniej].glebokosc_sufitu))<(-4)) return;
 
-    if ((x_aktualnej<1)||(y_aktualnej<1)||(x_aktualnej>x)||(y_aktualnej>y)) return;
+    ilosc_wody=ilosc_wody+(wiezienie[x_aktualnej][y_aktualnej].glebokosc_sufitu)-(wiezienie[x_poprzedniej][y_poprzedniej].glebokosc_sufitu)+1;
+
+    czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej++,y_aktualnej);
+
+    czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej,y_aktualnej++);
+
+
+
 }
 
 
@@ -77,8 +84,8 @@ int main()
     plik_wejsciowy>>x_wiezien;
     plik_wejsciowy>>y_wiezien;
 
-//czy_odwiedzone(x,y,x_wiezien,y_wiezien);
-    if (x_wiezien>=2)
+    czy_odwiedzone(x_wiezien,y_wiezien,x_wiezien,y_wiezien);
+   /* if (x_wiezien>=2)
     {
 
         if (((y_wiezien-1)>=1)&&((wiezienie[x_wiezien-1][y_wiezien-1].glebokosc_sufitu)>=(wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu)))//lewy gorny
@@ -136,7 +143,7 @@ int main()
         }
 
     }
-
+*/
     fstream plik_wyjsciowy;
     plik_wyjsciowy.open("Odpowiedz.txt",std::ios::out);
 
