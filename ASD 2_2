@@ -1,0 +1,157 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+class Cela
+{
+public:
+    int glebokosc_sufitu;
+    bool odwiedzono=false;
+    Cela() {};
+    Cela(int glebokosc_sufitu_)
+    {
+        glebokosc_sufitu=glebokosc_sufitu_;
+    }
+
+};
+
+Cela** wiezienie;
+int ilosc_wody=1; //bo minimum 1 m3 jest potrzebny, aby wiezien sie utopil we wlasnej celi
+int x_wiezien,y_wiezien,x,y;
+
+
+void czy_odwiedzone(int x_aktualnej , int y_aktualnej, int x_poprzedniej, int y_poprzedniej)
+{
+
+
+    if (wiezienie[x_aktualnej][y_aktualnej].odwiedzono==true) return; //jesli juz sprawdzono cele to nie nalezy jej sprawdzac po raz drugi
+
+    wiezienie[x_aktualnej][y_aktualnej].odwiedzono=true;
+
+    if (((wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu)-(wiezienie[x_aktualnej][y_aktualnej].glebokosc_sufitu))<0) return; //jesli aktualna cela jest wyzej od celi wieznia to woda tu nie wleci
+
+    if (((wiezienie[x_aktualnej][y_aktualnej].glebokosc_sufitu)-(wiezienie[x_poprzedniej][y_poprzedniej].glebokosc_sufitu))>4) return;
+
+    if (((wiezienie[x_aktualnej][y_aktualnej].glebokosc_sufitu)-(wiezienie[x_poprzedniej][y_poprzedniej].glebokosc_sufitu))<(-4)) return;
+
+    if ((x_aktualnej<1)||(y_aktualnej<1)||(x_aktualnej>x)||(y_aktualnej>y)) return;
+}
+
+
+int main()
+{
+
+    fstream plik_wejsciowy;
+    cout << "Podaj nazwe pliku" << endl;
+    string nazwa;
+    cin>>nazwa;
+
+    plik_wejsciowy.open(nazwa,std::ios::in|std::ios::out);
+
+    if (!plik_wejsciowy)
+    {
+        cout<<"Nie udalo sie otworzyc pliku!Nastapi zamkniecie programu.";
+        return -1;
+    }
+
+    plik_wejsciowy>>x;
+    plik_wejsciowy>>y;
+
+    wiezienie= new Cela *[x+1];
+    for(int i = 1; i <=x; i++)
+        wiezienie[i] = new Cela[y+1];
+
+    for(int i=1; i<=x; i++)
+    {
+        for(int j=1; j<=y; j++)
+        {
+            plik_wejsciowy>>wiezienie[i][j].glebokosc_sufitu;
+            cout<<wiezienie[i][j].glebokosc_sufitu<<" ";
+        }
+        cout<<endl;
+    }
+
+
+    plik_wejsciowy>>x_wiezien;
+    plik_wejsciowy>>y_wiezien;
+
+//czy_odwiedzone(x,y,x_wiezien,y_wiezien);
+    if (x_wiezien>=2)
+    {
+
+        if (((y_wiezien-1)>=1)&&((wiezienie[x_wiezien-1][y_wiezien-1].glebokosc_sufitu)>=(wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu)))//lewy gorny
+        {
+            ilosc_wody=ilosc_wody+(wiezienie[x_wiezien-1][y_wiezien-1].glebokosc_sufitu-wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu)+1;
+            cout<<"1";
+        }
+
+        if (((wiezienie[x_wiezien-1][y_wiezien].glebokosc_sufitu)>=(wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu)))//srodkowy gorny
+        {
+            ilosc_wody=ilosc_wody+(wiezienie[x_wiezien-1][y_wiezien].glebokosc_sufitu-wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu)+1;
+            cout<<"2";
+        }
+
+        if (((y_wiezien+1)<x)&&((wiezienie[x_wiezien-1][y_wiezien+1].glebokosc_sufitu)>=(wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu)))//prawy gorny
+        {
+            ilosc_wody=ilosc_wody+(wiezienie[x_wiezien-1][y_wiezien+1].glebokosc_sufitu-wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu)+1;
+            cout<<"3";
+        }
+    }
+
+
+
+    if ((y_wiezien>=2)&&((wiezienie[x_wiezien][y_wiezien-1].glebokosc_sufitu)>=(wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu)))//lewy
+    {
+        ilosc_wody=ilosc_wody+(wiezienie[x_wiezien][y_wiezien-1].glebokosc_sufitu-wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu)+1;
+        cout<<"4";
+    }
+
+    if (((y_wiezien+1)<y)&&((wiezienie[x_wiezien][y_wiezien+1].glebokosc_sufitu)>=(wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu)))//prawy
+    {
+        ilosc_wody=ilosc_wody+(wiezienie[x_wiezien][y_wiezien+1].glebokosc_sufitu-wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu)+1;
+        cout<<"5";
+    }
+
+    if ((x_wiezien+1)<x)
+    {
+
+        if ((y_wiezien>=2)&&((wiezienie[x_wiezien+1][y_wiezien-1].glebokosc_sufitu)>=(wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu)))//lewy dolny
+        {
+            ilosc_wody=ilosc_wody+(wiezienie[x_wiezien+1][y_wiezien-1].glebokosc_sufitu-wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu)+1;
+            cout<<"6";
+        }
+
+        if ((wiezienie[x_wiezien+1][y_wiezien].glebokosc_sufitu)>=(wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu))//srodkowy dolny
+        {
+            ilosc_wody=ilosc_wody+(wiezienie[x_wiezien+1][y_wiezien].glebokosc_sufitu-wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu)+1;
+            cout<<"7";
+        }
+
+        if (((y_wiezien+1)<y)&&((wiezienie[x_wiezien+1][y_wiezien+1].glebokosc_sufitu)>=(wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu)))//prawy dolny
+        {
+            ilosc_wody=ilosc_wody+(wiezienie[x_wiezien+1][y_wiezien+1].glebokosc_sufitu-wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu)+1;
+            cout<<"8";
+        }
+
+    }
+
+    fstream plik_wyjsciowy;
+    plik_wyjsciowy.open("Odpowiedz.txt",std::ios::out);
+
+    if (!plik_wyjsciowy)
+    {
+        cout<<"Nie udalo sie utworzyc pliku Odpowiedz.txt!Nastapi zamkniecie programu.";
+        return -1;
+    }
+    else
+    {
+        plik_wyjsciowy<<ilosc_wody;
+        cout<<"Poprawnie zapisano odpowiedz do pliku 'Odpowiedz.txt'"<<endl;
+    }
+
+    plik_wyjsciowy.close();
+    plik_wejsciowy.close();
+    return 0;
+}
