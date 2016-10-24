@@ -24,7 +24,7 @@ int x_wiezien,y_wiezien,x,y;
 
 void czy_odwiedzone( int x_poprzedniej, int y_poprzedniej,int x_aktualnej , int y_aktualnej)
 {
-    if ((x_aktualnej<1)||(y_aktualnej<1)||(x_aktualnej>(x+1))||(y_aktualnej>(y+1))) return;
+    if ((x_aktualnej<1)||(y_aktualnej<1)||(x_aktualnej>=(x+1))||(y_aktualnej>=(y+1))) return;
 
     if (wiezienie[x_aktualnej][y_aktualnej].odwiedzono==true) return; //jesli juz sprawdzono cele to nie nalezy jej sprawdzac po raz drugi
 
@@ -32,27 +32,29 @@ void czy_odwiedzone( int x_poprzedniej, int y_poprzedniej,int x_aktualnej , int 
 
     if (((wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu)-(wiezienie[x_aktualnej][y_aktualnej].glebokosc_sufitu))<0) return; //jesli aktualna cela jest wyzej od celi wieznia to woda tu nie wleci
 
-    if (((wiezienie[x_aktualnej][y_aktualnej].glebokosc_sufitu)-(wiezienie[x_poprzedniej][y_poprzedniej].glebokosc_sufitu))>4) return;
+    if (((wiezienie[x_aktualnej][y_aktualnej].glebokosc_sufitu)-(wiezienie[x_poprzedniej][y_poprzedniej].glebokosc_sufitu))>4) return; //czy woda sie przeleje
 
-    if (((wiezienie[x_aktualnej][y_aktualnej].glebokosc_sufitu)-(wiezienie[x_poprzedniej][y_poprzedniej].glebokosc_sufitu))<(-4)) return;
+    if (((wiezienie[x_aktualnej][y_aktualnej].glebokosc_sufitu)-(wiezienie[x_poprzedniej][y_poprzedniej].glebokosc_sufitu))<(-4)) return; //j.w.
 
-    ilosc_wody=ilosc_wody+(wiezienie[x_aktualnej][y_aktualnej].glebokosc_sufitu)-(wiezienie[x_poprzedniej][y_poprzedniej].glebokosc_sufitu)+1;
+    cout<<ilosc_wody<<"      "<<(wiezienie[x_aktualnej][y_aktualnej].glebokosc_sufitu)-(wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu)<<endl;
 
-    czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej+1,y_aktualnej);
+    ilosc_wody=ilosc_wody+(wiezienie[x_aktualnej][y_aktualnej].glebokosc_sufitu)-(wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu)+1;
 
-    czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej,y_aktualnej+1);
+    czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej+1,y_aktualnej); //dol
 
-    czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej+1,y_aktualnej+1);
+    czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej,y_aktualnej+1); //prawa
 
-    czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej-1,y_aktualnej);
+    czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej+1,y_aktualnej+1); //prawy dolny skos
 
-    czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej,y_aktualnej-1);
+    czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej-1,y_aktualnej); //gora
 
-    czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej-1,y_aktualnej-1);
+    czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej,y_aktualnej-1); //lewa
 
-    czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej+1,y_aktualnej-1);
+    czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej-1,y_aktualnej-1); //lewy gorny skos
 
-    czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej-1,y_aktualnej+1);
+    czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej+1,y_aktualnej-1); //lewy dolny skos
+
+    czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej-1,y_aktualnej+1); // prawy gorny skos
 
 
 
@@ -78,9 +80,9 @@ int main()
     plik_wejsciowy>>x;
     plik_wejsciowy>>y;
 
-    wiezienie= new Cela *[x+1];
-    for(int i = 1; i <=x; i++)
-        wiezienie[i] = new Cela[y+1];
+    wiezienie=new Cela *[x+1];
+    for(int i=1; i<=x; i++)
+        wiezienie[i]=new Cela[y+1];
 
     for(int i=1; i<=x; i++)
     {
@@ -97,65 +99,7 @@ int main()
     plik_wejsciowy>>y_wiezien;
 
     czy_odwiedzone(x_wiezien,y_wiezien,x_wiezien,y_wiezien);
-   /* if (x_wiezien>=2)
-    {
 
-        if (((y_wiezien-1)>=1)&&((wiezienie[x_wiezien-1][y_wiezien-1].glebokosc_sufitu)>=(wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu)))//lewy gorny
-        {
-            ilosc_wody=ilosc_wody+(wiezienie[x_wiezien-1][y_wiezien-1].glebokosc_sufitu-wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu)+1;
-            cout<<"1";
-        }
-
-        if (((wiezienie[x_wiezien-1][y_wiezien].glebokosc_sufitu)>=(wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu)))//srodkowy gorny
-        {
-            ilosc_wody=ilosc_wody+(wiezienie[x_wiezien-1][y_wiezien].glebokosc_sufitu-wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu)+1;
-            cout<<"2";
-        }
-
-        if (((y_wiezien+1)<x)&&((wiezienie[x_wiezien-1][y_wiezien+1].glebokosc_sufitu)>=(wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu)))//prawy gorny
-        {
-            ilosc_wody=ilosc_wody+(wiezienie[x_wiezien-1][y_wiezien+1].glebokosc_sufitu-wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu)+1;
-            cout<<"3";
-        }
-    }
-
-
-
-    if ((y_wiezien>=2)&&((wiezienie[x_wiezien][y_wiezien-1].glebokosc_sufitu)>=(wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu)))//lewy
-    {
-        ilosc_wody=ilosc_wody+(wiezienie[x_wiezien][y_wiezien-1].glebokosc_sufitu-wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu)+1;
-        cout<<"4";
-    }
-
-    if (((y_wiezien+1)<y)&&((wiezienie[x_wiezien][y_wiezien+1].glebokosc_sufitu)>=(wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu)))//prawy
-    {
-        ilosc_wody=ilosc_wody+(wiezienie[x_wiezien][y_wiezien+1].glebokosc_sufitu-wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu)+1;
-        cout<<"5";
-    }
-
-    if ((x_wiezien+1)<x)
-    {
-
-        if ((y_wiezien>=2)&&((wiezienie[x_wiezien+1][y_wiezien-1].glebokosc_sufitu)>=(wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu)))//lewy dolny
-        {
-            ilosc_wody=ilosc_wody+(wiezienie[x_wiezien+1][y_wiezien-1].glebokosc_sufitu-wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu)+1;
-            cout<<"6";
-        }
-
-        if ((wiezienie[x_wiezien+1][y_wiezien].glebokosc_sufitu)>=(wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu))//srodkowy dolny
-        {
-            ilosc_wody=ilosc_wody+(wiezienie[x_wiezien+1][y_wiezien].glebokosc_sufitu-wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu)+1;
-            cout<<"7";
-        }
-
-        if (((y_wiezien+1)<y)&&((wiezienie[x_wiezien+1][y_wiezien+1].glebokosc_sufitu)>=(wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu)))//prawy dolny
-        {
-            ilosc_wody=ilosc_wody+(wiezienie[x_wiezien+1][y_wiezien+1].glebokosc_sufitu-wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu)+1;
-            cout<<"8";
-        }
-
-    }
-*/
     fstream plik_wyjsciowy;
     plik_wyjsciowy.open("Odpowiedz.txt",std::ios::out);
 
