@@ -18,8 +18,8 @@ public:
 };
 
 Cela** wiezienie;
-int ilosc_wody=1; //bo minimum 1 m3 jest potrzebny, aby wiezien sie utopil we wlasnej celi
-int x_wiezien,y_wiezien,x,y;
+int ilosc_wody=0; //minimum 1 m3 jest potrzebny, aby wiezien sie utopil we wlasnej celi
+int x_wiezien,y_wiezien,x,y,woda;
 
 
 void czy_odwiedzone( int x_poprzedniej, int y_poprzedniej,int x_aktualnej , int y_aktualnej)
@@ -30,31 +30,35 @@ void czy_odwiedzone( int x_poprzedniej, int y_poprzedniej,int x_aktualnej , int 
 
     wiezienie[x_aktualnej][y_aktualnej].odwiedzono=true;
 
-    if (((wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu)-(wiezienie[x_aktualnej][y_aktualnej].glebokosc_sufitu))<0) return; //jesli aktualna cela jest wyzej od celi wieznia to woda tu nie wleci
+    if (((wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu)-(wiezienie[x_aktualnej][y_aktualnej].glebokosc_sufitu))>0) return; //jesli aktualna cela jest wyzej od celi wieznia to woda tu nie wleci
 
     if (((wiezienie[x_aktualnej][y_aktualnej].glebokosc_sufitu)-(wiezienie[x_poprzedniej][y_poprzedniej].glebokosc_sufitu))>4) return; //czy woda sie przeleje
 
     if (((wiezienie[x_aktualnej][y_aktualnej].glebokosc_sufitu)-(wiezienie[x_poprzedniej][y_poprzedniej].glebokosc_sufitu))<(-4)) return; //j.w.
 
-    cout<<ilosc_wody<<"      "<<(wiezienie[x_aktualnej][y_aktualnej].glebokosc_sufitu)-(wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu)<<endl;
+    cout<<ilosc_wody<<"      "<<"x_aktualnej:"<<x_aktualnej<<"  y_aktualnej:"<<y_aktualnej<<endl;
 
-    ilosc_wody=ilosc_wody+(wiezienie[x_aktualnej][y_aktualnej].glebokosc_sufitu)-(wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu)+1;
+    if (((wiezienie[x_aktualnej][y_aktualnej].glebokosc_sufitu)-(wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu)+1)>=5) ilosc_wody=ilosc_wody+5;
+    else
+    {
+        ilosc_wody=ilosc_wody+(wiezienie[x_aktualnej][y_aktualnej].glebokosc_sufitu)-(wiezienie[x_wiezien][y_wiezien].glebokosc_sufitu)+1;
+    }
 
-    czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej+1,y_aktualnej); //dol
+    czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej+1,y_aktualnej); //prawa
 
-    czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej,y_aktualnej+1); //prawa
+    czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej,y_aktualnej+1); //dol
 
     czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej+1,y_aktualnej+1); //prawy dolny skos
 
-    czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej-1,y_aktualnej); //gora
+    czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej-1,y_aktualnej); //lewa
 
-    czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej,y_aktualnej-1); //lewa
+    czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej,y_aktualnej-1); //gora
 
     czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej-1,y_aktualnej-1); //lewy gorny skos
 
-    czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej+1,y_aktualnej-1); //lewy dolny skos
+    czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej+1,y_aktualnej-1); //prawy gorny skos
 
-    czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej-1,y_aktualnej+1); // prawy gorny skos
+    czy_odwiedzone(x_aktualnej, y_aktualnej, x_aktualnej-1,y_aktualnej+1); // lewy dolny skos
 
 
 
@@ -114,6 +118,12 @@ int main()
         cout<<"Poprawnie zapisano odpowiedz do pliku 'Odpowiedz.txt'"<<endl;
     }
 
+
+    for (int i = 0; i<x+1; i++)
+	delete [] wiezienie[i];
+
+    delete [] wiezienie;
+    
     plik_wyjsciowy.close();
     plik_wejsciowy.close();
     return 0;
