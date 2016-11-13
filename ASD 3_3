@@ -1,0 +1,281 @@
+/*
+Pomys³ - Patrzeæ od koñca szukaæ najd³u¿szego mo¿liwego sp³ywu JEŒLI jego koszt nie przekracza kosztu ca³kowitego!!!
+*/
+#include <iostream>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+class Splyw
+{
+public:
+    int osada_poczatkowa=0,osada_docelowa=0,czas=0,koszt=0,dlugosc=0,indeks=-1;
+    bool sprawdzany=false;
+    Splyw() {};
+
+    Splyw(int osada_poczatkowa_,int osada_docelowa_,int czas_,int koszt_)
+    {
+        osada_poczatkowa=osada_poczatkowa_;
+        osada_docelowa=osada_docelowa_;
+        czas=czas_;
+        koszt=koszt_;
+    }
+    friend ostream & operator<< (ostream &wyjscie, const Splyw &s);
+};
+
+ostream & operator<< (ostream &wyjscie, const Splyw &s)
+{
+    return wyjscie << s.osada_poczatkowa<<" "<<s.osada_docelowa<< " " <<s.czas<<" "<<s.koszt;
+}
+
+
+int main()
+{
+
+    fstream plik_wejsciowy;
+    /* cout << "Podaj nazwe pliku" << endl; DO PODAWANIA NAZWY PRZEZ UZYTKOWNIKA
+     string nazwa;
+     cin>>nazwa;
+
+     plik_wejsciowy.open(nazwa,std::ios::in|std::ios::out);*/
+    plik_wejsciowy.open("test.txt",std::ios::in|std::ios::out);
+
+    if (!plik_wejsciowy)
+    {
+        cout<<"Nie udalo sie otworzyc pliku! Nastapi zamkniecie programu.";
+        return -1;
+    }
+
+    int osady, przewoznicy, monety;
+
+    plik_wejsciowy>>osady;
+    plik_wejsciowy>>przewoznicy;
+    plik_wejsciowy>>monety;
+
+    Splyw tab_splyw[przewoznicy];
+
+    int dlugosc_max=0,czas_temp=0,poprzednie_przewozy=0,trwanie_podrozy=1000000;
+
+    for(int i=1; i<=przewoznicy; i++)   //POD tab_splyw[0] TRZYMAM PUNKT AKTUALNIE PODEJRZANY O BYCIE OPTYMALNYM
+    {
+        plik_wejsciowy>>tab_splyw[i].osada_poczatkowa;
+        plik_wejsciowy>>tab_splyw[i].osada_docelowa;
+        plik_wejsciowy>>tab_splyw[i].czas;
+        plik_wejsciowy>>tab_splyw[i].koszt;
+        tab_splyw[i].indeks=i;
+        tab_splyw[i].dlugosc=(tab_splyw[i].osada_docelowa-tab_splyw[i].osada_poczatkowa);
+
+        if ((dlugosc_max<tab_splyw[i].dlugosc)&&(tab_splyw[i].osada_docelowa==(osady-poprzednie_przewozy))&&(tab_splyw[i].koszt<=monety))
+        {
+            dlugosc_max=tab_splyw[i].dlugosc;
+            tab_splyw[0]=tab_splyw[i];
+        }
+    }
+    if (dlugosc_max==0)  //NIE ZNALEZIONO MOZLIWOSCI DOTARCIA DO STACJI KONCOWEJ
+    {
+        cout<<"NIE!";
+        return-1;
+    }
+
+
+    int tab_wynikowa[przewoznicy],tab_temp[przewoznicy];
+
+    for(int i=0; i<=przewoznicy; i++)
+    {
+        tab_temp[i]=-1;
+        tab_wynikowa[i]=-1;
+    }
+
+    int j=0,nope=1,aktualne_monety=monety;
+    Splyw poprzedni_krok;
+    tab_splyw[tab_splyw[0].indeks].sprawdzany=true;
+    int poprzednie_przewozy_backup=poprzednie_przewozy;
+    cout<<tab_splyw[0]<<endl<<poprzedni_krok<<endl;
+    int repeat=0;
+    do
+    {
+        do
+        {
+            if ((tab_splyw[0].koszt==poprzedni_krok.koszt)&&(tab_splyw[0].osada_poczatkowa==poprzedni_krok.osada_poczatkowa)&&(tab_splyw[0].czas==poprzedni_krok.czas)) //TU JEST COS NIE TAK
+            {
+                cout<<"1 if "<<endl;
+                repeat++;
+                j--;
+
+                if (repeat==2)
+                {
+                    break;
+                }
+
+                if ((tab_splyw[tab_splyw[0].indeks].sprawdzany==true)&&(tab_splyw[0].osada_docelowa==osady)&&(repeat>1))
+                {
+                    nope=0;
+                    break;
+                }
+                poprzednie_przewozy=poprzednie_przewozy-tab_splyw[0].dlugosc;
+                aktualne_monety=aktualne_monety+tab_splyw[0].koszt;
+                czas_temp=czas_temp-tab_splyw[0].czas;
+                dlugosc_max=0;
+
+
+                cout<<endl<<"Poprzednie przewozy:"<<poprzednie_przewozy<<" "<<"dlugosc_max:"<<dlugosc_max<<"Poprzednie przewozy b:"<<poprzednie_przewozy_backup;
+
+                for(int i=1; i<=przewoznicy; i++) //nastepny krok - szukam
+                {
+                    if ((tab_splyw[i].sprawdzany!=true)&&(dlugosc_max<tab_splyw[i].dlugosc)&&(tab_splyw[i].osada_docelowa==(osady-poprzednie_przewozy))&&(tab_splyw[i].koszt<=aktualne_monety))
+                    {
+                        tab_splyw[i].dlugosc=(tab_splyw[i].osada_docelowa-tab_splyw[i].osada_poczatkowa);
+                        dlugosc_max=tab_splyw[i].dlugosc;
+                        tab_splyw[0]=tab_splyw[i];
+                        cout<<"Znalazlem kolejny: "<<tab_splyw[0];
+                        repeat=0;
+                   }
+
+                }
+                                if (aktualne_monety<0)
+                {
+                    cout<<"monet brak :( "<<endl;
+                    break;
+                }
+                int a;
+                cin>>a;
+                poprzednie_przewozy=poprzednie_przewozy+tab_splyw[0].dlugosc;
+                //poprzednie_przewozy=poprzednie_przewozy_backup;
+                tab_splyw[tab_splyw[0].indeks].sprawdzany=true;
+                //cout<<"tab_splyw[0]: "<<tab_splyw[0]<<endl;
+            }
+
+else
+            {
+
+                cout<<"wchodze z punktem:"<<tab_splyw[0]<<endl;
+                tab_temp[j]=tab_splyw[0].indeks;
+                j++;
+                cout<<"j="<<j;
+                poprzedni_krok=tab_splyw[0];
+                czas_temp=czas_temp+tab_splyw[0].czas;
+                aktualne_monety=aktualne_monety-tab_splyw[0].koszt;
+
+                poprzednie_przewozy=(poprzednie_przewozy+dlugosc_max);
+                cout<<"Dlugosc max:"<<dlugosc_max<<" Poprzednie przewozy:"<<poprzednie_przewozy;
+
+                dlugosc_max=0;
+                tab_splyw[tab_splyw[0].indeks].sprawdzany=true;
+
+                if (tab_splyw[0].osada_poczatkowa==1)
+                {
+                    cout<<"Gitaaaara siema";
+                  break;
+                }
+                for(int i=1; i<=przewoznicy; i++) //nastepny krok - szukam
+                {
+                    if ((tab_splyw[i].sprawdzany!=true)&&(dlugosc_max<tab_splyw[i].dlugosc)&&(tab_splyw[i].osada_docelowa==(osady-poprzednie_przewozy))&&(tab_splyw[i].koszt<=aktualne_monety))
+                    {
+                        tab_splyw[i].dlugosc=(tab_splyw[i].osada_docelowa-tab_splyw[i].osada_poczatkowa);
+                        dlugosc_max=tab_splyw[i].dlugosc;
+                        tab_splyw[0]=tab_splyw[i];
+                    }
+                }
+                //cout<<"tab_splyw[0]: "<<tab_splyw[0]<<endl;
+
+
+
+                if (aktualne_monety<0)
+                {
+                    cout<<"monet brak :( "<<endl;
+                    break;
+                }
+
+
+            }
+    }
+        while(1);
+
+
+        if ((czas_temp<trwanie_podrozy)&&(tab_splyw[0].osada_poczatkowa==1))
+        {
+            trwanie_podrozy=czas_temp;
+            int k=0;
+
+            for(int i=przewoznicy; i>=0; i--)
+            {
+               if (tab_splyw[i].osada_docelowa!=osady) tab_splyw[i].sprawdzany=false;
+                if(tab_temp[i]!=-1)
+                {
+                    tab_wynikowa[k]=tab_temp[i];
+                    k++;
+                }
+            }
+        }
+
+        repeat=0;
+        dlugosc_max=0;
+        poprzednie_przewozy=0;
+        czas_temp=0;
+        aktualne_monety=monety;
+
+        int k=0;
+
+        nope=0;
+
+        for(int i=1; i<=przewoznicy; i++) //szukanie nowego punktu startowego
+        {
+            tab_temp[k]=-1;
+            k++;
+
+            if ((tab_splyw[i].sprawdzany!=true)&&(tab_splyw[i].osada_docelowa==osady)&&(tab_splyw[i].koszt<=monety))
+            {
+                tab_splyw[i].dlugosc=(tab_splyw[i].osada_docelowa-tab_splyw[i].osada_poczatkowa);
+                dlugosc_max=tab_splyw[i].dlugosc;
+                tab_splyw[0]=tab_splyw[i];
+                nope=1;
+                //  cout<<tab_splyw[i]<<endl;
+            }
+        }
+
+        tab_splyw[tab_splyw[0].indeks].sprawdzany=true;
+        if ((tab_splyw[0].osada_poczatkowa==poprzedni_krok.osada_poczatkowa)&&(tab_splyw[0].czas==poprzedni_krok.czas)&&(tab_splyw[0].koszt==poprzedni_krok.koszt))
+        {
+            nope=0;
+            cout<<"ostatni nope";
+        }
+
+    }
+    while(nope!=0);
+
+
+
+
+    fstream plik_wyjsciowy;
+    plik_wyjsciowy.open("Odpowiedz.txt",std::ios::out);
+
+    if (!plik_wyjsciowy)
+    {
+        cout<<"Nie udalo sie utworzyc pliku Odpowiedz.txt!Nastapi zamkniecie programu.";
+        return -1;
+    }
+    else
+    {
+        j=0;
+        plik_wyjsciowy<<trwanie_podrozy<<endl;
+
+        while(tab_wynikowa[j]!=-1)
+        {
+            plik_wyjsciowy<<tab_wynikowa[j];
+            plik_wyjsciowy<<" ";
+            j++;
+
+        }
+
+        cout<<"Poprawnie zapisano odpowiedz do pliku 'Odpowiedz.txt'"<<endl;
+    }
+
+
+    plik_wyjsciowy.close();
+    plik_wejsciowy.close();
+    return 0;
+
+}
+
+
