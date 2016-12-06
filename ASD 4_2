@@ -1,13 +1,14 @@
 #include <iostream>
 #include <string>
 #include <cstdlib>
-#include <ctime>
 #include <stdlib.h>
 #include <fstream>
 using namespace std;
 
 string cr,cl,cp;
-fstream plik_wejsciowy,plik_wyjsciowy;
+fstream input_file,output_file;
+
+int value;
 
 
 struct AVL
@@ -19,6 +20,16 @@ public:
     string key;
     int bf;
 };
+
+class File_Commands
+{
+public:
+    char type;
+    string number1;
+    string number2;
+
+};
+
 AVL  * root = NULL;
 void printTree(string sp, string sn, AVL * v);
 void deleteTree(AVL* v);
@@ -30,15 +41,18 @@ void insertNode(AVL * & root, string k);
 AVL * previousNode(AVL * p);
 AVL * findNode(AVL * p, string k);
 AVL * deleteNode(AVL * & root, AVL * x);
+void howManyBetween(AVL * v,string from,string to);
 void menu();
 
 
 int main()
 {
+
     menu();
 
-    plik_wejsciowy.close();
-    plik_wyjsciowy.close();
+    input_file.close();
+    output_file.close();
+    deleteTree(root);
     return 0;
 }
 
@@ -408,7 +422,13 @@ AVL * deleteNode(AVL * & root, AVL * x)
 void menu()
 {
     int more=1,wybor;
+    output_file.open("Odpowiedz.txt",fstream::out);
 
+    if (!output_file)
+    {
+        cout<<"Nie udalo sie otworzyc pliku!Nastapi zamkniecie programu.";
+        exit(-1);
+    }
     cr = cl = cp = "  ";
     cr[0] = 218;
     cr[1] = 196;
@@ -421,266 +441,262 @@ void menu()
 
 
 
-            system("cls");
-            cout<<"     MENU     "<<endl;
-            cout<<"1.Dodaj element"<<endl<<"2.Usun element"<<endl<<"3.Wyszukaj element"<<endl<<"4.Ilosc liczb z zadanego przedzialu"<<endl;
-            cout<<"5.Wyswietl drzewo"<<endl<<"6.Wykonaj ciag polecen z pliku"<<endl<<"7.Wyjdz"<<endl;
+        system("cls");
+        cout<<"     MENU     "<<endl;
+        cout<<"1.Dodaj element"<<endl<<"2.Usun element"<<endl<<"3.Wyszukaj element"<<endl<<"4.Ilosc liczb z zadanego przedzialu"<<endl;
+        cout<<"5.Wyswietl drzewo"<<endl<<"6.Wykonaj ciag polecen z pliku"<<endl<<"7.Wyjdz"<<endl;
+        do
+        {
+            cout<<"Wybor:";
+            cin>>wybor;
+        }
+        while ((wybor!=1)&&(wybor!=2)&&(wybor!=3)&&(wybor!=4)&&(wybor!=5)&&(wybor!=6)&&(wybor!=7));
+        if (wybor==7) exit(0);
+
+        switch(wybor)
+        {
+        case (1):
+        {
+
+
+            string tmp;
+            bool ok;
             do
             {
-                cout<<"Wybor:";
-                cin>>wybor;
-            }
-            while ((wybor!=1)&&(wybor!=2)&&(wybor!=3)&&(wybor!=4)&&(wybor!=5)&&(wybor!=6)&&(wybor!=7));
-            if (wybor==7) exit(0);
+                ok=true;
+                cout<<endl<<"Podaj liczbe calkowita do dodania:";
+                cin>>tmp;
 
-            switch(wybor)
-            {
-            case (1):
-            {
-
-
-                string tmp;
-                bool ok;
-                do
+                for (int i=0; i<tmp.length(); i++)
                 {
-                    ok=true;
-                    cout<<endl<<"Podaj liczbe calkowita do dodania:";
-                    cin>>tmp;
-
-                    for (int i=0; i<tmp.length(); i++)
+                    if (tmp.length()>100)
                     {
-                        if (tmp.length()>100)
-                        {
-                            cout<<"Liczba za dluga!";
-                            ok=false;
-                            break;
-                        }
+                        cout<<"Liczba za dluga!";
+                        ok=false;
+                        break;
+                    }
 
-                        if ((tmp[i]<'0')||(tmp[i]>'9'))
-                        {
-                            cout<<endl<<"Podaj prawidlowa liczbe!"<<endl;
-                            ok=false;
-                            break;
-                        }
+                    if ((tmp[i]<'0')||(tmp[i]>'9'))
+                    {
+                        cout<<endl<<"Podaj prawidlowa liczbe!"<<endl;
+                        ok=false;
+                        break;
                     }
                 }
-                while (ok==false);
-                insertNode(root,tmp);
+            }
+            while (ok==false);
+            insertNode(root,tmp);
+            break;
+        }
+        case (2):
+        {
+            bool ok=true;
+            string tmp;
+
+            do
+            {
+
+
+                cout<<endl<<"Podaj liczbe calkowita do usuniecia:";
+                cin>>tmp;
+
+                for (int i=0; i<tmp.length(); i++)
+                {
+                    if (tmp.length()>100)
+                    {
+                        cout<<"Liczba za dluga!";
+                        ok=false;
+                        break;
+                    }
+
+                    if ((tmp[i]<'0')||(tmp[i]>'9'))
+                    {
+                        cout<<endl<<"Podaj prawidlowa liczbe!"<<endl;
+                        ok=false;
+                        break;
+                    }
+                }
+
+            }
+            while (ok==false);
+
+            AVL * tmp2=findNode(root,tmp);
+
+            if (tmp2==NULL)
+            {
+                cout<<endl<<"Drzewo nie zawiera takiej liczby!"<<endl;
                 break;
+
             }
-            case (2):
+            deleteNode(root,tmp2);
+            break;
+        }
+        case (3):
+        {
+            string tmp;
+            bool ok;
+            do
             {
-                bool ok=true;
-                string tmp;
+                ok=true;
+                cout<<endl<<"Podaj liczbe calkowita, ktorej szukasz:";
+                cin>>tmp;
 
-                do
+                for (int i=0; i<tmp.length(); i++)
                 {
-
-
-                    cout<<endl<<"Podaj liczbe calkowita do usuniecia:";
-                    cin>>tmp;
-
-                    for (int i=0; i<tmp.length(); i++)
+                    if (tmp.length()>100)
                     {
-                        if (tmp.length()>100)
-                        {
-                            cout<<"Liczba za dluga!";
-                            ok=false;
-                            break;
-                        }
-
-                        if ((tmp[i]<'0')||(tmp[i]>'9'))
-                        {
-                            cout<<endl<<"Podaj prawidlowa liczbe!"<<endl;
-                            ok=false;
-                            break;
-                        }
+                        cout<<"Liczba za dluga!";
+                        ok=false;
+                        break;
                     }
 
+                    if ((tmp[i]<'0')||(tmp[i]>'9'))
+                    {
+                        cout<<endl<<"Podaj prawidlowa liczbe!"<<endl;
+                        ok=false;
+                        break;
+                    }
                 }
-                while (ok==false);
+            }
+            while (ok==false);
 
-                AVL * tmp2=findNode(root,tmp);
 
-                if (tmp2==NULL)
+            AVL * tmp2=findNode(root,tmp);
+
+            if (tmp2==NULL)
+            {
+
+                cout<<"NIE"<<endl;
+                break;
+
+            }
+            cout<<"TAK"<<endl;
+            break;
+        }
+        case (4):
+        {
+            howManyBetween(root,"2","4");
+            break;
+        }
+        case (5):
+        {
+            printTree("","",root);
+            break;
+        }
+        case (6):
+        {
+            //  cout << "Podaj nazwe pliku" << endl;
+            string nazwa;
+            // cin>>nazwa;
+
+            input_file.open("test.txt",std::ios::in|std::ios::out);
+
+            if (!input_file)
+            {
+                cout<<"Nie udalo sie otworzyc pliku!Nastapi zamkniecie programu.";
+                exit(-1);
+            }
+            int commands;
+            input_file>>commands;
+
+            File_Commands commands_array[commands+1];
+
+            for (int i=0; i<commands+1; i++)
+            {
+
+                input_file>>commands_array[i].type;
+                input_file>>commands_array[i].number1;
+
+                if (commands_array[i].type=='L') input_file>>commands_array[i].number2;
+
+                cout<<commands_array[i].type<<" "<<commands_array[i].number1<<"      "<<commands_array[i].number2<<endl;
+            }
+
+            cout<<"dlugosc"<<commands_array[5].number1.length();
+
+
+            for(int i=0; i<commands+1; i++)
+            {
+                switch (commands_array[i].type)
                 {
-                    cout<<endl<<"Drzewo nie zawiera takiej liczby!"<<endl;
+                case('W'):
+                {
+                    cout<<"dlugosc"<<commands_array[i].number1.length();
+                    insertNode(root,commands_array[i].number1);
                     break;
-
                 }
-                deleteNode(root,tmp2);
-                break;
-            }
-            case (3):
-            {
-                string tmp;
-                bool ok;
-                do
+                case('U'):
                 {
-                    ok=true;
-                    cout<<endl<<"Podaj liczbe calkowita, ktorej szukasz:";
-                    cin>>tmp;
+                    AVL * tmp2=findNode(root,commands_array[i].number1);
 
-                    for (int i=0; i<tmp.length(); i++)
+                    if (tmp2==NULL)
                     {
-                        if (tmp.length()>100)
-                        {
-                            cout<<"Liczba za dluga!";
-                            ok=false;
-                            break;
-                        }
+                        cout<<endl<<"Drzewo nie zawiera takiej liczby!"<<endl;
+                        break;
 
-                        if ((tmp[i]<'0')||(tmp[i]>'9'))
-                        {
-                            cout<<endl<<"Podaj prawidlowa liczbe!"<<endl;
-                            ok=false;
-                            break;
-                        }
                     }
-                }
-                while (ok==false);
-
-
-                AVL * tmp2=findNode(root,tmp);
-
-                plik_wyjsciowy.open("Odpowiedz.txt",fstream::out);
-
-                 if (!plik_wyjsciowy)
-                {
-                    cout<<"Nie udalo sie otworzyc pliku!Nastapi zamkniecie programu.";
-                    exit(-1);
-                }
-
-                if (tmp2==NULL)
-                {
-
-                plik_wyjsciowy<<"NIE"<<endl;
+                    deleteNode(root,tmp2);
                     break;
-
                 }
-                plik_wyjsciowy<<"TAK"<<endl;
-                break;
-            }
-            case (4):
-            {
-
-                break;
-            }
-            case (5):
-            {
-                printTree("","",root);
-                break;
-            }
-            case (6):
-            {
-                cout << "Podaj nazwe pliku" << endl;
-                string nazwa;
-                cin>>nazwa;
-
-                plik_wejsciowy.open(nazwa,std::ios::in|std::ios::out);
-
-                if (!plik_wejsciowy)
+                case('S'):
                 {
-                    cout<<"Nie udalo sie otworzyc pliku!Nastapi zamkniecie programu.";
-                    exit(-1);
+                    AVL * tmp2=findNode(root,commands_array[i].number1);
+
+                    if (tmp2==NULL)
+                    {
+
+                        output_file<<"NIE"<<endl;
+                        break;
+
+                    }
+                    output_file<<"TAK"<<endl;
+                   break;
                 }
-                int commands;
-                plik_wejsciowy>>commands;
-
-                    string tab_commands[commands+1],temp;
-                    int j=0;
-
-                    for (int i=0; i<commands+1; i++)
-                    {
-
-                        plik_wejsciowy>>tab_commands[i][0];
-                        plik_wejsciowy>>temp;
-                        for (j=1;j-1<temp.length();j++) tab_commands[i][j]=temp[j-1]; //przepisuje liczbe po 1 cyfrze
-                      //  if (tab_commands[i][0]=='L') plik_wejsciowy>>tab_commands[i][2];
-                      //  if (tab_commands[i][0]=='L') cout<<tab_commands[i][0]<<" "<<tab_commands[i][1]<<" "<<tab_commands[i][2]<<endl;
-                      //  else
-                            cout<<tab_commands[i][0]<<" "<<tab_commands[i][1]<<endl;//tab_commands[i][2]<<endl;
-                    }
-
-
-                    string passing;
-                    for(int i=0;i<commands+1;i++)
-                    {
-                        switch (tab_commands[i][0])
-                        {
-                        case('W'):
-                            {
-                                cout<<"dlugosc"<<tab_commands[0].size();
-                                passing.insert( 0, tab_commands[i], 1, tab_commands[i].length() );
-                                insertNode(root,passing);
-                                break;
-                            }
-                        case('U'):
-                            {
-                                passing.insert( 0, tab_commands[i], 1, tab_commands[i].length() );
-                                AVL * tmp2=findNode(root,passing);
-
-                                if (tmp2==NULL)
-                                    {
-                                    cout<<endl<<"Drzewo nie zawiera takiej liczby!"<<endl;
-                                    break;
-
-                                    }
-                                    deleteNode(root,tmp2);
-                                deleteNode(root,tmp2);
-                                break;
-                            }
-                        case('S'):
-                            {
-                                findNode(root,&tab_commands[i][1]);
-                                break;
-                            }
-                       /* case('L'):
-                            {
-                                insertNode(root,tab_commands[i][1]);
-                                break;
-                            }   */
-                        }
-                    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                plik_wejsciowy.close();
-                break;
+                case('L'):
+                {
+                    value=0;
+                    howManyBetween(root,commands_array[i].number1,commands_array[i].number2);
+                    output_file<<value<<endl;
+                    break;
+                }
+                }
             }
-            }
+
+            break;
+        }
+        }
         cout<<endl<<endl<<"Chcesz zrobic cos jeszcze (1-tak/0-nie) ?"<<endl<<"Wybor:";
-                    cin>>more;
-                }
-                while ((more!=1)&&(more!=0));
-        return;
-
+        cin>>more;
     }
-    /*void preorder(BTNode * v)
-    {
-      if(v)
-      {
-        cout << v->data << " "; // odwiedzamy węzeł
-        preorder(v->left);      // przechodzimy lewe poddrzewo
-        preorder(v->right);     // przechodzimy prawe poddrzewo
-      }
-    }*/
+    while ((more!=1)&&(more!=0));
+    return;
+
+}
+
+void howManyBetween(AVL * v,string from,string to)
+{
+int tmp1,tmp2,tmp3,i;
+    if(v)
+    {cout<<"key od v"<<v->key<<endl;
+        if ((v->key.length()<=to.length())&&(v->key.length()>=from.length()))
+        {
+
+        for (i=0;i<(v->key.length());i++)
+        {
+            tmp1=v->key[i]-'0';
+            tmp2=from[i]-'0';
+            tmp3=to[i]-'0';
+
+            if ((tmp1>tmp3)||(tmp1<tmp2)) {break;}
+
+        }
+            if (i==v->key.length()-1) value++;
+            }
+
+        cout<<endl<<"licznik glupiego wojciecha:"<<value<<endl;
+        howManyBetween(v->left,from,to);      // przechodzimy lewe poddrzewo
+        howManyBetween(v->right,from,to);     // przechodzimy prawe poddrzewo
+    }
+
+    return;
+}
