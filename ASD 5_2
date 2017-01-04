@@ -1,0 +1,113 @@
+
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <set>
+
+#define nieskonczonosc 10000000
+
+using namespace std;
+
+class Misja
+{
+public:
+    int miasto_pocz,miasto_kon,czas;
+
+    friend ostream & operator<< (ostream &wyjscie, const Misja &m);
+};
+
+ostream & operator<< (ostream &wyjscie, const Misja &m)
+{
+    return wyjscie << m.miasto_pocz<<" "<<m.miasto_kon<<" "<<m.czas;
+}
+
+class Miasto
+{
+public:
+    int droga=nieskonczonosc;
+    set <int> poprzednik;
+    vector <int> koszt; //z poprzednika do tego miasta
+    set <int> nastepnik;
+    bool sprawdzone=false;
+
+    Miasto (){};
+};
+
+int main()
+{
+
+    fstream plik_wejsciowy;
+    //cout << "Podaj nazwe pliku" << endl;
+    //string nazwa;
+    //cin>>nazwa;
+
+    //plik_wejsciowy.open(nazwa,std::ios::in|std::ios::out);
+    plik_wejsciowy.open("in1.txt.txt",std::ios::in|std::ios::out);
+
+    if (!plik_wejsciowy)
+    {
+        cout<<"Nie udalo sie otworzyc pliku! Nastapi zamkniecie programu.";
+        return -1;
+    }
+    fstream plik_wyjsciowy;
+    plik_wyjsciowy.open("Odpowiedz.txt",std::ios::out);
+
+    if (!plik_wyjsciowy)
+    {
+        cout<<"Nie udalo sie utworzyc pliku Odpowiedz.txt!Nastapi zamkniecie programu.";
+        return -1;
+    }
+
+    int hipermiasta, korytarze, tunele;
+
+    plik_wejsciowy>>hipermiasta;
+    plik_wejsciowy>>korytarze;
+    plik_wejsciowy>>tunele;
+
+    Misja tab[korytarze];
+
+    Miasto miasta[hipermiasta+1];
+
+    for (int i=0; i<korytarze; i++)
+    {
+        plik_wejsciowy>>tab[i].miasto_pocz;
+        plik_wejsciowy>>tab[i].miasto_kon;
+        plik_wejsciowy>>tab[i].czas;
+        miasta[tab[i].miasto_pocz].nastepnik.insert(tab[i].miasto_kon);
+        miasta[tab[i].miasto_kon].poprzednik.insert(tab[i].miasto_pocz);
+        miasta[tab[i].miasto_kon].koszt.push_back(tab[i].czas);
+
+    }
+
+    set<int>::iterator poprzedniki_iter;
+    set<int>::iterator nastepniki_iter;
+    auto temp_iter  = miasta[2].poprzednik.begin();
+    vector<int>::iterator koszt_iter;
+    plik_wyjsciowy<<endl;
+
+    for (int i=2; i<=hipermiasta; i++) //bo z miasta 1 do maista 1 nie ma sensu sprawdzac
+    {
+        poprzedniki_iter=miasta[i].poprzednik.begin();
+        koszt_iter=miasta[i].koszt.begin();
+
+        while (poprzedniki_iter!=miasta[i].poprzednik.end())
+        {
+            if ((miasta[i].droga)>((miasta[*poprzedniki_iter].droga)+(*koszt_iter)))
+            {
+                miasta[i].droga=((miasta[*poprzedniki_iter].droga)+(*koszt_iter));
+                temp_iter=poprzedniki_iter;
+            }
+            poprzedniki_iter++;
+            koszt_iter++;
+
+        }
+        miasta[i].sprawdzone=true;
+
+        plik_wyjsciowy<<*temp_iter<<" ";
+    }
+    plik_wyjsciowy.close();
+    plik_wejsciowy.close();
+    return 0;
+
+}
