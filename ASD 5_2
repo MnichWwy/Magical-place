@@ -5,145 +5,142 @@
 #include <vector>
 #include <set>
 
-#define nieskonczonosc 10000000
+#define infinity 10000000
 
 using namespace std;
 
-class Misja
+class Mission
 {
 public:
-    int miasto_pocz,miasto_kon,czas;
+    int city_beg,city_end,time;
 
-    friend ostream & operator<< (ostream &wyjscie, const Misja &m);
+    friend ostream & operator<< (ostream &output, const Mission &m);
 };
 
-ostream & operator<< (ostream &wyjscie, const Misja &m)
+ostream & operator<< (ostream &output, const Mission &m)
 {
-    return wyjscie << m.miasto_pocz<<" "<<m.miasto_kon<<" "<<m.czas;
+    return output << m.city_beg<<" "<<m.city_end<<" "<<m.time;
 }
 
-class Miasto
+class City
 {
 public:
-    int droga=nieskonczonosc;
-    set <int> poprzednik;
-    vector <int> koszt; //z poprzednika do tego miasta
-    set <int> nastepnik;
-    bool sprawdzone=false;
+    int road=infinity;
+    set <int> previous;
+    vector <int> cost; //z poprzednika do tego miasta
+    set <int> next;
+    bool checked=false;
 
-    Miasto () {};
+    City () {};
 };
 
 int main()
 {
 
-    fstream plik_wejsciowy;
+    fstream input_file;
     //cout << "Podaj nazwe pliku" << endl;
-    //string nazwa;
-    //cin>>nazwa;
+    //string name;
+    //cin>>name;
 
-    //plik_wejsciowy.open(nazwa,std::ios::in|std::ios::out);
-    plik_wejsciowy.open("in1.txt.txt",std::ios::in|std::ios::out);
+    //input_file.open(name,std::ios::in|std::ios::out);
+    input_file.open("in3.txt",std::ios::in|std::ios::out);
 
-    if (!plik_wejsciowy)
+    if (!input_file)
     {
         cout<<"Nie udalo sie otworzyc pliku! Nastapi zamkniecie programu.";
         return -1;
     }
-    fstream plik_wyjsciowy;
-    plik_wyjsciowy.open("Odpowiedz.txt",std::ios::out);
+    fstream output_file;
+    output_file.open("Odpowiedz.txt",std::ios::out);
 
-    if (!plik_wyjsciowy)
+    if (!output_file)
     {
         cout<<"Nie udalo sie utworzyc pliku Odpowiedz.txt!Nastapi zamkniecie programu.";
         return -1;
     }
 
-    int hipermiasta, korytarze, tunele;
+    int hipercities, corridors, tunels;
 
-    plik_wejsciowy>>hipermiasta;
-    plik_wejsciowy>>korytarze;
-    plik_wejsciowy>>tunele;
+    input_file>>hipercities;
+    input_file>>corridors;
+    input_file>>tunels;
 
-    Misja tab[korytarze];
+    Mission tab[corridors];
 
-    Miasto miasta[hipermiasta+1];
+    City cities[hipercities+1];
 
-    for (int i=0; i<korytarze; i++)
+    for (int i=0; i<corridors; i++)
     {
-        plik_wejsciowy>>tab[i].miasto_pocz;
-        plik_wejsciowy>>tab[i].miasto_kon;
-        plik_wejsciowy>>tab[i].czas;
-        miasta[tab[i].miasto_pocz].nastepnik.insert(tab[i].miasto_kon);
-        miasta[tab[i].miasto_kon].poprzednik.insert(tab[i].miasto_pocz);
-        miasta[tab[i].miasto_kon].koszt.push_back(tab[i].czas);
+        input_file>>tab[i].city_beg;
+        input_file>>tab[i].city_end;
+        input_file>>tab[i].time;
+        cities[tab[i].city_beg].next.insert(tab[i].city_end);
+        cities[tab[i].city_end].previous.insert(tab[i].city_beg);
+        cities[tab[i].city_end].cost.push_back(tab[i].time);
 
     }
 
-    set<int>::iterator poprzedniki_iter;
-    set<int>::iterator nastepniki_iter;
-    auto temp_iter  = miasta[2].poprzednik.begin();
-    vector<int>::iterator koszt_iter;
-    plik_wyjsciowy<<endl;
+    set<int>::iterator previous_iter;
+    set<int>::iterator next_iter;
+    auto temp_iter  = cities[2].previous.begin();
+    vector<int>::iterator cost_iter;
+    output_file<<endl;
 
-    miasta[1].droga=0;
-    plik_wyjsciowy<<" 1 ";
+    cities[1].road=0;
+    output_file<<" 1 ";
 
-    int k=0;
-    vector <int> odpowiedz(hipermiasta,0);
+    vector <int> answer(hipercities,0);
 
-    for (int i=0; i<hipermiasta; i++) odpowiedz[i]=0;
-
-    for (int i=2; i<=hipermiasta; i++) //bo z miasta 1 do miasta 1 nie ma sensu sprawdzac
+    for (int i=2; i<=hipercities; i++) //bo z miasta 1 do miasta 1 nie ma sensu sprawdzac
     {
-        poprzedniki_iter=miasta[i].poprzednik.begin();
-        koszt_iter=miasta[i].koszt.begin();
+        previous_iter=cities[i].previous.begin();
+        cost_iter=cities[i].cost.begin();
 
-        while (poprzedniki_iter!=miasta[i].poprzednik.end())
+        while (previous_iter!=cities[i].previous.end())
         {
-            if ((miasta[i].droga)>((miasta[*poprzedniki_iter].droga)+(*koszt_iter)))
+            if ((cities[i].road)>((cities[*previous_iter].road)+(*cost_iter)))
             {
-                if (*koszt_iter==0)
+                if (*cost_iter==0)
                 {
-                    if (tunele!=0)
+                    if (tunels!=0)
                     {
-                        miasta[i].droga=((miasta[*poprzedniki_iter].droga)+(*koszt_iter));
-                        temp_iter=poprzedniki_iter;
-                        tunele--; cout<<"tunel ";
+                        cities[i].road=((cities[*previous_iter].road)+(*cost_iter));
+                        temp_iter=previous_iter;
+                        tunels--; cout<<"tunel ";
                     }
                 }
                 else
                 {
-                    miasta[i].droga=((miasta[*poprzedniki_iter].droga)+(*koszt_iter));
-                    temp_iter=poprzedniki_iter;
+                    cities[i].road=((cities[*previous_iter].road)+(*cost_iter));
+                    temp_iter=previous_iter;
                 }
             }
-            poprzedniki_iter++;
-            koszt_iter++;
+            previous_iter++;
+            cost_iter++;
 
         }
 
-        if (miasta[*temp_iter].sprawdzone==false)
+        if (cities[*temp_iter].checked==false)
         {
-            odpowiedz.push_back(*temp_iter);
+            answer.push_back(*temp_iter);
         }
-        miasta[*temp_iter].sprawdzone=true;
+        cities[*temp_iter].checked=true;
     }
 
 
-    auto odp = odpowiedz.begin();
-    while (!odpowiedz.empty())
+    auto ans = answer.begin();
+    while (!answer.empty())
     {
-        if (*odp!=0) plik_wyjsciowy<<*odp<<" ";
-        odpowiedz.pop_back();
-        odp++;
+        if (*ans!=0) output_file<<*ans<<" ";
+        answer.pop_back();
+        ans++;
     }
 
-    plik_wyjsciowy<<hipermiasta;
-    plik_wyjsciowy.seekg( 0 );
-    plik_wyjsciowy<<miasta[hipermiasta].droga<<endl;
-    plik_wyjsciowy.close();
-    plik_wejsciowy.close();
+    output_file<<hipercities;
+    output_file.seekg( 0 );
+    output_file<<cities[hipercities].road<<endl; //droga do ostatniego miasta
+    output_file.close();
+    input_file.close();
     return 0;
 
 }
