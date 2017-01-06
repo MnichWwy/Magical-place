@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -26,9 +25,9 @@ class City
 {
 public:
     int road=infinity;
-    set <int> previous;
+    vector <int> previous;
     vector <int> cost; //z poprzednika do tego miasta
-    set <int> next;
+    vector <int> next;
     bool checked=false;
 
     City () {};
@@ -74,20 +73,20 @@ int main()
         input_file>>tab[i].city_beg;
         input_file>>tab[i].city_end;
         input_file>>tab[i].time;
-        cities[tab[i].city_beg].next.insert(tab[i].city_end);
-        cities[tab[i].city_end].previous.insert(tab[i].city_beg);
+        cities[tab[i].city_beg].next.push_back(tab[i].city_end);
+        cities[tab[i].city_end].previous.push_back(tab[i].city_beg);
         cities[tab[i].city_end].cost.push_back(tab[i].time);
 
     }
 
-    set<int>::iterator previous_iter;
-    set<int>::iterator next_iter;
+    vector<int>::iterator previous_iter;
+    vector<int>::iterator next_iter;
     auto temp_iter  = cities[2].previous.begin();
     vector<int>::iterator cost_iter;
     output_file<<endl;
 
-    cities[1].road=0;
-    output_file<<" 1 ";
+    cities[1].road=0; //bo z miasta 1 do 1 podroz nic nie trwa
+    output_file<<"   1 ";
 
     vector <int> answer(hipercities,0);
 
@@ -106,7 +105,8 @@ int main()
                     {
                         cities[i].road=((cities[*previous_iter].road)+(*cost_iter));
                         temp_iter=previous_iter;
-                        tunels--; cout<<"tunel ";
+                        tunels--;
+                        cout<<"tunel ";
                     }
                 }
                 else
@@ -120,15 +120,42 @@ int main()
 
         }
 
-        if (cities[*temp_iter].checked==false)
-        {
-            answer.push_back(*temp_iter);
-        }
+        // if (cities[*temp_iter].checked==false)
+        //  {
+        //       answer.push_back(*temp_iter);
+        //  }
         cities[*temp_iter].checked=true;
     }
 
 
-    auto ans = answer.begin();
+    int best=infinity;
+    auto ans1=answer.rbegin();
+
+    for (int i=hipercities; i>=2; i--)
+    {
+
+        previous_iter=cities[i].previous.begin();
+        while (previous_iter!=cities[i].previous.end())
+        {
+            cout<<"Poprzednik miasta "<<i<<" to "<<*previous_iter<<" z droga "<<cities[*previous_iter].road<<endl;
+            if (best>cities[*previous_iter].road)
+            {
+                best=cities[*previous_iter].road;
+                temp_iter=previous_iter;
+
+            }
+            previous_iter++;
+
+        }
+        ans1=answer.rbegin();
+        if (*temp_iter!=*ans1) answer.push_back(*temp_iter);
+    }
+
+
+
+
+auto ans=answer.rbegin();
+
     while (!answer.empty())
     {
         if (*ans!=0) output_file<<*ans<<" ";
@@ -139,6 +166,7 @@ int main()
     output_file<<hipercities;
     output_file.seekg( 0 );
     output_file<<cities[hipercities].road<<endl; //droga do ostatniego miasta
+    cout<<endl<<"Poprawnie zapisano odpowiedz do pliku Odpowiedz.txt"<<endl;
     output_file.close();
     input_file.close();
     return 0;
