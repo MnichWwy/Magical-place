@@ -1,47 +1,45 @@
 #include <iostream>
-#include <fstream>
-#include <string>
 #include <vector>
+#include <utility>
 #include <set>
-
-#define infinity 10000000
+#include <fstream>
+#define INF 10000000
 
 using namespace std;
 
-class Mission
-{
-public:
-    int city_beg,city_end,time;
 
-    friend ostream & operator<< (ostream &output, const Mission &m);
-};
+vector< pair<int,int> > *cities;
+vector<int> proximity;
 
-ostream & operator<< (ostream &output, const Mission &m)
+void dijkstra(int numb_of_hipercities)
 {
-    return output << m.city_beg<<" "<<m.city_end<<" "<<m.time;
+    proximity.assign(numb_of_hipercities,INF); //odleglosci na nieskonczonosc...
+    proximity[0] = 0; //..ale z miasta 1 do samego siebie na 0
+    set<pair<int,int>> Q; //miasto,odleglosc
+    Q.insert({0,0});
+    while(!Q.empty())
+    {
+        auto top = Q.begin();
+        int city = top->second;
+        Q.erase(top);
+        for(auto next: cities[city])
+        {
+            int next_city = next.first, road = next.second;
+            if( proximity[next_city] > proximity[city] + road)
+            {
+                if(Q.find( {proximity[next_city], next_city} ) != Q.end())
+                    Q.erase(Q.find( {proximity[next_city], next_city} ));
+                proximity[next_city] = proximity[city] + road;
+                Q.insert( {proximity[next_city], next_city} );
+            }
+        }
+    }
 }
-
-class City
-{
-public:
-    int road=infinity;
-    vector <int> previous;
-    vector <int> cost; //z poprzednika do tego miasta
-    vector <int> next;
-    bool checked=false;
-
-    City () {};
-};
 
 int main()
 {
 
     fstream input_file;
-    //cout << "Podaj nazwe pliku" << endl;
-    //string name;
-    //cin>>name;
-
-    //input_file.open(name,std::ios::in|std::ios::out);
     input_file.open("in3.txt",std::ios::in|std::ios::out);
 
     if (!input_file)
@@ -58,117 +56,42 @@ int main()
         return -1;
     }
 
-    int hipercities, corridors, tunels;
+    int hipercities, corridors, tunels,start,finish,cost;
 
     input_file>>hipercities;
     input_file>>corridors;
     input_file>>tunels;
 
-    Mission tab[corridors];
+    cities = new vector< pair<int,int> >[hipercities];
 
-    City cities[hipercities+1];
-
-    for (int i=0; i<corridors; i++)
+    for(int i=0; i<corridors; i++)
     {
-        input_file>>tab[i].city_beg;
-        input_file>>tab[i].city_end;
-        input_file>>tab[i].time;
-        cities[tab[i].city_beg].next.push_back(tab[i].city_end);
-        cities[tab[i].city_end].previous.push_back(tab[i].city_beg);
-        cities[tab[i].city_end].cost.push_back(tab[i].time);
+        input_file>>start>>finish>>cost;
+        start--;
+        finish--;
+        //bo miasta numerowane sa w pliku in od 1 (!!!)
+        cities[start].push_back({finish,cost});
+        cities[finish].push_back({start,cost});
+    }
+
+    dijkstra(hipercities);
+
+    for(int i=0; i<hipercities; i++)
+    {
+        cout<<"Miasto:"<<i+1<<" Odleglosc:"<<proximity[i]<<" ";
+        cout<<endl;
 
     }
 
-    vector<int>::iterator previous_iter;
-    vector<int>::iterator next_iter;
-    auto temp_iter  = cities[2].previous.begin();
-    vector<int>::iterator cost_iter;
-    output_file<<endl;
+   // auto ans=cities[0].first;
 
-    cities[1].road=0; //bo z miasta 1 do 1 podroz nic nie trwa
-    output_file<<"   1 ";
+   // while (ans.first!=hipercities)
+   // {
+   //     cout<<ans;
+    //    ans=cities[ans].first;
 
-    vector <int> answer(hipercities,0);
-
-    for (int i=2; i<=hipercities; i++) //bo z miasta 1 do miasta 1 nie ma sensu sprawdzac
-    {
-        previous_iter=cities[i].previous.begin();
-        cost_iter=cities[i].cost.begin();
-
-        while (previous_iter!=cities[i].previous.end())
-        {
-            if ((cities[i].road)>((cities[*previous_iter].road)+(*cost_iter)))
-            {
-                if (*cost_iter==0)
-                {
-                    if (tunels!=0)
-                    {
-                        cities[i].road=((cities[*previous_iter].road)+(*cost_iter));
-                        temp_iter=previous_iter;
-                        tunels--;
-                        cout<<"tunel ";
-                    }
-                }
-                else
-                {
-                    cities[i].road=((cities[*previous_iter].road)+(*cost_iter));
-                    temp_iter=previous_iter;
-                }
-            }
-            previous_iter++;
-            cost_iter++;
-
-        }
-
-        // if (cities[*temp_iter].checked==false)
-        //  {
-        //       answer.push_back(*temp_iter);
-        //  }
-        cities[*temp_iter].checked=true;
-    }
+ //   }
 
 
-    int best=infinity;
-    auto ans1=answer.rbegin();
-
-    for (int i=hipercities; i>=2; i--)
-    {
-
-        previous_iter=cities[i].previous.begin();
-        while (previous_iter!=cities[i].previous.end())
-        {
-            cout<<"Poprzednik miasta "<<i<<" to "<<*previous_iter<<" z droga "<<cities[*previous_iter].road<<endl;
-            if (best>cities[*previous_iter].road)
-            {
-                best=cities[*previous_iter].road;
-                temp_iter=previous_iter;
-
-            }
-            previous_iter++;
-
-        }
-        ans1=answer.rbegin();
-        if (*temp_iter!=*ans1) answer.push_back(*temp_iter);
-    }
-
-
-
-
-auto ans=answer.rbegin();
-
-    while (!answer.empty())
-    {
-        if (*ans!=0) output_file<<*ans<<" ";
-        answer.pop_back();
-        ans++;
-    }
-
-    output_file<<hipercities;
-    output_file.seekg( 0 );
-    output_file<<cities[hipercities].road<<endl; //droga do ostatniego miasta
-    cout<<endl<<"Poprawnie zapisano odpowiedz do pliku Odpowiedz.txt"<<endl;
-    output_file.close();
-    input_file.close();
     return 0;
-
 }
